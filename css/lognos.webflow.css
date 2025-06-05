@@ -68,7 +68,7 @@ h1 {
   font-family: var(--font-primary);
   letter-spacing: -.01em;
   margin-top: 0;
-  margin-bottom: 0;
+  margin-bottom: 2rem;
   font-size: 3.8rem;
   font-weight: 500;
   line-height: 1;
@@ -345,6 +345,7 @@ figcaption {
   color: var(--text-primary);
   background-color: #0000;
   background-image: none;
+  width: 60%;
   transition: color .25s, background-color .35s;
 }
 
@@ -2397,7 +2398,7 @@ figcaption {
     justify-content: center;
     align-items: center;
     width: 24px;
-    height: 2px;
+    height: 1px;
     margin-top: 6px;
     margin-bottom: 6px;
     padding-bottom: 0;
@@ -2459,7 +2460,7 @@ figcaption {
   .menu-icon_line-bottom {
     background-color: var(--text-primary);
     width: 24px;
-    height: 2px;
+    height: 1px;
     padding-bottom: 0;
     padding-right: 0;
   }
@@ -2475,7 +2476,7 @@ figcaption {
   .menu-icon_line-top {
     background-color: var(--text-primary);
     width: 24px;
-    height: 2px;
+    height: 1px;
     padding-bottom: 0;
     padding-right: 0;
   }
@@ -2760,7 +2761,7 @@ figcaption {
   }
 
   .button.is-secondary {
-    width: 100%;
+    width: 60%;
     padding-top: 1rem;
     padding-bottom: 1rem;
   }
@@ -3130,7 +3131,7 @@ figcaption {
   }
 
   .button.is-secondary {
-    width: 100%;
+    width: 60%;
     padding-top: 1rem;
     padding-bottom: 1rem;
   }
