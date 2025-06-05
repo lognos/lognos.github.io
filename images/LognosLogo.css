@@ -1,0 +1,43 @@
+/* LognosLogo animation styles */
+@keyframes circle-to-collapsed {
+  0% {
+    cx: 72;
+    r: 10;
+  }
+  40% {
+    cx: 40;
+    r: 10;
+  }
+  100% {
+    cx: 12;
+    r: 12;
+  }
+}
+
+@keyframes circle-to-expanded {
+  0% {
+    cx: 12;
+    r: 12;
+  }
+  60% {
+    cx: 45;
+    r: 10;
+  }
+  100% {
+    cx: 72;
+    r: 10;
+  }
+}
+
+.circle-collapsed {
+  animation: circle-to-collapsed 0.5s forwards cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.circle-expanded {
+  animation: circle-to-expanded 0.5s forwards cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* For the letter animations */
+.letter {
+  transition: opacity 0.3s ease-out, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1.4);
+}

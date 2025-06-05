@@ -1312,6 +1312,7 @@ figcaption {
   display: flex;
   margin-left: 1rem;
   margin-right: 1rem;
+  margin-top: 2rem;
 }
 
 .section_smallhero {
@@ -3442,9 +3443,9 @@ figcaption {
   flex-flow: column;
   place-content: center;
   align-items: center;
-  padding: 4.8rem 4.8rem 4rem;
+  padding: 4rem 4rem 4rem;
   display: flex;
-  min-height: 80vh;
+  min-height: 10vh;
 }
 
 .hero_image-wrapper-home-video {
@@ -3472,8 +3473,8 @@ figcaption {
 
 @media screen and (max-width: 991px) {
   .hero_wrapper-main-video {
-    padding: 3rem 2rem 3rem;
-    min-height: 70vh;
+    padding: 0.5rem 0.5rem 0.5rem;
+    min-height: 10vh;
   }
   
   .hero_image-wrapper-home-video {
@@ -3490,7 +3491,7 @@ figcaption {
 @media screen and (max-width: 767px) {
   .hero_wrapper-main-video {
     padding: 0.5rem 0.25rem 0.25rem !important;
-    min-height: 85vh !important;
+    min-height: 10vh !important;
   }
   
   .hero_image-wrapper-home-video {
@@ -3512,8 +3513,8 @@ figcaption {
   
   /* Target elements with specific data-w-id attributes to override inline styles */
   div[data-w-id="9f4cb4fe-02b7-c068-e94c-0516fe342a06"] {
-    padding: 0.5rem 0rem 0rem !important;
-    min-height: 95vh !important;
+    padding: 0.5rem 0.25rem 0.25rem !important;
+    min-height: 10vh !important;
   }
   
   div[data-w-id="9f4cb4fe-02b7-c068-e94c-0516fe342a0a"] {
@@ -3524,13 +3525,13 @@ figcaption {
 @media screen and (max-width: 479px) {
   .hero_wrapper-main-video {
     padding: 0.5rem 0.25rem 0.25rem !important;
-    min-height: 75vh !important;
+    min-height: 10vh !important;
   }
   
   .hero_image-wrapper-home-video {
     min-height: 45vh !important;
     margin-bottom: 0.5rem !important;
-    height: 45vh !important;
+    height: 10vh !important;
     padding: 0.15rem !important;
     width: 100% !important;
   }
