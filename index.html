@@ -37,6 +37,47 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+/* Accelerate video playback */
+.video-accelerated {
+  animation: none !important;
+  width: 85%;
+  height: auto;
+  max-width: 650px;
+  max-height: 450px;
+  object-fit: contain;
+  margin: 1.5rem auto;
+  display: block;
+}
+.video-accelerated video {
+  animation-duration: 0.33s !important;
+}
+/* Center the video container */
+.hero_image-wrapper-home {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-height: 500px;
+  overflow: hidden;
+}
+/* Ensure hero layout works well */
+.hero_wrapper-main {
+  align-items: center;
+}
+
+/* Mobile video styles - override inline styles */
+@media screen and (max-width: 767px) {
+  .hero_image-wrapper-home-video {
+    min-height: 450px !important;
+    margin-bottom: 2rem !important;
+  }
+  
+  .video-accelerated-hero {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -266,48 +307,69 @@ margin: 0rem !important;
     <main class="main-wrapper">
       <section class="section_hero">
         <div class="w-layout-blockcontainer padding-global padding-section-hero w-container">
-          <div data-w-id="9f4cb4fe-02b7-c068-e94c-0516fe342a06" class="hero_wrapper-main">
-            <div data-w-id="9f4cb4fe-02b7-c068-e94c-0516fe342a0a" class="hero_column-wrapper">
+          <div data-w-id="9f4cb4fe-02b7-c068-e94c-0516fe342a06" class="hero_wrapper-main-video" style="padding: 2rem 4.8rem 1rem; min-height: 50vh;">
+            <div data-w-id="9f4cb4fe-02b7-c068-e94c-0516fe342a0a" class="hero_column-wrapper" style="margin-bottom: 1rem;">
               <div class="hero_text">
-                <h1 class="heading-3"><span class="text-color-highlighted">AI Agents </span> for project <span class="text-color-highlighted">risks management.</span></h1>
+                <h1 class="heading-3"><span class="text-color-highlighted">AI Agents </span> for project <span class="text-color-highlighted">risks management.</span></h1>
                 <div class="hero_text-paragraph">
                   <p class="paragraph-3">Enabling your project team to target what&#x27;s critical.</p>
                 </div>
               </div>
               <div class="button-group">
-                <a href="pricing.html" class="button is-icon w-inline-block">
-                  <div class="text-weight-semibold text-size-regular">Get started</div>
-                  <div class="icon-embed-xsmall w-embed">
-                    <?xml version="1.0" encoding="UTF-8"?>
-                    <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 16 16">
-                      <defs>
-                        <style>
-      .cls-1 {
-        fill: currentcolor;
-        stroke-width: 0px;
-      }
-    </style>
-                      </defs>
-                      <polygon class="cls-1" points="8.35 15.35 7.65 14.65 14.29 8 7.65 1.35 8.35 .65 15.71 8 8.35 15.35">
-                      <rect class="cls-1" x="1" y="7.5" width="14" height="1"></rect>
-                    </polygon></svg>
-                  </div>
-                </a>
+
                 <a href="https://calendly.com/facundo-bassi/lognos_demo" target="_blank" class="button is-secondary text-size-regular text-weight-semibold w-button">Book a demo</a>
               </div>
             </div>
-            <div class="hero_image-wrapper-home"><img class="img_hero-1-copy" src="images/qra_dashboard.png" alt="" style="-webkit-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0" sizes="(max-width: 767px) 100vw, (max-width: 991px) 728px, 940px" data-w-id="d4ef5b87-80d7-9065-c7c1-de7060683e41" loading="lazy" srcset="images/qra_dashboard-p-500.png 500w, images/qra_dashboard-p-800.png 800w, images/qra_dashboard-p-1080.png 1080w, images/qra_dashboard-p-1600.png 1600w, images/qra_dashboard.png 1829w"><img class="img_hero-mobile" src="images/forecast_graph.png" alt="" style="-webkit-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0" sizes="(max-width: 767px) 100vw, (max-width: 991px) 728px, 940px" data-w-id="81359fa4-c547-40c1-8886-9f2aafc6f14d" loading="lazy" srcset="images/forecast_graph-p-500.png 500w, images/forecast_graph-p-800.png 800w, images/forecast_graph-p-1080.png 1080w, images/forecast_graph-p-1600.png 1600w, images/forecast_graph.png 1678w"><img class="img_hero-2-copy" src="images/chat_agent_2.png" alt="" style="-webkit-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0" sizes="(max-width: 767px) 100vw, (max-width: 991px) 728px, 940px" data-w-id="9a8589e3-8050-1702-ac6b-0c7415dfc1fc" loading="lazy" srcset="images/chat_agent_2-p-500.png 500w, images/chat_agent_2-p-800.png 800w, images/chat_agent_2-p-1080.png 1080w, images/chat_agent_2.png 1593w"><img class="img_hero-2" src="images/actions_graph.png" alt="" style="-webkit-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0" sizes="(max-width: 767px) 100vw, (max-width: 991px) 728px, 940px" data-w-id="6a1f61ae-41fc-9307-ac1c-929a58d10fdc" loading="lazy" srcset="images/actions_graph-p-500.png 500w, images/actions_graph-p-800.png 800w, images/actions_graph-p-1080.png 1080w, images/actions_graph.png 1502w"></div>
+            <div class="hero_image-wrapper-home-video" style="min-height: 400px; margin-bottom: 2rem;">
+              <video 
+                class="video-accelerated-hero" 
+                autoplay 
+                muted 
+                loop 
+                playsinline
+                poster="images/qra_dashboard.png"
+                data-w-id="d4ef5b87-80d7-9065-c7c1-de7060683e41"
+                onloadstart="console.log('Video load started'); this.playbackRate = 3.0;"
+                oncanplay="console.log('Video can play'); this.playbackRate = 3.0;"
+                onloadeddata="this.playbackRate = 3.0;"
+                onerror="console.log('Video error:', this.error)">
+                <source src="images/lognos_home.mp4" type="video/mp4">
+                <source src="lognos_home.mp4" type="video/mp4">
+                <img src="images/qra_dashboard.png" alt="Lognos Dashboard" style="width: 100%; height: auto;">
+              </video>
+            </div>
           </div>
         </div>
       </section>
-      <section class="section_partners">
-        <div class="padding-global">
-          <div class="integration-logos"><img src="images/project_logo.png" alt="" class="logo-img"><img src="images/p6_logo.jpeg" alt="" class="logo-img"><img src="images/excel_logo.png" alt="" class="logo-img"><img src="images/outlook_new.png" alt="" class="logo-img"><img src="images/sql.png" alt="" class="logo-img"><img src="images/adobe.jpeg" alt="" class="logo-img"></div>
-        </div>
-      </section>
       <section class="section_mainfeatures">
-        <div class="w-layout-blockcontainer padding-global padding-section-medium w-container">
+        <div class="w-layout-blockcontainer padding-global w-container" >
           <div class="mainfeatures_heading">
+            <div data-w-id="b7cc369f-7df7-2383-00ed-f8ff33075c9e" style="-webkit-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0" class="insights_component">
+              <div class="insights_tile">
+                <div class="insights_text-wrapper">
+                  <div class="heading-style-h1">90%</div>
+                  <div class="text-size-small">Reduction in information processing time </div>
+                </div>
+              </div>
+              <div class="insights_tile">
+                <div class="insights_text-wrapper">
+                  <div class="heading-style-h1">3X</div>
+                  <div class="text-size-small">Team knowledge capture</div>
+                </div>
+              </div>
+              <div class="insights_tile">
+                <div class="insights_text-wrapper">
+                  <div class="heading-style-h1">80%</div>
+                  <div class="text-size-small">Risk Management time saving</div>
+                </div>
+              </div>
+              <div class="insights_tile">
+                <div class="insights_text-wrapper">
+                  <div class="heading-style-h1">4X</div>
+                  <div class="text-size-small">Quantitative risk awareness</div>
+                </div>
+              </div>
+            </div>
             <div class="section-header text-align-center">
               <h3 data-w-id="6e8c5aff-4024-b7a9-74cb-f091c55bf2ed" style="-webkit-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0" class="heading-4">AI powered collaboration for risk management.<br></h3>
             </div>
@@ -363,37 +425,7 @@ margin: 0rem !important;
       </section>
       <section class="section_insights">
         <div class="w-layout-blockcontainer padding-global padding-section-medium w-container">
-          <div class="insights_wrapper">
-            <div data-w-id="b7cc369f-7df7-2383-00ed-f8ff33075c91" style="-webkit-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0" class="section-header">
-              <h3 class="heading-style-h4">We deliver measurable results. <br></h3>
-            </div>
-            <div data-w-id="b7cc369f-7df7-2383-00ed-f8ff33075c9e" style="-webkit-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0" class="insights_component">
-              <div class="insights_tile">
-                <div class="insights_text-wrapper">
-                  <div class="heading-style-h1">90%</div>
-                  <div class="text-size-small">Reduction in information processing time </div>
-                </div>
-              </div>
-              <div class="insights_tile">
-                <div class="insights_text-wrapper">
-                  <div class="heading-style-h1">3X</div>
-                  <div class="text-size-small">Team knowledge capture</div>
-                </div>
-              </div>
-              <div class="insights_tile">
-                <div class="insights_text-wrapper">
-                  <div class="heading-style-h1">80%</div>
-                  <div class="text-size-small">Risk Management time saving</div>
-                </div>
-              </div>
-              <div class="insights_tile">
-                <div class="insights_text-wrapper">
-                  <div class="heading-style-h1">4X</div>
-                  <div class="text-size-small">Quantitative risk awareness</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          
         </div>
       </section>
       <section class="faq">
