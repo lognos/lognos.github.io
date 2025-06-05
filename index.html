@@ -68,22 +68,26 @@
 /* Mobile video styles - maximize video size on mobile */
 @media screen and (max-width: 767px) {
   .hero_wrapper-main-video {
-    padding: 0.5rem 0rem 0rem !important;
-    min-height: 90vh !important;
+    padding: 0.25rem 0.15rem 0.15rem !important;
+    min-height: 85vh !important;
   }
   
   .hero_image-wrapper-home-video {
-    min-height: 70vh !important;
-    margin-bottom: 0rem !important;
-    height: 70vh !important;
+    min-height: 60vh !important;
+    margin-bottom: 0.5rem !important;
+    height: 60vh !important;
+    padding: 0.1rem !important;
+    width: 100% !important;
   }
   
   .video-accelerated-hero {
     width: 100% !important;
-    height: 70vh !important;
-    max-width: 100vw !important;
-    max-height: 70vh !important;
+    height: 60vh !important;
+    max-width: 100% !important;
+    max-height: 30vh !important;
     object-fit: cover !important;
+    object-position: center !important;
+    border-radius: 0.5rem !important;
   }
   
   .hero_column-wrapper {
@@ -92,29 +96,33 @@
   
   /* Remove container side padding for full width video */
   .w-layout-blockcontainer.padding-global.padding-section-hero {
-    padding-left: 0rem !important;
-    padding-right: 0rem !important;
+    padding-left: 0.25rem !important;
+    padding-right: 0.25rem !important;
   }
 }
 
 @media screen and (max-width: 479px) {
   .hero_wrapper-main-video {
-    padding: 0.25rem 0rem 0rem !important;
-    min-height: 85vh !important;
+    padding: 0.15rem 0.1rem 0.1rem !important;
+    min-height: 10vh !important;
   }
   
   .hero_image-wrapper-home-video {
-    min-height: 65vh !important;
-    margin-bottom: 0rem !important;
-    height: 65vh !important;
+    min-height: 55vh !important;
+    margin-bottom: 0.25rem !important;
+    height: 40vh !important;
+    padding: 0.05rem !important;
+    width: 100% !important;
   }
   
   .video-accelerated-hero {
     width: 100% !important;
-    height: 65vh !important;
-    max-width: 100vw !important;
-    max-height: 65vh !important;
+    height: 55vh !important;
+    max-width: 100% !important;
+    max-height: 30vh !important;
     object-fit: cover !important;
+    object-position: center !important;
+    border-radius: 0.4rem !important;
   }
   
   .hero_column-wrapper {
@@ -122,8 +130,8 @@
   }
   
   .w-layout-blockcontainer.padding-global.padding-section-hero {
-    padding-left: 0rem !important;
-    padding-right: 0rem !important;
+    padding-left: 0.1rem !important;
+    padding-right: 0.1rem !important;
   }
 }
 </style>
@@ -209,11 +217,11 @@ font-size: inherit;
 }
 /* Removes native scrollbar */
 .no-scrollbar {
-    -ms-overflow-style: none;  // IE 10+
-    overflow: -moz-scrollbars-none;  // Firefox
+    -ms-overflow-style: none;  /* IE 10+ */
+    overflow: -moz-scrollbars-none;  /* Firefox */
 }
 .no-scrollbar::-webkit-scrollbar {
-    display: none; // Safari and Chrome
+    display: none; /* Safari and Chrome */
 }
 /* Adds inline flex display */
 .display-inlineflex {
@@ -223,19 +231,17 @@ font-size: inherit;
 .hide {
   display: none !important;
 }
-@media screen and (max-width: 991px), 
-  @media screen and (max-width: 767px), 
-  @media screen and (max-width: 479px){
+@media screen and (max-width: 991px) {
     .hide, .hide-tablet{
       display: none !important;
     }
   }
-  @media screen and (max-width: 767px)
+  @media screen and (max-width: 767px) {
     .hide-mobile-landscape{
       display: none !important;
     }
   }
-  @media screen and (max-width: 479px)
+  @media screen and (max-width: 479px) {
     .hide-mobile{
       display: none !important;
     }
