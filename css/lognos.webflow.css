@@ -443,6 +443,8 @@ figcaption {
   margin-left: 1rem;
   margin-right: 1rem;
   display: flex;
+  width:100%;
+  justify-content: center;
 }
 
 .button-group.align-center {
@@ -955,7 +957,7 @@ figcaption {
 }
 
 .navbar_menu {
-  flex-direction: row;
+  flex-direction: row-reverse;
   flex: 1;
   justify-content: space-between;
   align-items: center;
@@ -2347,6 +2349,7 @@ figcaption {
     align-items: center;
     margin-left: 1rem;
     margin-right: 1rem;
+    width: 100%;
   }
 
   .padding-section-medium {
@@ -2482,6 +2485,7 @@ figcaption {
   }
 
   .navbar_menu {
+    flex-direction: row_reverse;
     background-color: var(--body-color);
     -webkit-text-fill-color: inherit;
     background-clip: border-box;
