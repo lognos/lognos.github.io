@@ -439,6 +439,8 @@ figcaption {
   flex-wrap: wrap;
   align-items: center;
   margin-top: 0;
+  margin-left: 1rem;
+  margin-right: 1rem;
   display: flex;
 }
 
@@ -1308,6 +1310,8 @@ figcaption {
   grid-row-gap: .8rem;
   flex-flow: column;
   display: flex;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .section_smallhero {
@@ -2339,6 +2343,8 @@ figcaption {
   .button-group {
     justify-content: center;
     align-items: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
 
   .padding-section-medium {
@@ -2771,6 +2777,8 @@ figcaption {
 
   .button-group {
     width: 100%;
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
 
   .padding-section-medium {
