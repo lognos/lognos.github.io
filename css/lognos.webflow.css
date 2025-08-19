@@ -518,8 +518,8 @@ figcaption {
 }
 
 .padding-section-medium {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
 .padding-section-large {
@@ -785,12 +785,12 @@ figcaption {
 
 .footer_top-wrapper {
   grid-column-gap: 9.6rem;
-  grid-row-gap: 4.8rem;
+  grid-row-gap: 2rem;
   flex-flow: row;
   grid-template-rows: auto;
   grid-template-columns: .75fr 1fr;
-  align-items: start;
-  padding-bottom: 2rem;
+  align-items: center;
+  padding-bottom: 1rem;
   display: flex;
 }
 
@@ -894,7 +894,9 @@ figcaption {
   grid-column-gap: 1.6rem;
   grid-row-gap: 1.6rem;
   flex-direction: column;
-  margin-top: 5rem;
+  align-items: flex-start;
+  justify-content: center;
+  margin-top: 0;
   display: flex;
 }
 
