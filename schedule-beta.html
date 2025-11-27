@@ -298,13 +298,13 @@ margin: 0rem !important;
                   <label for="Company" style="font-size: 1rem;">Company</label>
                   <input class="text-field w-input" maxlength="256" name="Company" data-name="Company" placeholder="Your company name" type="text" id="Company" style="font-size: 1rem;">
                   <label for="Role" style="font-size: 1rem;">Role</label>
-                  <input class="text-field w-input" maxlength="256" name="Role" data-name="Role" placeholder="e.g. Project Manager, Scheduler" type="text" id="Role" style="font-size: 1rem;">
+                  <input class="text-field w-input" maxlength="256" name="Role" data-name="Role" placeholder="Project Manager, Scheduler" type="text" id="Role" style="font-size: 1rem;">
                   <label for="Use-Case" style="font-size: 1rem;">How will you use the assistant?</label>
-                  <textarea class="text-field w-input" maxlength="500" name="Use-Case" data-name="Use Case" placeholder="e.g. schedule creation, updates, modifications, analysis..." id="Use-Case" style="min-height: 80px; resize: vertical; font-size: 1rem; flex: 1;"></textarea>
-                  <input type="submit" data-wait="Please wait..." class="button form-button w-button" value="Request Beta Access" style="width: 100%; margin-top: auto;">
+                  <textarea class="text-field w-input" maxlength="500" name="Use-Case" data-name="Use Case" placeholder="Schedule creation, updates, modifications, analysis..." id="Use-Case" style="min-height: 80px; resize: vertical; font-size: 1rem; flex: 1;"></textarea>
+                  <input type="submit" data-wait="Please wait..." class="button form-button w-button" value="Request access" style="width: 100%; margin-top: auto;">
                 </form>
                 <div class="success-message-2 w-form-done" style="display: none; margin-top: 1rem; padding: 1rem; border-radius: 0.5rem; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.5);">
-                  <div style="font-size: 1rem; color: #22c55e;">🎉 Thanks for your interest! We'll reach out with beta access details soon.</div>
+                  <div style="font-size: 1rem; color: #22c55e;">Thanks for your interest! We'll reach out with beta access details soon.</div>
                 </div>
                 <div class="w-form-fail" style="display: none; margin-top: 1rem; padding: 1rem; border-radius: 0.5rem; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.5);">
                   <div style="font-size: 1rem; color: #ef4444;">Oops! Something went wrong. Please try again.</div>
@@ -417,7 +417,7 @@ margin: 0rem !important;
         const data = await response.json();
 
         if (response.ok && data.success) {
-          showSuccess('✅ Email verified! Thanks for confirming. We\'ll be in touch soon with your beta access details.');
+          showSuccess('Email verified! Thanks for confirming. We\'ll be in touch soon with your beta access details.');
           // Clean up URL
           window.history.replaceState({}, document.title, window.location.pathname);
         } else {
@@ -500,14 +500,14 @@ margin: 0rem !important;
               // Don't fail the whole submission if email fails
             }
             
-            showSuccess('📧 Please check your email to verify your address. We\'ve sent a confirmation link.');
+            showSuccess('Please check your email to verify your address. We\'ve sent a confirmation link. Check spam folder if you don\'t see it soon.');
           } else {
             let errorMsg = `Status: ${response.status}`;
             try {
               const error = await response.json();
               console.error('Supabase error:', error);
               if (error.code === '23505') {
-                showError('This email is already on the waitlist. Check your inbox for the verification email!');
+                showError('This email is already on the waitlist. Check your inbox or spam folder for the verification email!');
                 submitBtn.value = originalText;
                 submitBtn.disabled = false;
                 return;
