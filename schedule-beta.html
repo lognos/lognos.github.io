@@ -260,8 +260,23 @@ margin: 0rem !important;
       </div>
     </div>
     <main class="main-wrapper">
+      <!-- Video Section -->
+      <section style="padding-top: 8rem;">
+        <div class="w-layout-blockcontainer padding-global w-container">
+          <div style="margin-bottom: 2rem;">
+            <video id="schedule-video" autoplay loop muted playsinline style="width: 100%; border-radius: 0.75rem; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);">
+              <source src="images/lognos_schedule.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <script>
+              document.getElementById('schedule-video').playbackRate = 1.7;
+            </script>
+          </div>
+        </div>
+      </section>
+      
       <section class="section_contact">
-        <div class="w-layout-blockcontainer padding-global padding-section-large w-container" style="padding-top: 10rem;">
+        <div class="w-layout-blockcontainer padding-global padding-section-large w-container" style="padding-top: 0;">
           <div style="display: flex; gap: 2rem; align-items: stretch; flex-wrap: wrap;">
             <!-- Left Column: Title and Text -->
             <div style="flex: 1; min-width: 320px; padding: 2.5rem; border-radius: var(--border-radius); background: var(--color-primary-transparent); border: 1px solid var(--border-subtle); display: flex; flex-direction: column;">
