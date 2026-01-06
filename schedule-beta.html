@@ -261,16 +261,23 @@ margin: 0rem !important;
     </div>
     <main class="main-wrapper">
       <!-- Video Section -->
-      <section style="padding-top: 8rem;">
-        <div class="w-layout-blockcontainer padding-global w-container">
-          <div style="margin-bottom: 2rem;">
-            <video id="schedule-video" autoplay loop muted playsinline style="width: 100%; border-radius: 0.75rem; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);">
-              <source src="images/lognos_schedule.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-            <script>
-              document.getElementById('schedule-video').playbackRate = 1.7;
-            </script>
+      <section style="background-color: var(--background-primary, #0a0a0f); padding-top: 2rem;">
+        <div class="w-layout-blockcontainer padding-global padding-section-hero w-container">
+          <div class="hero_wrapper-main-video">
+            <div class="hero_column-wrapper">
+              <div class="hero_text" style="margin-left: 1rem; margin-right: 1rem;">
+                <h1 class="heading-3" style="font-size: 2.5rem;"><span class="text-color-highlighted">Schedule assistants </span> empowering your project team</h1>
+              </div>
+            </div>
+            <div class="hero_image-wrapper-home-video">
+              <video id="schedule-video" class="video-accelerated-hero" autoplay loop muted playsinline>
+                <source src="images/lognos_schedule.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <script>
+                document.getElementById('schedule-video').playbackRate = 1.7;
+              </script>
+            </div>
           </div>
         </div>
       </section>
