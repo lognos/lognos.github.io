@@ -1123,20 +1123,27 @@
                 if (k === 'arrowleft' || k === 'pageup') prev();
             });
 
-            // Mobile swipe navigation
+            // Mobile swipe navigation - strict horizontal only
             let touchStartX = 0;
             let touchEndX = 0;
+            let touchStartY = 0;
+            let touchEndY = 0;
             const stage = document.getElementById('stage');
 
             stage.addEventListener('touchstart', (e) => {
                 touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
             }, { passive: true });
 
             stage.addEventListener('touchend', (e) => {
                 touchEndX = e.changedTouches[0].screenX;
-                const diff = touchStartX - touchEndX;
-                if (Math.abs(diff) > 50) { // Minimum swipe distance
-                    if (diff > 0) next(); // Swipe left = next
+                touchEndY = e.changedTouches[0].screenY;
+                const diffX = touchStartX - touchEndX;
+                const diffY = touchStartY - touchEndY;
+                
+                // Only trigger navigation if horizontal movement is significantly larger than vertical
+                if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY) * 2) {
+                    if (diffX > 0) next(); // Swipe left = next
                     else prev(); // Swipe right = prev
                 }
             }, { passive: true });
