@@ -496,6 +496,27 @@
 
         /* Mobile optimizations - must override desktop clamp() */
         @media screen and (max-width: 768px) {
+            /* Hide header on all slides except cover */
+            header {
+                display: none !important;
+            }
+
+            .slide.active[data-title="Cover"] ~ header,
+            body:has(.slide.active[data-title="Cover"]) header {
+                display: flex !important;
+            }
+
+            /* Fix slide content positioning for mobile */
+            .slide {
+                align-items: flex-start !important;
+                padding-top: 20px !important;
+                padding-bottom: 80px !important;
+            }
+
+            .document-canvas {
+                padding-top: 20px !important;
+            }
+
             .cover-canvas {
                 padding-top: 60px !important;
             }
@@ -1106,6 +1127,12 @@
                 nextBtn.disabled = idx === slides.length - 1;
                 const t = slides[idx].getAttribute('data-title') || `Slide ${idx + 1}`;
                 document.title = `Lognos white paper · ${t}`;
+                
+                // Show header only on cover slide in mobile
+                const header = document.querySelector('header');
+                if (header && window.innerWidth <= 768) {
+                    header.style.display = idx === 0 ? 'flex' : 'none';
+                }
             }
 
             function next() { if (idx < slides.length - 1) { idx++; render(); } }
