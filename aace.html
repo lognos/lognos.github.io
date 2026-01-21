@@ -1,0 +1,1391 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI + Ontologies: Freeing Project Controls from Manual Labor</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Montserrat:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <link href="images/circle_favicon.png" rel="shortcut icon" type="image/x-icon">
+  <link href="images/webclip.png" rel="apple-touch-icon">
+
+  <style>
+    :root {
+      --bg0: #0f0f0f;
+      --bg1: #1a1a1a;
+      --ink: #ffffff;
+      --muted: #a1a1aa;
+      --line: rgba(255, 255, 255, .10);
+      --accent: #3b82f6;
+      --accent2: #60a5fa;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+      --good: #3b82f6;
+
+      --radius: 16px;
+      --shadow: 0 20px 70px rgba(0, 0, 0, .55);
+      --mono: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --logo: 'Montserrat', sans-serif;
+
+      --hpad: clamp(24px, 3vw, 50px);
+      --vpad: clamp(20px, 2.5vh, 40px);
+      --contentMax: 95%;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      font-family: var(--sans);
+      color: var(--ink);
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, .12), transparent),
+        linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 100%);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none
+    }
+
+    a:hover {
+      text-decoration: underline
+    }
+
+    .deck {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px;
+      position: relative;
+    }
+
+    header {
+      position: absolute;
+      top: 16px;
+      left: 20px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0;
+      background: transparent;
+      border: none;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .brand h1 {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 18px;
+      margin: 0;
+      font-weight: 300;
+      letter-spacing: 0;
+      color: var(--muted);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .brand .separator {
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .brand .sub {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    /* Cover slide styles */
+    .cover-canvas {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: clamp(40px, 5vw, 80px);
+    }
+
+    .cover-canvas .cover-title {
+      font-size: clamp(48px, 6vw, 100px);
+      line-height: 1.0;
+      letter-spacing: -0.01em;
+      font-weight: 300;
+      margin: 0 0 clamp(16px, 2vh, 32px);
+      max-width: 1200px;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .cover-canvas .cover-subtitle {
+      font-size: clamp(18px, 2vw, 32px);
+      color: var(--muted);
+      margin: 0 0 clamp(30px, 4vh, 60px);
+      max-width: 900px;
+      line-height: 1.5;
+    }
+
+    .cover-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(8px, 1vh, 16px);
+    }
+
+    .cover-meta .presenter {
+      font-size: clamp(16px, 1.5vw, 24px);
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .cover-meta .event {
+      font-size: clamp(14px, 1.2vw, 20px);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .cover-meta .date {
+      font-size: clamp(12px, 1vw, 16px);
+      color: var(--muted);
+    }
+
+    .cover-badge {
+      margin-top: clamp(24px, 3vh, 48px);
+      padding: clamp(10px, 1.2vw, 18px) clamp(18px, 2vw, 32px);
+      border: 1px solid rgba(121, 242, 192, .30);
+      background: rgba(121, 242, 192, .10);
+      border-radius: 999px;
+      font-size: clamp(12px, 1.1vw, 16px);
+      color: var(--accent2);
+      font-weight: 600;
+    }
+
+    .stage {
+      position: relative;
+      flex: 1;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .02));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: var(--vpad) var(--hpad);
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity .35s ease, transform .35s ease;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .canvas {
+      width: var(--contentMax);
+      max-width: 1600px;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: clamp(20px, 2.5vw, 40px);
+      align-content: center;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--sans);
+      font-size: clamp(11px, 1vw, 14px);
+      font-weight: 500;
+      padding: clamp(6px, 0.8vh, 10px) clamp(10px, 1vw, 16px);
+      border-radius: 999px;
+      border: 1px solid rgba(59, 130, 246, .30);
+      background: rgba(59, 130, 246, .10);
+      color: rgba(255, 255, 255, .90);
+      margin-bottom: clamp(12px, 1.5vh, 22px);
+    }
+
+    .kicker .chip {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(59, 130, 246, .15);
+    }
+
+    .title {
+      font-size: clamp(36px, 4.2vw, 72px);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      font-weight: 300;
+      margin: 0 0 clamp(10px, 1.5vh, 20px);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .lead {
+      font-size: clamp(16px, 1.5vw, 24px);
+      line-height: 1.55;
+      color: rgba(234, 240, 255, .92);
+      margin: 0 0 clamp(14px, 2vh, 28px);
+      max-width: 100%;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(10px, 1.2vw, 20px);
+      margin-top: clamp(8px, 1vh, 16px);
+    }
+
+    .card {
+      background: rgba(255, 255, 255, .035);
+      border: 1px solid var(--line);
+      border-radius: clamp(12px, 1.2vw, 20px);
+      padding: clamp(12px, 1.4vw, 22px);
+    }
+
+    .card h3 {
+      margin: 0 0 clamp(6px, 0.8vh, 12px);
+      font-size: clamp(11px, 1vw, 14px);
+      color: var(--muted);
+      font-weight: 800;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: clamp(13px, 1.15vw, 18px);
+      line-height: 1.55;
+      color: rgba(234, 240, 255, .88);
+    }
+
+    .aside {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(10px, 1.2vh, 18px);
+    }
+
+    .stat {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: clamp(10px, 1vw, 18px);
+      padding: clamp(12px, 1.4vw, 22px);
+      border-radius: clamp(12px, 1.2vw, 20px);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, .02));
+    }
+
+    .stat .label {
+      font-size: clamp(11px, 1vw, 15px);
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .stat .value {
+      font-size: clamp(24px, 2.8vw, 44px);
+      font-weight: 900;
+      letter-spacing: -.6px;
+      text-align: right;
+    }
+
+    .value.bad {
+      color: var(--bad)
+    }
+
+    .value.good {
+      color: var(--good)
+    }
+
+    .value.warn {
+      color: var(--warn)
+    }
+
+    .stat small {
+      display: block;
+      font-size: 12px;
+      color: rgba(169, 182, 211, .92);
+      margin-top: 8px
+    }
+
+    .diagram {
+      font-family: var(--mono);
+      font-size: clamp(11px, 1vw, 15px);
+      line-height: 1.5;
+      padding: clamp(12px, 1.4vw, 22px);
+      border-radius: clamp(12px, 1.2vw, 20px);
+      border: 1px solid rgba(59, 130, 246, .25);
+      background: rgba(59, 130, 246, .08);
+      color: rgba(255, 255, 255, .90);
+      white-space: pre-wrap;
+    }
+
+    .diagram b {
+      color: var(--accent);
+      font-weight: 700
+    }
+
+    .diagram.purple {
+      border: 1px solid rgba(136, 136, 136, .30);
+      background: rgba(136, 136, 136, .08);
+    }
+
+    .diagram.purple b {
+      color: #ffffff
+    }
+
+    .fineprint {
+      position: absolute;
+      bottom: clamp(12px, 1.5vh, 20px);
+      left: clamp(16px, 2vw, 28px);
+      font-size: clamp(9px, 0.7vw, 11px);
+      line-height: 1.4;
+      color: rgba(169, 182, 211, .65);
+      max-width: 50%;
+    }
+
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: clamp(8px, 1vh, 14px) clamp(12px, 1.2vw, 18px);
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .03);
+      border-radius: 14px;
+      backdrop-filter: blur(10px);
+      flex-shrink: 0;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid rgba(255, 255, 255, .16);
+      background: rgba(255, 255, 255, .065);
+      color: var(--ink);
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .06s ease, background .18s ease, border-color .18s ease;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, .10);
+      border-color: rgba(255, 255, 255, .24);
+    }
+
+    button:active {
+      transform: translateY(1px)
+    }
+
+    button.primary {
+      border-color: rgba(59, 130, 246, .40);
+      background: rgba(59, 130, 246, .18);
+    }
+
+    button.primary:hover {
+      background: rgba(59, 130, 246, .26);
+      border-color: rgba(59, 130, 246, .52);
+    }
+
+    button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .progress {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      min-width: 240px;
+      justify-content: flex-end;
+    }
+
+    .bar {
+      width: 150px;
+      height: 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .04);
+      overflow: hidden;
+    }
+
+    .bar>i {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      border-radius: 999px;
+      transition: width .35s ease;
+    }
+
+    .big-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(10px, 1.2vw, 20px);
+      margin-top: clamp(12px, 1.5vh, 24px);
+    }
+
+    .big-stat {
+      text-align: center;
+      padding: clamp(12px, 1.4vw, 24px);
+      border-radius: clamp(12px, 1.2vw, 20px);
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .03);
+    }
+
+    .big-stat .num {
+      font-size: clamp(32px, 3.8vw, 64px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .big-stat .desc {
+      font-size: clamp(11px, 1vw, 15px);
+      color: var(--muted);
+      margin-top: clamp(6px, 0.8vh, 12px);
+      line-height: 1.4;
+    }
+
+    .highlight-box {
+      background: rgba(59, 130, 246, .08);
+      border: 1px solid rgba(59, 130, 246, .25);
+      border-radius: clamp(12px, 1.2vw, 20px);
+      padding: clamp(14px, 1.5vw, 26px);
+      margin-top: clamp(12px, 1.5vh, 22px);
+    }
+
+    .highlight-box h4 {
+      margin: 0 0 clamp(6px, 0.8vh, 12px);
+      font-size: clamp(12px, 1.1vw, 16px);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .highlight-box p {
+      margin: 0;
+      font-size: clamp(13px, 1.15vw, 18px);
+      line-height: 1.5;
+      color: rgba(234, 240, 255, .90);
+    }
+
+    .cover-index {
+      display: flex;
+      gap: clamp(40px, 6vw, 100px);
+      margin-top: clamp(30px, 4vh, 60px);
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .index-column {
+      text-align: left;
+    }
+
+    .index-header {
+      font-size: clamp(14px, 1.2vw, 18px);
+      color: var(--accent);
+      font-weight: 400;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .cover-index ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .cover-index li {
+      font-size: clamp(14px, 1.3vw, 20px);
+      color: var(--muted);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .cover-index li a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .cover-index li a:hover {
+      color: var(--ink);
+    }
+
+    @media (max-width: 1080px) {
+      .canvas {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .big-stats {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .aside {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .canvas {
+        grid-template-columns: 1fr;
+      }
+
+      .big-stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .aside {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Mobile optimizations */
+    @media screen and (max-width: 768px) {
+      .cover-canvas {
+        padding-top: 60px !important;
+      }
+
+      .cover-canvas .cover-title {
+        font-size: 28px !important;
+        line-height: 1.3 !important;
+        margin: 0 0 14px !important;
+        max-width: 100% !important;
+      }
+
+      .cover-canvas .cover-subtitle {
+        font-size: 18px !important;
+        line-height: 1.5 !important;
+        margin: 0 0 20px !important;
+        max-width: 100% !important;
+      }
+
+      .cover-meta {
+        font-size: 14px !important;
+        gap: 6px !important;
+      }
+
+      .cover-meta .presenter {
+        font-size: 16px !important;
+      }
+
+      .cover-meta .event {
+        font-size: 14px !important;
+      }
+
+      .cover-meta .date {
+        font-size: 13px !important;
+      }
+
+      .cover-index {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 20px !important;
+        margin-top: 24px !important;
+        width: 100%;
+      }
+
+      .index-column {
+        text-align: left !important;
+      }
+
+      .index-header {
+        font-size: 14px !important;
+        margin-bottom: 8px !important;
+      }
+
+      .cover-index li {
+        font-size: 13px !important;
+        line-height: 1.5 !important;
+        margin-bottom: 6px !important;
+      }
+
+      .title {
+        font-size: 24px !important;
+      }
+
+      .kicker {
+        font-size: 12px !important;
+      }
+
+      button {
+        padding: 10px 14px !important;
+        font-size: 13px !important;
+        border-radius: 12px !important;
+      }
+
+      footer {
+        padding: 8px 12px !important;
+        gap: 8px !important;
+        border-radius: 12px !important;
+      }
+
+      .progress {
+        min-width: auto !important;
+        gap: 8px !important;
+        font-size: 12px !important;
+      }
+
+      .bar {
+        width: 80px !important;
+        height: 6px !important;
+      }
+
+      :root {
+        --hpad: 20px;
+        --vpad: 20px;
+      }
+    }
+
+    /* Extra small mobile phones */
+    @media (max-width: 480px) {
+      .cover-canvas .cover-title {
+        font-size: 24px !important;
+      }
+
+      .cover-canvas .cover-subtitle {
+        font-size: 16px !important;
+      }
+
+      .title {
+        font-size: 20px !important;
+      }
+
+      button {
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+      }
+
+      .progress {
+        font-size: 11px !important;
+      }
+
+      .bar {
+        width: 60px !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="deck">
+    <header>
+      <div class="brand">
+        <svg class="brand-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="#3b82f6" fill="none" stroke-width="2.5" />
+        </svg>
+        <h1>lognos</h1>
+        <span class="separator">·</span>
+        <span class="sub">AACE Toronto Section</span>
+      </div>
+    </header>
+
+    <main class="stage" id="stage">
+
+      <!-- Cover Slide -->
+      <section class="slide active" data-title="Cover">
+        <div class="cover-canvas">
+          <h1 class="cover-title">Project Controls & Risk Management Ontologies and workflows</h1>
+          <p class="cover-subtitle">Reducing Project Controls manual labor</p>
+          <p class="cover-subtitle">AACE Toronto Section</p>
+
+
+          <div class="cover-index">
+            <div class="index-column">
+              <div class="index-header">PROBLEM</div>
+              <ul>
+                <li><a href="#" onclick="goToSlide(1); return false;">The Problem</a></li>
+                <li><a href="#" onclick="goToSlide(2); return false;">Data Labor</a></li>
+                <li><a href="#" onclick="goToSlide(3); return false;">LLM Opportunity</a></li>
+                <li><a href="#" onclick="goToSlide(4); return false;">Ontologies</a></li>
+              </ul>
+            </div>
+            <div class="index-column">
+              <div class="index-header">SOLUTION</div>
+              <ul>
+                <li><a href="#" onclick="goToSlide(5); return false;">Workflows</a></li>
+                <li><a href="#" onclick="goToSlide(6); return false;">Automation %</a></li>
+                <li><a href="#" onclick="goToSlide(7); return false;">Team Interaction</a></li>
+                <li><a href="#" onclick="goToSlide(8); return false;">Risks</a></li>
+                <li><a href="#" onclick="goToSlide(9); return false;">Discussion</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 1: The State of Project Controls Data Labor -->
+      <section class="slide" data-title="The Problem">
+        <div class="canvas">
+          <div>
+            <div class="kicker"><span class="chip"></span>The uncomfortable truth about project controls</div>
+            <h2 class="title">We spend more time preparing data than making decisions with it</h2>
+
+            <div class="big-stats">
+              <div class="big-stat">
+                <div class="num bad">44%</div>
+                <div class="desc">spend 10+ hrs/week on reporting alone</div>
+              </div>
+              <div class="big-stat">
+                <div class="num warn">58%</div>
+                <div class="desc">feel that time is "well spent"</div>
+              </div>
+              <div class="big-stat">
+                <div class="num bad">88%</div>
+                <div class="desc">of schedules fail best-practice standards</div>
+              </div>
+            </div>
+
+            <div class="fineprint">
+              Data source: SmartPM "The State of Construction Scheduling 2025" — 600+ projects, N. America.
+            </div>
+          </div>
+
+          <aside class="aside">
+            <div class="stat">
+              <div>
+                <div class="label">Talk thesis</div>
+                <small>LLMs + ontologies can automate 60–80% of this labor</small>
+              </div>
+              <div class="value good">60–80%</div>
+            </div>
+
+            <div class="card">
+              <h3>What this talk is</h3>
+              <p>An exploration of how AI-enabled platforms with <b>structured ontologies</b> can dramatically reduce
+                manual data capture and transformation in schedule + risk management.</p>
+            </div>
+
+            <div class="card">
+              <h3>What this talk is NOT</h3>
+              <p>A sales pitch. No pricing, no CTAs. Patterns and principles that apply to any platform seeking to
+                reduce project controls labor.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Slide 2: The Data Labor Breakdown -->
+      <section class="slide" data-title="Data Labor">
+        <div class="canvas">
+          <div>
+            <div class="kicker"><span class="chip"></span>Where does the time go?</div>
+            <h2 class="title">The hidden tax: data capture, transformation & reconciliation</h2>
+
+            <div class="grid">
+              <div class="card">
+                <h3><span style="color: #ef4444; font-weight: 600; font-size: 1.5em;">↓</span> Manual reconciliation</h3>
+                <p>Comparing field progress vs schedule vs cost systems. Copy-paste, format conversion,
+                  exception-hunting across Excel files.</p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #ef4444; font-weight: 600; font-size: 1.5em;">↓</span> Narrative generation</h3>
+                <p>Writing weekly reports, risk summaries, change impact explanations. Repetitive interpretation of the
+                  same patterns.</p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #ef4444; font-weight: 600; font-size: 1.5em;">↓</span> Quality enforcement</h3>
+                <p>Checking for logic errors, open ends, missing links, unrealistic durations. Should be automated, is
+                  mostly manual.</p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #ef4444; font-weight: 600; font-size: 1.5em;">↓</span> Multi-stakeholder translation</h3>
+                <p>Converting CPM data into language PMs, superintendents, and owners understand. Same data, different
+                  views.</p>
+              </div>
+            </div>
+          </div>
+
+          <aside class="aside">
+            <div class="stat">
+              <div class="label">High-quality baselines at start</div>
+              <div class="value bad">12%</div>
+            </div>
+            <div class="stat">
+              <div class="label">Still high-quality at 75% complete</div>
+              <div class="value bad">&lt;5%</div>
+            </div>
+            <div class="stat">
+              <div class="label">Updates changing actuals (data integrity issue)</div>
+              <div class="value bad">~45%</div>
+            </div>
+
+            <div class="diagram">
+              <b>Typical weekly cycle</b>
+              Field → emails/photos → Excel
+              Scheduler → P6/MSP → update
+              PM → reconcile → discrepancies
+              Report → PowerPoint → leadership
+              Hours spent: 8–15 per person
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Slide 3: Why LLMs Change the Game -->
+      <section class="slide" data-title="LLM Opportunity">
+        <div class="canvas">
+          <div>
+            <div class="kicker"><span class="chip"></span>The AI opportunity in project controls</div>
+            <h2 class="title">LLMs excel at exactly what drains project controls teams</h2>
+
+            <div class="grid">
+              <div class="card">
+                <h3><span style="color: #10b981; font-weight: 600; font-size: 1.5em;">↑</span> What LLMs do well</h3>
+                <p>Parse unstructured text (emails, RFIs), generate summaries, explain changes in plain language,
+                  compare versions, flag anomalies, create role-specific reports.</p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #ef4444; font-weight: 600; font-size: 1.5em;">↓</span> What LLMs need help with</h3>
+                <p>Domain-specific reasoning, CPM calculations, enforcing business rules, maintaining consistency.
+                  <b>This is where ontologies matter.</b>
+                </p>
+              </div>
+            </div>
+
+            <div class="highlight-box">
+              <h4>The key insight</h4>
+              <p><b>LLMs + structured ontologies + built-in workflows</b> = reliable automation. The LLM handles
+                language tasks;
+                the ontology provides domain logic; workflows ensure governance. Together, they can automate what no
+                human should spend time on.</p>
+            </div>
+          </div>
+
+          <aside class="aside">
+            <div class="stat">
+              <div>
+                <div class="label">Automatable tasks (estimated)</div>
+              </div>
+              <div class="value good">60–80%</div>
+            </div>
+
+            <div class="diagram purple">
+              <b>LLM automation targets</b>
+              • Field note → risk register entry
+              • Schedule delta → change narrative
+              • Progress % → forecast update
+              • Multi-source → reconciled view
+              • Technical → stakeholder language
+            </div>
+
+            <div class="card">
+              <h3>Why now?</h3>
+              <p>LLMs reached production quality in 2023–24. Construction ontologies exist (WBS, cost codes, risk
+                taxonomies). The gap is integration + trust.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Slide 4: Ontologies as the Missing Layer -->
+      <section class="slide" data-title="Ontologies">
+        <div class="canvas">
+          <div>
+            <div class="kicker"><span class="chip"></span>Why "just add AI" fails</div>
+            <h2 class="title">Strong ontologies make AI reliable in project controls</h2>
+
+            <div class="grid">
+              <div class="card">
+                <h3><span style="color: #10b981; font-weight: 600; font-size: 1.5em;">↑</span> Schedule ontology</h3>
+                <p>Activities, milestones, WBS hierarchy, logic types, constraints, calendars. A shared language that AI
+                  can reason about correctly.</p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #ef4444; font-weight: 600; font-size: 1.5em;">−</span> Risk ontology</h3>
+                <p>Risk categories, impact scales, probability definitions, mitigation types, ownership structures.
+                  Enables automated risk tagging and routing.</p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #10b981; font-weight: 600; font-size: 1.5em;">↑</span> Cost/change ontology</h3>
+                <p>Change types, approval workflows, cost code mappings, contract relationships. Links schedule impacts
+                  to financial consequences.</p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #10b981; font-weight: 600; font-size: 1.5em;">↑</span> Stakeholder ontology</h3>
+                <p>Roles, permissions, information needs, escalation paths. AI generates right content for right
+                  audience automatically.</p>
+              </div>
+            </div>
+          </div>
+
+          <aside class="aside">
+            <div class="diagram">
+              <b>Ontology = guardrails</b>
+
+              LLM + ontology:
+              "Delay in foundation pour"
+              → WBS: 03.01.02 (Foundations)
+              → Risk: R-047 (weather-related)
+              → Impact: Critical path +3d
+              → Owner: Site Super + PM
+              → Action: Recovery plan needed
+
+              LLM alone:
+              "There might be a delay..."
+              (no structure, no routing)
+            </div>
+
+            <div class="card">
+              <h3>Why AACE practitioners should care</h3>
+              <p>Ontologies align with <b>AACE recommended practices</b>: structured risk registers, WBS standards,
+                change management protocols. AI amplifies what you already do.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Slide 5: Built-in Workflows -->
+      <section class="slide" data-title="Workflows">
+        <div class="canvas">
+          <div>
+            <div class="kicker"><span class="chip"></span>From AI output to action</div>
+            <h2 class="title">Built-in workflows turn AI suggestions into governed actions</h2>
+
+            <div class="grid">
+              <div class="card">
+                <h3><span style="color: #10b981; font-weight: 600; font-size: 1.5em;">↑</span> AI-triggered workflows</h3>
+                <p>Schedule signals (float erosion, compression, critical path changes) → automatic risk entry → routed
+                  to responsible parties → tracked to closure.</p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #10b981; font-weight: 600; font-size: 1.5em;">+</span> Human-in-the-loop</h3>
+                <p>AI drafts, humans approve. LLM generates risk narrative; PM validates before it hits the register.
+                  Maintain accountability, reduce labor.</p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #10b981; font-weight: 600; font-size: 1.5em;">↑</span> Role-based views</h3>
+                <p>Superintendent sees field actions. PM sees cross-trade impacts. Owner sees milestone risks. Same
+                  data, different workflows, all automated.</p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #10b981; font-weight: 600; font-size: 1.5em;">↑</span> Audit trail</h3>
+                <p>Every AI suggestion, every human decision, every action — logged. Supports claims, disputes, lessons
+                  learned.</p>
+              </div>
+            </div>
+          </div>
+
+          <aside class="aside">
+            <div class="stat">
+              <div>
+                <div class="label">Late/incomplete schedule updates</div>
+                <small>Human process failure</small>
+              </div>
+              <div class="value bad">75%</div>
+            </div>
+
+            <div class="stat">
+              <div>
+                <div class="label">Projects delayed vs baseline</div>
+                <small>Systemic, not random</small>
+              </div>
+              <div class="value bad">76%</div>
+            </div>
+
+            <div class="diagram">
+              <b>Workflow example</b>
+              Schedule import →
+              AI: "3 critical risks detected"
+              → Workflow: assign owners
+              → Review deadline: 48 hrs
+              → Escalation: auto if unactioned
+              → Report: weekly risk summary
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Slide 6: The Automation Estimate -->
+      <section class="slide" data-title="Automation %">
+        <div class="canvas">
+          <div>
+            <div class="kicker"><span class="chip"></span>Quantifying the opportunity</div>
+            <h2 class="title">Estimating automation potential: 60–80% of data labor</h2>
+
+            <div class="big-stats">
+              <div class="big-stat">
+                <div class="num good">~90%</div>
+                <div class="desc">narrative generation (reports, summaries, change explanations)</div>
+              </div>
+              <div class="big-stat">
+                <div class="num good">~85%</div>
+                <div class="desc">data reconciliation & anomaly detection</div>
+              </div>
+              <div class="big-stat">
+                <div class="num warn">~70%</div>
+                <div class="desc">risk identification & initial categorization</div>
+              </div>
+            </div>
+
+            <div class="highlight-box">
+              <h4>What remains human?</h4>
+              <p>Strategic decisions, relationship management, negotiation, final accountability.
+                <b>The goal isn't to replace professionals — it's to give them back time for high-value work.</b>
+              </p>
+            </div>
+          </div>
+
+          <aside class="aside">
+            <div class="stat">
+              <div>
+                <div class="label">If 10 hrs/week → AI</div>
+                <small>Freed for analysis & action</small>
+              </div>
+              <div class="value good">6–8 hrs</div>
+            </div>
+
+            <div class="diagram">
+              <b>Time reallocation</b>
+
+              BEFORE (10 hrs):
+              ├─ Data collection: 3 hrs
+              ├─ Reconciliation: 2 hrs
+              ├─ Report writing: 3 hrs
+              └─ QA/validation: 2 hrs
+
+              AFTER (2–4 hrs):
+              ├─ Review AI outputs: 1 hr
+              ├─ Strategic analysis: 1–2 hrs
+              └─ Stakeholder action: 1 hr
+
+              SAVED: 6–8 hrs/week
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Slide 7: Simplifying Team Interaction -->
+      <section class="slide" data-title="Team Interaction">
+        <div class="canvas">
+          <div>
+            <div class="kicker"><span class="chip"></span>The human side of automation</div>
+            <h2 class="title">AI agents simplify interaction across roles</h2>
+
+            <div class="grid">
+              <div class="card">
+                <h3><span style="color: #10b981; font-weight: 600; font-size: 1.5em;">↑</span> Field → structured data</h3>
+                <p>Superintendent texts: "Foundation pour delayed 2 days, weather." AI: Creates schedule update, risk
+                  entry, notifies PM. No training needed.</p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #10b981; font-weight: 600; font-size: 1.5em;">↑</span> Email → action items</h3>
+                <p>AI parses RFI, change order, or delay notice. Extracts dates, impacts, owners. Routes to workflow.
+                  Scheduler reviews, not re-enters.</p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #10b981; font-weight: 600; font-size: 1.5em;">↑</span> Questions → answers</h3>
+                <p>"What's driving the August milestone delay?" AI: Queries schedule model, assembles narrative, cites
+                  sources. PM gets insight in seconds.</p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #10b981; font-weight: 600; font-size: 1.5em;">↑</span> Mobile-first capture</h3>
+                <p>Voice notes, photos with context, quick forms. AI handles the translation to structured project data.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <aside class="aside">
+            <div class="stat">
+              <div>
+                <div class="label">Self-rated schedule literacy</div>
+                <small>Confidence ≠ quality</small>
+              </div>
+              <div class="value warn">3.6/5</div>
+            </div>
+
+            <div class="stat">
+              <div>
+                <div class="label">SPI target achievement</div>
+                <small>Despite literacy confidence</small>
+              </div>
+              <div class="value bad">&lt;30%</div>
+            </div>
+
+            <div class="card">
+              <h3>Key insight</h3>
+              <p>Don't train the field to use CPM. <b>Train the AI to understand the field.</b> Meet people where they
+                are; let technology adapt.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Slide 8: Risks & Challenges -->
+      <section class="slide" data-title="Risks">
+        <div class="canvas">
+          <div>
+            <div class="kicker"><span class="chip"></span>Final thoughts · The other side</div>
+            <h2 class="title">Real risks we need to address before scaling AI in project controls</h2>
+
+            <div class="grid">
+              <div class="card">
+                <h3><span style="color: #ef4444; font-weight: 600; font-size: 1.5em;">↓</span> Security</h3>
+                <p>Project data is sensitive: costs, delays, risks, contractual exposure. LLM platforms raise questions
+                  about data residency, model training, and third-party access. <b>Obvious but non-trivial.</b></p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #f59e0b; font-weight: 600; font-size: 1.5em;">−</span> Governance</h3>
+                <p>Who validates AI outputs before they become official records? What's the approval chain? How do you
+                  audit what the AI suggested vs. what humans accepted?</p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #ef4444; font-weight: 600; font-size: 1.5em;">↓</span> Accountability erosion</h3>
+                <p>Observed behavior: when agents propose actions, humans take <b>less ownership</b>. "The agent did it"
+                  becomes an excuse. Guardrails don't solve the psychological shift.</p>
+              </div>
+              <div class="card">
+                <h3><span style="color: #f59e0b; font-weight: 600; font-size: 1.5em;">−</span> Robustness vs. flexibility</h3>
+                <p>Workflows must be <b>robust enough to enforce governance</b> but <b>flexible enough to handle
+                    exceptions</b>. This balance is hard to configure and harder to maintain.</p>
+              </div>
+            </div>
+          </div>
+
+          <aside class="aside">
+            <div class="stat">
+              <div>
+                <div class="label">Key tension</div>
+                <small>Automation ↔ Accountability</small>
+              </div>
+              <div class="value warn"><span style="color: #f59e0b; font-weight: 600; font-size: 1.5em;">−</span></div>
+            </div>
+
+            <div class="diagram">
+              <b>The accountability gap</b>
+
+              Before AI:
+              Human decides → Human owns
+
+              With AI:
+              Agent proposes → Human approves?
+              → "Agent did it" mindset
+              → Reduced scrutiny
+              → Diffused responsibility
+            </div>
+
+            <div class="card">
+              <h3>No easy answers</h3>
+              <p>These aren't solvable by features alone. They require <b>organizational design</b>, clear policies, and
+                continuous reinforcement of human accountability.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Slide 9: Closing + Discussion -->
+      <section class="slide" data-title="Discussion">
+        <div class="canvas">
+          <div>
+            <div class="kicker"><span class="chip"></span>Closing thoughts + Q&A</div>
+            <h2 class="title">The future: project controls professionals as strategic advisors</h2>
+
+            <div class="grid">
+              <div class="card">
+                <h3>Discussion: your experience</h3>
+                <p>What % of your week is data labor vs. analysis? Which tasks feel most ripe for automation? What would
+                  you do with 6–8 hrs back?</p>
+              </div>
+              <div class="card">
+                <h3>Discussion: trust & adoption</h3>
+                <p>What would make you trust AI-generated risk entries? What governance do you need? Where does human
+                  review remain essential?</p>
+              </div>
+            </div>
+
+            <div class="highlight-box">
+              <h4>Takeaways for practitioners</h4>
+              <p>
+                1. Quantify your data labor — track where time goes.<br>
+                2. Evaluate tools by ontology strength, not just AI claims.<br>
+                3. Demand workflows that maintain accountability.<br>
+                4. Pilot on low-risk, high-volume tasks first.
+              </p>
+            </div>
+
+            <div class="fineprint">
+              Evidence base: SmartPM "The State of Construction Scheduling 2025" · Principles applicable to any
+              AI-enabled platform, not specific to Lognos.
+            </div>
+          </div>
+
+          <aside class="aside">
+            <div class="stat">
+              <div class="label">Non-sales pledge</div>
+              <div class="value good"><span style="color: #10b981; font-weight: 600; font-size: 1.5em;">+</span></div>
+            </div>
+
+            <div class="card">
+              <h3>Optional demo</h3>
+              <p>If time permits: 5-min walkthrough of agent-based capture, ontology-driven routing, and auto-generated
+                reporting — as a pattern example, not a pitch.</p>
+            </div>
+
+            <div class="card">
+              <h3>Contact</h3>
+              <p>Facundo Bassi · Lognos<br>
+                Open to follow-up questions on AI + project controls patterns.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <div class="controls">
+        <button id="prevBtn" aria-label="Previous slide">← Prev</button>
+        <button id="nextBtn" class="primary" aria-label="Next slide">Next →</button>
+        <button id="indexBtn" aria-label="Go to index">Index</button>
+      </div>
+
+      <div class="progress">
+        <span id="counter">Slide 1 / 10</span>
+        <div class="bar" aria-hidden="true"><i id="barFill"></i></div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const counter = document.getElementById('counter');
+      const barFill = document.getElementById('barFill');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      let idx = 0;
+
+      function render() {
+        slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+        counter.textContent = `Slide ${idx + 1} / ${slides.length}`;
+        barFill.style.width = `${((idx + 1) / slides.length) * 100}%`;
+        prevBtn.disabled = idx === 0;
+        nextBtn.disabled = idx === slides.length - 1;
+        const t = slides[idx].getAttribute('data-title') || `Slide ${idx + 1}`;
+        document.title = `AACE Talk · ${t}`;
+      }
+
+      function next() { if (idx < slides.length - 1) { idx++; render(); } }
+      function prev() { if (idx > 0) { idx--; render(); } }
+
+      // Navigate to a specific slide by index
+      function goToSlide(slideIndex) {
+        if (slideIndex >= 0 && slideIndex < slides.length) {
+          idx = slideIndex;
+          render();
+        }
+      }
+
+      // Expose goToSlide globally for index links
+      window.goToSlide = goToSlide;
+
+      nextBtn.addEventListener('click', next);
+      prevBtn.addEventListener('click', prev);
+      document.getElementById('indexBtn').addEventListener('click', () => goToSlide(0));
+
+      window.addEventListener('keydown', (e) => {
+        const k = e.key.toLowerCase();
+        if (k === 'arrowright' || k === ' ' || k === 'pagedown') next();
+        if (k === 'arrowleft' || k === 'pageup') prev();
+      });
+
+      // Mobile swipe navigation - strict horizontal only
+      let touchStartX = 0;
+      let touchEndX = 0;
+      let touchStartY = 0;
+      let touchEndY = 0;
+      const stage = document.getElementById('stage');
+
+      stage.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+
+      stage.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        const diffX = touchStartX - touchEndX;
+        const diffY = touchStartY - touchEndY;
+        
+        // Only trigger navigation if horizontal movement is significantly larger than vertical
+        if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY) * 2) {
+          if (diffX > 0) next(); // Swipe left = next
+          else prev(); // Swipe right = prev
+        }
+      }, { passive: true });
+
+      document.getElementById('stage').addEventListener('click', (e) => {
+        const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+        if (['button', 'a', 'input', 'textarea'].includes(tag)) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        if (x < rect.width * 0.33) prev(); else next();
+      });
+
+      render();
+    })();
+  </script>
+</body>
+
+</html>
