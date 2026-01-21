@@ -496,13 +496,18 @@
 
         /* Mobile optimizations */
         @media (max-width: 768px) {
+            .cover-canvas {
+                padding-top: 80px !important;
+            }
+
             .cover-canvas .cover-title {
-                font-size: clamp(28px, 8vw, 42px);
+                font-size: 32px !important;
+                line-height: 1.3 !important;
                 margin: 0 0 16px;
             }
 
             .cover-canvas .cover-subtitle {
-                font-size: clamp(14px, 4vw, 18px);
+                font-size: 22px !important;
                 margin: 0 0 20px;
             }
 
@@ -513,11 +518,11 @@
             }
 
             .index-header {
-                font-size: 14px;
+                font-size: 16px !important;
             }
 
             .cover-index li {
-                font-size: 14px;
+                font-size: 14px !important;
             }
 
             .document-canvas h2 {
