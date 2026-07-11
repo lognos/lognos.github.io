@@ -146,18 +146,39 @@
    ------------------------------------------------------------------ */
 
 @media screen and (max-width: 767px) {
+  /* Hero: smaller, sleeker headline on mobile */
+  .section_hero h1.heading-3 {
+    font-size: 1.75rem;
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    margin-bottom: 1.25rem;
+  }
+
+  .section_hero .hero_text {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .section_hero .button.is-secondary {
+    width: auto;
+    min-width: 10rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+  }
+
   /* Feature card container: tighter, consistent padding */
   .section_mainfeatures .mainfeatures_tabs-pane {
-    padding: 1.35rem 1.15rem 1.5rem;
+    padding: 1.15rem 1rem 1.25rem;
   }
 
   .section_mainfeatures .mainfeatures_pane-content {
     padding: 0;
-    grid-row-gap: 1.25rem;
+    grid-row-gap: 1rem;
   }
 
   .section_mainfeatures .mainfeatures_content {
-    grid-row-gap: 0.85rem;
+    grid-row-gap: 0.75rem;
     width: 100%;
   }
 
@@ -168,7 +189,7 @@
 
   /* Card headline: smaller, readable line length */
   .section_mainfeatures .heading-style-h3 {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     font-weight: 400;
     line-height: 1.3;
     letter-spacing: -0.01em;
@@ -187,7 +208,7 @@
     margin-left: 0;
     margin-right: 0;
     position: static;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 300;
     line-height: 1.55;
     text-align: center;
@@ -195,77 +216,83 @@
 
   /* Inline emphasis ("Lognos Agent") stays in hierarchy with body */
   .section_mainfeatures .text-span-2 {
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 400;
     line-height: inherit;
   }
 
   /* Compact tab pills */
   .section_mainfeatures .mainfeatures_tabs-menu {
-    margin: 12px auto 1.25rem;
-    grid-column-gap: 0.45rem;
-    grid-row-gap: 0.45rem;
+    margin: 10px auto 1rem;
+    grid-column-gap: 0.4rem;
+    grid-row-gap: 0.4rem;
   }
 
   .section_mainfeatures .mainfeatures_tabs-link {
-    padding: 0.55rem 0.95rem;
-    font-size: 0.8rem;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.75rem;
     letter-spacing: 0.04em;
   }
 
   /* Insights tiles: keep stats readable but less bulky */
   .insights_tile {
     min-width: 0;
-    padding: 1.15rem 1rem;
+    padding: 1rem 0.9rem;
   }
 
   .insights_tile .heading-style-h1 {
-    font-size: 2rem;
+    font-size: 1.85rem;
     line-height: 1.1;
   }
 
   .insights_tile .text-size-small {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     line-height: 1.35;
   }
 }
 
 /* Phone portrait — iPhone 14 Pro Max and similar (~390–430px) */
 @media screen and (max-width: 479px) {
+  .section_hero h1.heading-3 {
+    font-size: 1.3rem;
+    line-height: 1.25;
+    margin-bottom: 0.85rem;
+  }
+
   .section_mainfeatures .mainfeatures_tabs-pane {
-    padding: 1.15rem 1rem 1.35rem;
+    padding: 1rem 0.9rem 1.15rem;
   }
 
   .section_mainfeatures .mainfeatures_content {
-    grid-row-gap: 0.7rem;
+    grid-row-gap: 0.65rem;
   }
 
   .section_mainfeatures .heading-style-h3 {
-    font-size: 1.2rem;
+    font-size: 1.125rem;
     line-height: 1.32;
   }
 
   .section_mainfeatures .paragraph-4,
   .section_mainfeatures .text-size-regular.paragraph-4,
   .section_mainfeatures .text-size-regular {
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
     line-height: 1.55;
   }
 
   .section_mainfeatures .text-span-2 {
-    font-size: 0.975rem;
+    font-size: 0.9rem;
   }
 
   .section_mainfeatures .mainfeatures_tabs-link {
-    padding: 0.5rem 0.8rem;
-    font-size: 0.75rem;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.7rem;
   }
 
   .insights_tile .heading-style-h1 {
-    font-size: 1.75rem;
+    font-size: 1.6rem;
   }
 
   .insights_tile .text-size-small {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 }
