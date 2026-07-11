@@ -139,3 +139,133 @@
     --text-secondary: #cccccc;
   }
 }
+
+/* ------------------------------------------------------------------
+   Mobile main-page polish (feature cards + related type)
+   Targets phones/tablets including iPhone 14 Pro Max (~430px CSS)
+   ------------------------------------------------------------------ */
+
+@media screen and (max-width: 767px) {
+  /* Feature card container: tighter, consistent padding */
+  .section_mainfeatures .mainfeatures_tabs-pane {
+    padding: 1.35rem 1.15rem 1.5rem;
+  }
+
+  .section_mainfeatures .mainfeatures_pane-content {
+    padding: 0;
+    grid-row-gap: 1.25rem;
+  }
+
+  .section_mainfeatures .mainfeatures_content {
+    grid-row-gap: 0.85rem;
+    width: 100%;
+  }
+
+  .section_mainfeatures .mainfeatures_content-wrapper {
+    align-items: stretch;
+    width: 100%;
+  }
+
+  /* Card headline: smaller, readable line length */
+  .section_mainfeatures .heading-style-h3 {
+    font-size: 1.35rem;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Reset desktop paragraph layout that breaks mobile (60% width + left offset) */
+  .section_mainfeatures .paragraph-4,
+  .section_mainfeatures .text-size-regular.paragraph-4,
+  .section_mainfeatures .text-size-regular {
+    width: 100%;
+    max-width: 100%;
+    left: 0;
+    right: auto;
+    margin-left: 0;
+    margin-right: 0;
+    position: static;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  /* Inline emphasis ("Lognos Agent") stays in hierarchy with body */
+  .section_mainfeatures .text-span-2 {
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: inherit;
+  }
+
+  /* Compact tab pills */
+  .section_mainfeatures .mainfeatures_tabs-menu {
+    margin: 12px auto 1.25rem;
+    grid-column-gap: 0.45rem;
+    grid-row-gap: 0.45rem;
+  }
+
+  .section_mainfeatures .mainfeatures_tabs-link {
+    padding: 0.55rem 0.95rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+  }
+
+  /* Insights tiles: keep stats readable but less bulky */
+  .insights_tile {
+    min-width: 0;
+    padding: 1.15rem 1rem;
+  }
+
+  .insights_tile .heading-style-h1 {
+    font-size: 2rem;
+    line-height: 1.1;
+  }
+
+  .insights_tile .text-size-small {
+    font-size: 0.85rem;
+    line-height: 1.35;
+  }
+}
+
+/* Phone portrait — iPhone 14 Pro Max and similar (~390–430px) */
+@media screen and (max-width: 479px) {
+  .section_mainfeatures .mainfeatures_tabs-pane {
+    padding: 1.15rem 1rem 1.35rem;
+  }
+
+  .section_mainfeatures .mainfeatures_content {
+    grid-row-gap: 0.7rem;
+  }
+
+  .section_mainfeatures .heading-style-h3 {
+    font-size: 1.2rem;
+    line-height: 1.32;
+  }
+
+  .section_mainfeatures .paragraph-4,
+  .section_mainfeatures .text-size-regular.paragraph-4,
+  .section_mainfeatures .text-size-regular {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .section_mainfeatures .text-span-2 {
+    font-size: 0.975rem;
+  }
+
+  .section_mainfeatures .mainfeatures_tabs-link {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.75rem;
+  }
+
+  .insights_tile .heading-style-h1 {
+    font-size: 1.75rem;
+  }
+
+  .insights_tile .text-size-small {
+    font-size: 0.8rem;
+  }
+}
