@@ -3532,7 +3532,7 @@ figcaption {
 
 @media screen and (max-width: 767px) {
   .hero_wrapper-main-video {
-    padding: 0.85rem 0.65rem 0.75rem !important;
+    padding: 0.85rem 0.75rem 0.85rem !important;
     min-height: 0 !important;
   }
   
@@ -3540,8 +3540,9 @@ figcaption {
     min-height: 0 !important;
     margin-bottom: 0 !important;
     height: auto !important;
-    padding: 0.25rem !important;
+    padding: 0 !important;
     width: 100% !important;
+    flex: 0 0 auto !important;
   }
   
   .video-accelerated-hero {
@@ -3551,11 +3552,13 @@ figcaption {
     max-height: 26vh !important;
     object-fit: cover !important;
     object-position: center !important;
+    border-radius: 0.5rem !important;
+    margin: 0 !important;
   }
   
   /* Target elements with specific data-w-id attributes to override inline styles */
   div[data-w-id="9f4cb4fe-02b7-c068-e94c-0516fe342a06"] {
-    padding: 0.85rem 0.65rem 0.75rem !important;
+    padding: 0.85rem 0.75rem 0.85rem !important;
     min-height: 0 !important;
   }
   
@@ -3566,7 +3569,7 @@ figcaption {
 
 @media screen and (max-width: 479px) {
   .hero_wrapper-main-video {
-    padding: 0.65rem 0.45rem 0.45rem !important;
+    padding: 0.75rem 0.7rem 0.75rem !important;
     min-height: 0 !important;
     place-content: flex-start !important;
   }
@@ -3588,12 +3591,13 @@ figcaption {
     object-fit: cover !important;
     object-position: center !important;
     margin: 0 !important;
+    border-radius: 0.45rem !important;
   }
   
     
   /* Target elements with specific data-w-id attributes to override inline styles */
   div[data-w-id="9f4cb4fe-02b7-c068-e94c-0516fe342a06"] {
-    padding: 0.65rem 0.45rem 0.45rem !important;
+    padding: 0.75rem 0.7rem 0.75rem !important;
     min-height: 0 !important;
     place-content: flex-start !important;
   }
