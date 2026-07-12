@@ -24,6 +24,8 @@
   --border-radius-xs: .2rem;
   --section-background-2: #242424;
   --font-lognos: Montserrat, sans-serif;
+  --container-surface: #1f1f1f;
+  --container-surface-end: #161616;
 }
 
 .w-layout-blockcontainer {
@@ -1269,7 +1271,7 @@ figcaption {
   grid-column-gap: 1.6rem;
   grid-row-gap: 1.6rem;
   border-radius: var(--border-radius-m);
-  background-image: linear-gradient(180deg, var(--color-primary-transparent), var(--color-secondary));
+  background-image: linear-gradient(180deg, var(--container-surface), var(--container-surface-end));
   flex-flow: column;
   place-content: center;
   align-items: center;
@@ -1295,7 +1297,7 @@ figcaption {
   grid-column-gap: 2.4rem;
   grid-row-gap: 2.4rem;
   border-radius: var(--border-radius-m);
-  background-image: linear-gradient(180deg, var(--color-primary-transparent), var(--section-background));
+  background-image: linear-gradient(180deg, var(--container-surface), var(--container-surface-end));
   flex-flow: column;
   padding: 4.8rem;
   display: flex;
@@ -2073,7 +2075,7 @@ figcaption {
   grid-column-gap: 1.6rem;
   grid-row-gap: 1.6rem;
   border-radius: var(--border-radius-m);
-  background-image: linear-gradient(180deg, var(--color-primary-transparent), var(--color-secondary));
+  background-image: linear-gradient(180deg, var(--container-surface), var(--container-surface-end));
   flex-flow: column;
   place-content: center;
   align-items: center;
@@ -3481,7 +3483,7 @@ figcaption {
   grid-column-gap: 1.6rem;
   grid-row-gap: 1.6rem;
   border-radius: var(--border-radius-m);
-  background-image: linear-gradient(180deg, var(--color-primary-transparent), var(--color-secondary));
+  background-image: linear-gradient(180deg, var(--container-surface), var(--container-surface-end));
   flex-flow: column;
   place-content: center;
   align-items: center;
