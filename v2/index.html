@@ -108,7 +108,7 @@ p{ margin:0; }
    SHEET — the three-column drafting grid every section sits in
    ============================================================ */
 .sheet{
-  display:grid;
+  display:grid; justify-content:center;
   grid-template-columns: var(--gutter) minmax(0,var(--content-max)) var(--gutter);
 }
 .sheet::before,.sheet::after{
@@ -144,11 +144,10 @@ p{ margin:0; }
   display:flex; align-items:center; justify-content:space-between;
   height:64px;
 }
-.brand{ display:flex; align-items:center; gap:var(--sp-sm); text-decoration:none; }
-.brand svg{ width:26px; height:auto; }
-.brand .log{ fill:var(--accent); }
-.brand .nos{ fill:var(--text-strong); }
-.brand-word{ font-family:var(--font-mono); font-size:.95rem; letter-spacing:.02em; color:var(--text-strong); }
+.brand{ display:flex; align-items:center; gap:7px; text-decoration:none; }
+.brand-mark{ width:22px; height:22px; fill:none; stroke:var(--accent); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex:none; }
+.brand-word{ font-family:var(--font-display); font-weight:300; font-size:1.2rem; letter-spacing:-0.01em; color:var(--text-strong); }
+.brand:hover .brand-word{ color:var(--text-max); }
 
 .nav-links{ display:flex; align-items:center; gap:var(--sp-lg); list-style:none; margin:0; padding:0; }
 .nav-links a{
@@ -258,24 +257,49 @@ section{ padding-block:var(--sp-3xl); }
 .diff-card .tag{ margin-bottom:var(--sp-md); }
 
 /* ============================================================
-   LOOP DIAGRAMS
+   LOOP DIAGRAMS — orthogonal connectors, square nodes, typed status
    ============================================================ */
 .loop-section{ background:var(--surface); border-top:1px solid var(--hairline); border-bottom:1px solid var(--hairline); }
 .loop-diagram{ width:100%; height:auto; overflow:visible; }
-.loop-diagram .node-circle{ fill:var(--surface); stroke:var(--hairline); stroke-width:1.5; }
+
+.loop-diagram .fnode-box{ fill:var(--surface); stroke:var(--hairline); stroke-width:1.5; }
+.loop-diagram .fnode.is-terminal .fnode-box{ stroke:var(--accent-border); }
 .loop-diagram .node-icon{ color:var(--text-strong); }
 .loop-diagram .node-label{
-  font-family:var(--font-mono); font-size:12px; fill:var(--text-muted);
+  font-family:var(--font-mono); font-size:12px; fill:var(--text-strong);
   text-anchor:middle; letter-spacing:.01em;
 }
-.loop-diagram .node-label tspan.strong{ fill:var(--text-strong); }
-.loop-diagram .flow-path{ fill:none; stroke:var(--hairline); stroke-width:1.5; }
-.loop-diagram .return-path{ fill:none; stroke:var(--hairline); stroke-width:1.25; stroke-dasharray:2 6; stroke-linecap:round; }
-.loop-diagram .traveler{ fill:var(--accent); filter:drop-shadow(0 0 6px color-mix(in oklab, var(--accent) 70%, transparent)); }
-.loop-diagram .halo{ fill:none; stroke:var(--accent); stroke-width:1.5; opacity:0; transform-origin:center; transform-box:fill-box; }
-.loop-diagram .confirm-badge{ opacity:0; transform-origin:center; transform-box:fill-box; }
-.loop-diagram .confirm-badge circle{ fill:var(--accent-surface); stroke:var(--accent); stroke-width:1.25; }
-.loop-diagram .confirm-badge path{ stroke:var(--accent); stroke-width:1.6; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+.loop-diagram .node-label.is-accent{ fill:var(--accent); }
+
+/* connectors: a static hairline guide + an animated dashed accent overlay
+   riding the same right-angle path — the dashes are the "flow of information" */
+.loop-diagram .conn-base{ fill:none; stroke:var(--hairline); stroke-width:1.25; }
+.loop-diagram .conn-flow{
+  fill:none; stroke:var(--accent); stroke-width:1.5;
+  stroke-dasharray:5 9; opacity:.85;
+  animation: conn-dash 1.4s linear infinite;
+}
+.loop-diagram .conn-return.conn-base{ stroke-dasharray:2 5; opacity:.6; }
+.loop-diagram .conn-return.conn-flow{
+  stroke-width:1.25; opacity:.5; stroke-dasharray:3 7;
+  animation: conn-dash 2.6s linear infinite;
+}
+@keyframes conn-dash{ to{ stroke-dashoffset:-28; } }
+
+/* typed status line, hosted in a foreignObject under each node */
+.flow-type{
+  font-family:var(--font-mono); font-size:9px; line-height:1;
+  color:var(--text-muted); display:flex; align-items:baseline;
+  white-space:nowrap; justify-content:center;
+}
+.flow-type .ft-text{
+  display:inline-block; overflow:hidden; width:0; vertical-align:bottom;
+  animation: ft-type 10s steps(30,end) infinite;
+}
+.flow-type .ft-cursor{ margin-left:1px; color:var(--accent); animation: ft-blink .9s steps(2) infinite; }
+@keyframes ft-type{ 0%{width:0} 14%{width:var(--ft-w)} 78%{width:var(--ft-w)} 88%,100%{width:0} }
+@keyframes ft-blink{ 0%,100%{opacity:1} 50%{opacity:0} }
+
 .loop-caption-row{ display:grid; grid-template-columns:repeat(5,1fr); gap:var(--sp-md); margin-top:var(--sp-2xl); }
 @media (max-width:900px){ .loop-caption-row{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:520px){ .loop-caption-row{ grid-template-columns:1fr; } }
@@ -285,65 +309,22 @@ section{ padding-block:var(--sp-3xl); }
 .loop-caption .step-desc{ color:var(--text-muted); margin-top:4px; display:block; }
 .loop-legend{ display:flex; gap:var(--sp-lg); margin-top:var(--sp-lg); flex-wrap:wrap; }
 .loop-legend span{ display:inline-flex; align-items:center; gap:6px; font-size:.75rem; color:var(--text-dim); font-family:var(--font-mono); }
-.loop-legend .swatch{ width:10px; height:10px; border-radius:50%; }
-.loop-legend .swatch.dot{ background:var(--accent); }
-.loop-legend .swatch.person{ background:var(--accent-surface); border:1px solid var(--accent); }
-
-/* Loop 1: five-node cycle, keyframed halos/badges timed along one closed path */
-@keyframes travel-loop1{ 0%{ offset-distance:0%; } 100%{ offset-distance:100%; } }
-.loop1 .traveler{ offset-path: path("M80,220 C160,180 240,140 320,100 C400,60 480,140 560,220 C640,300 720,180 800,100 C880,20 960,140 1040,220 C980,292 220,292 80,220 Z"); animation: travel-loop1 10s linear infinite; }
-.loop1 .return-path{ d: path("M1040,220 C980,292 220,292 80,220"); }
-
-@keyframes halo-pulse{ 0%{ opacity:0; transform:scale(.7); } 30%{ opacity:.9; transform:scale(1.15); } 100%{ opacity:0; transform:scale(1.4); } }
-@keyframes badge-in{ 0%{ opacity:0; transform:translateY(4px) scale(.85); } 25%{ opacity:1; transform:translateY(0) scale(1); } 70%{ opacity:1; transform:translateY(0) scale(1); } 100%{ opacity:0; transform:translateY(-4px) scale(.9); } }
-
-.loop1 .n1 .halo{ animation:halo-pulse 10s linear infinite; animation-delay:0s; }
-.loop1 .n1 .confirm-badge{ animation:badge-in 10s linear infinite; animation-delay:0s; }
-.loop1 .n2 .halo{ animation:halo-pulse 10s linear infinite; animation-delay:2s; }
-.loop1 .n2 .confirm-badge{ animation:badge-in 10s linear infinite; animation-delay:2s; }
-.loop1 .n3 .halo{ animation:halo-pulse 10s linear infinite; animation-delay:4s; }
-.loop1 .n3 .confirm-badge{ animation:badge-in 10s linear infinite; animation-delay:4s; }
-.loop1 .n4 .halo{ animation:halo-pulse 10s linear infinite; animation-delay:6s; }
-.loop1 .n4 .confirm-badge{ animation:badge-in 10s linear infinite; animation-delay:6s; }
-.loop1 .n5 .halo{ animation:halo-pulse 10s linear infinite; animation-delay:8s; }
-.loop1 .n5 .confirm-badge{ animation:badge-in 10s linear infinite; animation-delay:8s; }
-.loop1 .return-glow{ animation: dash-flow 10s linear infinite; }
-
-@keyframes dash-flow{ 0%,78%{ opacity:0; } 84%{ opacity:.8; } 100%{ opacity:0; } }
-
-/* Loop 2: two inputs converge on the risk register, then one path to report */
-@keyframes travel-a{ 0%{ offset-distance:0%; opacity:1; } 24%{ offset-distance:100%; opacity:1; } 25%{ opacity:0; } 100%{ opacity:0; offset-distance:100%; } }
-@keyframes travel-b{ 0%{ offset-distance:0%; opacity:1; } 24%{ offset-distance:100%; opacity:1; } 25%{ opacity:0; } 100%{ opacity:0; offset-distance:100%; } }
-@keyframes travel-c{ 0%,26%{ offset-distance:0%; opacity:0; } 30%{ opacity:1; } 78%{ offset-distance:100%; opacity:1; } 82%{ opacity:0; } 100%{ opacity:0; offset-distance:100%; } }
-
-.loop2 .traveler-a{ offset-path: path("M80,80 C210,80 270,150 360,170"); animation: travel-a 10s linear infinite; }
-.loop2 .traveler-b{ offset-path: path("M80,260 C210,260 270,210 360,170"); animation: travel-b 10s linear infinite; }
-.loop2 .traveler-c{ offset-path: path("M360,170 C480,120 560,220 680,170 C800,120 860,220 960,170"); animation: travel-c 10s linear infinite; }
-
-.loop2 .n-world .halo{ animation:halo-pulse 10s linear infinite; animation-delay:0s; }
-.loop2 .n-world .confirm-badge{ animation:badge-in 10s linear infinite; animation-delay:0s; }
-.loop2 .n-schedule .halo{ animation:halo-pulse 10s linear infinite; animation-delay:0s; }
-.loop2 .n-schedule .confirm-badge{ animation:badge-in 10s linear infinite; animation-delay:0s; }
-.loop2 .n-risk .halo{ animation:halo-pulse 10s linear infinite; animation-delay:2.4s; }
-.loop2 .n-risk .confirm-badge{ animation:badge-in 10s linear infinite; animation-delay:2.4s; }
-.loop2 .n-mc .halo{ animation:halo-pulse 10s linear infinite; animation-delay:5s; }
-.loop2 .n-mc .confirm-badge{ animation:badge-in 10s linear infinite; animation-delay:5s; }
-.loop2 .n-report .halo{ animation:halo-pulse 10s linear infinite; animation-delay:7.8s; }
-.loop2 .n-report .confirm-badge{ animation:badge-in 10s linear infinite; animation-delay:7.8s; }
-.loop2 .return-glow{ animation: dash-flow 10s linear infinite; }
+.loop-legend .swatch{ width:14px; height:2px; }
+.loop-legend .swatch.flow{ background:var(--accent); }
+.loop-legend .swatch.confirm{ width:10px; height:10px; border-radius:2px; background:var(--accent-surface); border:1px solid var(--accent); }
 
 @media (max-width:640px){
-  /* the diagram renders too narrow for 12px SVG text to stay legible;
+  /* the diagram renders too narrow for small SVG/HTML text to stay legible;
      the caption row below (real HTML) and the svg's aria-label already
      carry the same information at readable size. */
   .loop-diagram .node-label{ display:none; }
+  .loop-diagram foreignObject{ display:none; }
 }
 
 @media (prefers-reduced-motion: reduce){
-  .loop-diagram .traveler{ animation:none !important; offset-distance:0% !important; opacity:0 !important; }
-  .loop-diagram .halo{ animation:none !important; opacity:.5 !important; transform:scale(1) !important; }
-  .loop-diagram .confirm-badge{ animation:none !important; opacity:1 !important; transform:none !important; }
-  .loop-diagram .return-glow{ animation:none !important; opacity:.4 !important; }
+  .loop-diagram .conn-flow{ animation:none !important; opacity:.6 !important; }
+  .flow-type .ft-text{ animation:none !important; width:var(--ft-w) !important; }
+  .flow-type .ft-cursor{ animation:none !important; opacity:1 !important; }
 }
 
 /* ============================================================
@@ -412,6 +393,9 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
      ============================================================ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <defs>
+  <marker id="arrow" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L8,4 L0,8 Z" style="fill:var(--hairline)"/>
+  </marker>
   <symbol id="i-checklist" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
     <rect x="4" y="3" width="16" height="18" rx="1.5"/>
     <path d="M8 8h8M8 12l1.5 1.5L12 11M8 16h8"/>
@@ -473,9 +457,8 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 <nav class="nav sheet">
   <div class="well">
     <a class="brand" href="#top">
-      <svg viewBox="0 0 297.675 194.513" aria-hidden="true">
-        <g class="log"><path d="M52.5959 91.8627C50.2072 91.8627 48.0855 91.2027 46.2309 89.8825C44.3763 88.5624 42.9306 86.7395 41.8934 84.4134C40.8561 82.0873 40.3375 79.3845 40.3375 76.304L40.3375 21.0471C40.3375 20.1671 40.6045 19.4754 41.139 18.9726C41.6735 18.4698 42.349 18.2182 43.1664 18.2182C44.0463 18.2182 44.7381 18.4698 45.2408 18.9726C45.7436 19.4754 45.9952 20.1671 45.9952 21.0471L45.9952 76.304C45.9952 79.1959 46.6081 81.5687 47.834 83.4233C49.0598 85.2779 50.647 86.205 52.5959 86.205L54.9532 86.205C55.6446 86.205 56.2104 86.4566 56.6506 86.9594C57.0907 87.4622 57.3106 88.1539 57.3106 89.0339C57.3106 89.8512 57.059 90.5268 56.5563 91.0612C56.0535 91.5957 55.3617 91.8627 54.4818 91.8627L52.5959 91.8627Z"/><path d="M88.428 92.4285C83.3991 92.4285 78.8884 91.2811 74.8967 88.9867C70.905 86.6923 67.7615 83.5489 65.4672 79.5572C63.1728 75.5655 62.0254 71.0865 62.0254 66.1202C62.0254 61.0912 63.1728 56.5805 65.4672 52.5888C67.7615 48.5971 70.905 45.4537 74.8967 43.1593C78.8884 40.8649 83.3991 39.7175 88.428 39.7175C93.457 39.7175 97.9518 40.8649 101.912 43.1593C105.873 45.4537 109 48.5971 111.295 52.5888C113.589 56.5805 114.736 61.0912 114.736 66.1202C114.736 71.0865 113.589 75.5655 111.295 79.5572C109 83.5489 105.873 86.6923 101.912 88.9867C97.9518 91.2811 93.457 92.4285 88.428 92.4285ZM88.428 87.148C92.3884 87.148 95.9245 86.2209 99.0362 84.3663C102.148 82.5117 104.6 79.9974 106.391 76.8227C108.183 73.6479 109.079 70.0493 109.079 66.0259C109.079 62.0655 108.183 58.4981 106.391 55.3234C104.6 52.1486 102.148 49.6344 99.0362 47.7798C95.9245 45.9252 92.3884 44.998 88.428 44.998C84.5306 44.998 81.01 45.9252 77.867 47.7798C74.7239 49.6344 72.2406 52.1486 70.4177 55.3234C68.5947 58.4981 67.6831 62.0968 67.6831 66.1202C67.6831 70.0806 68.5947 73.6479 70.4177 76.8227C72.2406 79.9974 74.7239 82.5117 77.867 84.3663C81.01 86.2209 84.5306 87.148 88.428 87.148Z"/><path d="M152.454 92.4285C147.299 92.4285 142.742 91.297 138.782 89.0339C134.821 86.7708 131.709 83.6591 129.446 79.6987C127.183 75.7383 126.052 71.2121 126.052 66.1202C126.052 60.9652 127.215 56.4078 129.541 52.4474C131.867 48.487 135.026 45.3752 139.017 43.1121C143.009 40.8491 147.488 39.7175 152.454 39.7175C157.609 39.7175 162.151 40.8491 166.08 43.1121C170.009 45.3752 173.105 48.487 175.368 52.4474C177.631 56.4078 178.763 60.9652 178.763 66.1202L175.462 69.892C175.462 74.2925 174.488 78.1899 172.539 81.5846C170.59 84.9792 167.888 87.6353 164.43 89.5525C160.972 91.4697 156.981 92.4285 152.454 92.4285ZM152.832 111.57C147.614 111.57 143.166 110.596 139.489 108.647C135.811 106.698 132.778 104.215 130.389 101.198C129.887 100.569 129.635 99.9091 129.635 99.2178C129.635 98.5264 129.949 97.9289 130.578 97.4261C131.207 96.986 131.945 96.8291 132.794 96.9547C133.643 97.0803 134.287 97.4891 134.727 98.1805C136.676 100.507 139.159 102.44 142.176 103.98C145.194 105.52 148.746 106.29 152.832 106.29C156.729 106.29 160.202 105.347 163.251 103.461C166.3 101.575 168.704 98.982 170.465 95.6817C172.225 92.3814 173.105 88.688 173.105 84.602L173.105 69.6091L175.651 66.1202L178.763 66.1202L178.763 84.602C178.763 89.6939 177.631 94.2831 175.368 98.3691C173.105 102.455 170.025 105.677 166.127 108.034C162.23 110.392 157.798 111.57 152.832 111.57ZM152.454 87.148C156.478 87.148 160.045 86.2522 163.157 84.4606C166.269 82.669 168.704 80.186 170.465 77.0113C172.225 73.8365 173.105 70.2062 173.105 66.1202C173.105 61.9712 172.225 58.3095 170.465 55.1348C168.704 51.96 166.269 49.4771 163.157 47.6855C160.045 45.8939 156.478 44.998 152.454 44.998C148.431 44.998 144.848 45.8939 141.705 47.6855C138.562 49.4771 136.11 51.96 134.35 55.1348C132.589 58.3095 131.709 61.9712 131.709 66.1202C131.709 70.2062 132.589 73.8365 134.35 77.0113C136.11 80.186 138.562 82.669 141.705 84.4606C144.848 86.2522 148.431 87.148 152.454 87.148Z"/><path d="M237.509 91.8627C236.69 91.8627 236.015 91.5957 235.483 91.0612C234.948 90.5268 234.68 89.8512 234.68 89.0339L234.68 63.6685C234.68 59.5195 233.88 56.0936 232.277 53.3903C230.67 50.6871 228.505 48.6597 225.767 47.3083C223.032 45.9568 219.94 45.2809 216.481 45.2809C213.086 45.2809 210.039 45.9252 207.334 47.214C204.63 48.5028 202.494 50.2786 200.922 52.5417C199.35 54.8047 198.565 57.3507 198.565 60.1796L193.85 60.1796C194.102 56.2822 195.264 52.7774 197.339 49.6657C199.413 46.5539 202.117 44.1022 205.448 42.3106C208.779 40.519 212.456 39.6232 216.481 39.6232C221.007 39.6232 225.077 40.5503 228.694 42.4049C232.307 44.2595 235.151 46.9624 237.226 50.5143C239.3 54.0662 240.338 58.4509 240.338 63.6685L240.338 89.0339C240.338 89.8512 240.07 90.5268 239.534 91.0612C239.002 91.5957 238.327 91.8627 237.509 91.8627ZM195.736 91.8627C194.919 91.8627 194.243 91.5957 193.709 91.0612C193.174 90.5268 192.907 89.8512 192.907 89.0339L192.907 43.1121C192.907 42.2322 193.174 41.5404 193.709 41.0377C194.243 40.5349 194.919 40.2833 195.736 40.2833C196.616 40.2833 197.308 40.5349 197.81 41.0377C198.313 41.5404 198.565 42.2322 198.565 43.1121L198.565 89.0339C198.565 89.8512 198.313 90.5268 197.81 91.0612C197.308 91.5957 196.616 91.8627 195.736 91.8627Z"/></g>
-        <g class="nos"><path d="M157.869 176.295C151.865 176.295 146.477 174.939 141.711 172.226C136.941 169.514 133.189 165.798 130.45 161.079C127.707 156.36 126.338 151.065 126.338 145.194C126.338 139.249 127.707 133.916 130.45 129.198C133.189 124.479 136.941 120.763 141.711 118.05C146.477 115.338 151.865 113.981 157.869 113.981C163.874 113.981 169.243 115.338 173.973 118.05C178.702 120.763 182.437 124.479 185.18 129.198C187.919 133.916 189.288 139.249 189.288 145.194C189.288 151.065 187.919 156.36 185.18 161.079C182.437 165.798 178.702 169.514 173.973 172.226C169.243 174.939 163.874 176.295 157.869 176.295ZM157.869 170.053C162.599 170.053 166.819 168.957 170.54 166.764C174.256 164.572 177.18 161.599 179.324 157.846C181.464 154.093 182.531 149.839 182.531 145.083C182.531 140.401 181.464 136.183 179.324 132.43C177.18 128.677 174.256 125.705 170.54 123.512C166.819 121.32 162.599 120.224 157.869 120.224C153.216 120.224 149.009 121.32 145.256 123.512C141.504 125.705 138.536 128.677 136.36 132.43C134.184 136.183 133.094 140.438 133.094 145.194C133.094 149.876 134.184 154.093 136.36 157.846C138.536 161.599 141.504 164.572 145.256 166.764C149.009 168.957 153.216 170.053 157.869 170.053Z"/><path d="M227.126 176.295C223.22 176.295 219.13 175.589 214.851 174.177C210.572 172.765 207.004 170.387 204.153 167.043C203.554 166.299 203.306 165.501 203.423 164.646C203.536 163.791 204.004 163.067 204.828 162.472C205.581 161.952 206.387 161.767 207.252 161.915C208.112 162.063 208.806 162.472 209.333 163.141C211.509 165.668 214.157 167.433 217.27 168.436C220.387 169.439 223.783 169.941 227.464 169.941C233.77 169.941 238.238 168.826 240.865 166.597C243.491 164.367 244.806 161.767 244.806 158.794C244.806 155.895 243.401 153.499 240.585 151.604C237.765 149.709 233.432 148.352 227.576 147.535C220.067 146.495 214.513 144.488 210.91 141.515C207.306 138.543 205.504 135.087 205.504 131.148C205.504 127.433 206.441 124.293 208.319 121.729C210.198 119.165 212.765 117.233 216.036 115.932C219.301 114.632 223.036 113.981 227.238 113.981C232.342 113.981 236.662 114.892 240.189 116.713C243.716 118.533 246.572 120.967 248.747 124.014C249.347 124.757 249.554 125.556 249.369 126.411C249.18 127.266 248.599 127.953 247.621 128.473C246.869 128.844 246.081 128.956 245.256 128.807C244.432 128.659 243.716 128.213 243.117 127.47C241.238 125.092 238.968 123.289 236.306 122.063C233.639 120.837 230.54 120.224 227.013 120.224C222.283 120.224 218.603 121.227 215.977 123.234C213.351 125.24 212.036 127.656 212.036 130.48C212.036 132.412 212.581 134.102 213.666 135.552C214.756 137.001 216.54 138.227 219.018 139.23C221.495 140.233 224.797 141.032 228.928 141.627C234.558 142.37 239.004 143.633 242.27 145.417C245.54 147.201 247.865 149.263 249.252 151.604C250.644 153.945 251.338 156.453 251.338 159.128C251.338 162.621 250.211 165.668 247.959 168.269C245.707 170.87 242.743 172.858 239.063 174.233C235.383 175.607 231.405 176.295 227.126 176.295Z"/></g>
+      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
       </svg>
       <span class="brand-word">lognos</span>
     </a>
@@ -483,7 +466,8 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       <li><a href="#what-we-do">Product</a></li>
       <li><a href="#loop-cost">How it works</a></li>
       <li><a href="#governance">Governance</a></li>
-      <li><a href="#contact" class="nav-cta">Talk to us</a></li>
+      <li><a href="https://cal.com/facundo.bassi/lognos-demo" target="_blank" rel="noopener" class="nav-cta"
+             data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}'>Talk to us</a></li>
     </ul>
     <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle menu">
       <svg width="22" height="22"><use href="#i-menu"/></svg>
@@ -509,7 +493,8 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#loop-cost">See it reconcile</a>
-        <a class="btn btn-secondary" href="#contact">Talk to us</a>
+        <a class="btn btn-secondary" href="https://cal.com/facundo.bassi/lognos-demo" target="_blank" rel="noopener"
+           data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}'>Talk to us</a>
       </div>
     </div>
 
@@ -520,21 +505,27 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
           <span style="margin-left:8px">reconciliation.lognos — live</span>
         </div>
         <div class="frame-body">
-          <svg viewBox="0 0 900 260" width="100%" role="img" aria-label="A miniature preview of the reconciliation loop: an update moves from schedule to cost to risk to a Monte Carlo simulation to a report.">
-            <defs>
-              <path id="mini-path" d="M60,200 C150,160 220,120 300,110 C400,95 460,150 520,150 C600,150 650,90 720,80 C780,72 800,120 840,140"/>
-            </defs>
-            <path style="fill:none;stroke:var(--hairline);stroke-width:1.5"
-                  d="M60,200 C150,160 220,120 300,110 C400,95 460,150 520,150 C600,150 650,90 720,80 C780,72 800,120 840,140"/>
+          <svg viewBox="0 0 900 160" width="100%" role="img" aria-label="A miniature preview of the reconciliation loop: an update moves from schedule to cost forecast to a Monte Carlo simulation to a report.">
+            <path class="conn-base" marker-end="url(#arrow)" d="M80,80 L266,80"/>
+            <path class="conn-flow" d="M80,80 L270,80"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M310,80 L466,80"/>
+            <path class="conn-flow" d="M310,80 L470,80"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M510,80 L666,80"/>
+            <path class="conn-flow" d="M510,80 L670,80"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M710,80 L816,80"/>
+            <path class="conn-flow" d="M710,80 L820,80"/>
             <g style="stroke:var(--hairline);fill:var(--surface)">
-              <circle cx="60" cy="200" r="16"/><circle cx="300" cy="110" r="16"/>
-              <circle cx="520" cy="150" r="16"/><circle cx="720" cy="80" r="16"/><circle cx="840" cy="140" r="16"/>
+              <rect x="40" y="60" width="40" height="40" rx="4"/>
+              <rect x="270" y="60" width="40" height="40" rx="4"/>
+              <rect x="470" y="60" width="40" height="40" rx="4"/>
+              <rect x="670" y="60" width="40" height="40" rx="4"/>
+              <rect x="820" y="60" width="40" height="40" rx="4" style="stroke:var(--accent-border)"/>
             </g>
-            <use href="#i-gantt" x="288" y="98" width="24" height="24" style="color:var(--text-strong)"/>
-            <use href="#i-forecast" x="508" y="138" width="24" height="24" style="color:var(--text-strong)"/>
-            <use href="#i-report" x="828" y="128" width="24" height="24" style="color:var(--accent)"/>
-            <circle r="5" style="fill:var(--accent);offset-path:path('M60,200 C150,160 220,120 300,110 C400,95 460,150 520,150 C600,150 650,90 720,80 C780,72 800,120 840,140'); animation:mini-travel 6s linear infinite;"/>
-            <style>@keyframes mini-travel{0%{offset-distance:0%}100%{offset-distance:100%}}</style>
+            <use href="#i-checklist" x="50" y="70" width="20" height="20" style="color:var(--text-strong)"/>
+            <use href="#i-gantt" x="280" y="70" width="20" height="20" style="color:var(--text-strong)"/>
+            <use href="#i-forecast" x="480" y="70" width="20" height="20" style="color:var(--text-strong)"/>
+            <use href="#i-montecarlo" x="680" y="70" width="20" height="20" style="color:var(--text-strong)"/>
+            <use href="#i-report" x="830" y="70" width="20" height="20" style="color:var(--accent)"/>
           </svg>
         </div>
       </div>
@@ -600,77 +591,79 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
         validating each stage it passes through.</p>
       </div>
 
-      <svg class="loop-diagram loop1" viewBox="0 0 1120 320" role="img"
+      <svg class="loop-diagram loop1" viewBox="0 0 1120 240" role="img"
            aria-label="Diagram: a site progress update updates the schedule Gantt, which triggers a cost forecast, which triggers a Monte Carlo simulation of cost and schedule, which produces a report, which feeds the next update. A person confirms each stage.">
-        <path class="return-path return-glow" d="M1040,220 C980,292 220,292 80,220"/>
-        <path class="flow-path" d="M80,220 C160,180 240,140 320,100 C400,60 480,140 560,220 C640,300 720,180 800,100 C880,20 960,140 1040,220"/>
+        <path class="conn-return conn-base" d="M1030,130 L1030,196 L90,196 L90,130"/>
+        <path class="conn-return conn-flow" d="M1030,130 L1030,196 L90,196 L90,130"/>
 
-        <g class="n1">
-          <circle class="halo" cx="80" cy="220" r="30"/>
-          <circle class="node-circle" cx="80" cy="220" r="26"/>
-          <use href="#i-checklist" x="68" y="208" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
-          <text class="node-label" x="80" y="266"><tspan class="strong">Site update</tspan></text>
-          <text class="node-label" x="80" y="280" style="fill:var(--text-dim)">progress captured</text>
-          <g class="confirm-badge" transform="translate(80,220)">
-            <circle cx="26" cy="-30" r="11"/>
-            <path d="M22,-30 l3,3 l6,-6" transform="translate(0,0)"/>
-          </g>
+        <path class="conn-base" marker-end="url(#arrow)" d="M120,100 L286,100"/>
+        <path class="conn-flow" d="M120,100 L290,100"/>
+        <path class="conn-base" marker-end="url(#arrow)" d="M350,100 L526,100"/>
+        <path class="conn-flow" d="M350,100 L530,100"/>
+        <path class="conn-base" marker-end="url(#arrow)" d="M590,100 L766,100"/>
+        <path class="conn-flow" d="M590,100 L770,100"/>
+        <path class="conn-base" marker-end="url(#arrow)" d="M830,100 L996,100"/>
+        <path class="conn-flow" d="M830,100 L1000,100"/>
+
+        <g class="fnode n1">
+          <rect class="fnode-box" x="60" y="70" width="60" height="60" rx="4"/>
+          <use href="#i-checklist" x="78" y="88" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
+          <text class="node-label" x="90" y="150">Site update</text>
+          <foreignObject x="38" y="156" width="104" height="14">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+              <span class="ft-text" style="--ft-w:21ch; animation-delay:0s">capturing progress ✓</span><span class="ft-cursor">_</span>
+            </div>
+          </foreignObject>
         </g>
 
-        <g class="n2">
-          <circle class="halo" cx="320" cy="100" r="30"/>
-          <circle class="node-circle" cx="320" cy="100" r="26"/>
+        <g class="fnode n2">
+          <rect class="fnode-box" x="290" y="70" width="60" height="60" rx="4"/>
           <use href="#i-gantt" x="308" y="88" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
-          <text class="node-label" x="320" y="60"><tspan class="strong">Schedule</tspan></text>
-          <text class="node-label" x="320" y="46" style="fill:var(--text-dim)">Gantt updates</text>
-          <g class="confirm-badge" transform="translate(320,100)">
-            <circle cx="26" cy="-30" r="11"/>
-            <path d="M22,-30 l3,3 l6,-6"/>
-          </g>
+          <text class="node-label" x="320" y="150">Schedule</text>
+          <foreignObject x="266" y="156" width="108" height="14">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+              <span class="ft-text" style="--ft-w:22ch; animation-delay:2s">recalculating logic ✓</span><span class="ft-cursor">_</span>
+            </div>
+          </foreignObject>
         </g>
 
-        <g class="n3">
-          <circle class="halo" cx="560" cy="220" r="30"/>
-          <circle class="node-circle" cx="560" cy="220" r="26"/>
-          <use href="#i-forecast" x="548" y="208" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
-          <text class="node-label" x="560" y="266"><tspan class="strong">Cost forecast</tspan></text>
-          <text class="node-label" x="560" y="280" style="fill:var(--text-dim)">re-run</text>
-          <g class="confirm-badge" transform="translate(560,220)">
-            <circle cx="26" cy="-30" r="11"/>
-            <path d="M22,-30 l3,3 l6,-6"/>
-          </g>
+        <g class="fnode n3">
+          <rect class="fnode-box" x="530" y="70" width="60" height="60" rx="4"/>
+          <use href="#i-forecast" x="548" y="88" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
+          <text class="node-label" x="560" y="150">Cost forecast</text>
+          <foreignObject x="506" y="156" width="108" height="14">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+              <span class="ft-text" style="--ft-w:22ch; animation-delay:4s">re-forecasting cost ✓</span><span class="ft-cursor">_</span>
+            </div>
+          </foreignObject>
         </g>
 
-        <g class="n4">
-          <circle class="halo" cx="800" cy="100" r="30"/>
-          <circle class="node-circle" cx="800" cy="100" r="26"/>
+        <g class="fnode n4">
+          <rect class="fnode-box" x="770" y="70" width="60" height="60" rx="4"/>
           <use href="#i-montecarlo" x="788" y="88" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
-          <text class="node-label" x="800" y="60"><tspan class="strong">Monte Carlo</tspan></text>
-          <text class="node-label" x="800" y="46" style="fill:var(--text-dim)">cost + schedule</text>
-          <g class="confirm-badge" transform="translate(800,100)">
-            <circle cx="26" cy="-30" r="11"/>
-            <path d="M22,-30 l3,3 l6,-6"/>
-          </g>
+          <text class="node-label" x="800" y="150">Monte Carlo</text>
+          <foreignObject x="746" y="156" width="108" height="14">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+              <span class="ft-text" style="--ft-w:22ch; animation-delay:6s">simulating outcomes ✓</span><span class="ft-cursor">_</span>
+            </div>
+          </foreignObject>
         </g>
 
-        <g class="n5">
-          <circle class="halo" cx="1040" cy="220" r="30"/>
-          <circle class="node-circle" cx="1040" cy="220" r="26"/>
-          <use href="#i-report" x="1028" y="208" width="24" height="24" class="node-icon" color="var(--accent)"/>
-          <text class="node-label" x="1040" y="266"><tspan class="strong" style="fill:var(--accent)">Report</tspan></text>
-          <text class="node-label" x="1040" y="280" style="fill:var(--text-dim)">confirmed, sent</text>
-          <g class="confirm-badge" transform="translate(1040,220)">
-            <circle cx="26" cy="-30" r="12"/>
-            <path d="M21.5,-30 l3.5,3.5 l7,-7"/>
-          </g>
+        <g class="fnode n5 is-terminal">
+          <rect class="fnode-box" x="1000" y="70" width="60" height="60" rx="4"/>
+          <use href="#i-report" x="1018" y="88" width="24" height="24" class="node-icon" color="var(--accent)"/>
+          <text class="node-label is-accent" x="1030" y="150">Report</text>
+          <foreignObject x="978" y="156" width="104" height="14">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+              <span class="ft-text" style="--ft-w:19ch; animation-delay:8s">compiling report ✓</span><span class="ft-cursor">_</span>
+            </div>
+          </foreignObject>
         </g>
-
-        <circle class="traveler" r="5"/>
       </svg>
 
       <div class="loop-legend">
-        <span><span class="swatch dot"></span> live update propagating</span>
-        <span><span class="swatch person"></span> a person confirms this stage</span>
+        <span><span class="swatch flow"></span> live update propagating</span>
+        <span><span class="swatch confirm"></span> a person confirms this stage ( ✓ )</span>
       </div>
 
       <div class="loop-caption-row">
@@ -698,77 +691,79 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       named person validating each stage.</p>
     </div>
 
-    <svg class="loop-diagram loop2" viewBox="0 0 1040 320" role="img"
+    <svg class="loop-diagram loop2" viewBox="0 0 1040 280" role="img"
          aria-label="Diagram: a schedule update and an external world signal both feed the risk register, which triggers a Monte Carlo simulation of cost and schedule, which produces a report, which feeds the next cycle. A person confirms each stage.">
-      <path class="return-path return-glow" d="M960,170 C900,280 460,280 190,225 M960,170 C900,60 460,60 190,115"/>
+      <path class="conn-return conn-base" d="M930,100 L930,10 L90,10 L90,30"/>
+      <path class="conn-return conn-flow" d="M930,100 L930,10 L90,10 L90,30"/>
 
-      <path class="flow-path" d="M80,80 C210,80 270,150 360,170"/>
-      <path class="flow-path" d="M80,260 C210,260 270,200 360,170"/>
-      <path class="flow-path" d="M360,170 C480,120 560,220 680,170 C800,120 860,220 960,170"/>
+      <path class="conn-base" marker-end="url(#arrow)" d="M120,60 L260,60 L260,126 L336,126"/>
+      <path class="conn-flow" d="M120,60 L260,60 L260,130 L340,130"/>
+      <path class="conn-base" marker-end="url(#arrow)" d="M120,200 L260,200 L260,134 L336,134"/>
+      <path class="conn-flow" d="M120,200 L260,200 L260,130 L340,130"/>
+      <path class="conn-base" marker-end="url(#arrow)" d="M400,130 L616,130"/>
+      <path class="conn-flow" d="M400,130 L620,130"/>
+      <path class="conn-base" marker-end="url(#arrow)" d="M680,130 L896,130"/>
+      <path class="conn-flow" d="M680,130 L900,130"/>
 
-      <g class="n-world">
-        <circle class="halo" cx="80" cy="80" r="28"/>
-        <circle class="node-circle" cx="80" cy="80" r="24"/>
-        <use href="#i-globe" x="69" y="69" width="22" height="22" class="node-icon" color="var(--text-strong)"/>
-        <text class="node-label" x="80" y="38"><tspan class="strong">World signal</tspan></text>
-        <text class="node-label" x="80" y="24" style="fill:var(--text-dim)">supplier, weather, code</text>
-        <g class="confirm-badge" transform="translate(80,80)">
-          <circle cx="24" cy="-28" r="10"/><path d="M20.5,-28 l2.8,2.8 l5.5,-5.5"/>
-        </g>
+      <g class="fnode n-world">
+        <rect class="fnode-box" x="60" y="30" width="60" height="60" rx="4"/>
+        <use href="#i-globe" x="78" y="48" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
+        <text class="node-label" x="90" y="108">World signal</text>
+        <foreignObject x="34" y="114" width="112" height="14">
+          <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+            <span class="ft-text" style="--ft-w:20ch; animation-delay:0s">verifying signal ✓</span><span class="ft-cursor">_</span>
+          </div>
+        </foreignObject>
       </g>
 
-      <g class="n-schedule">
-        <circle class="halo" cx="80" cy="260" r="28"/>
-        <circle class="node-circle" cx="80" cy="260" r="24"/>
-        <use href="#i-gantt" x="69" y="249" width="22" height="22" class="node-icon" color="var(--text-strong)"/>
-        <text class="node-label" x="80" y="302"><tspan class="strong">Schedule update</tspan></text>
-        <text class="node-label" x="80" y="316" style="fill:var(--text-dim)">logic or duration change</text>
-        <g class="confirm-badge" transform="translate(80,260)">
-          <circle cx="24" cy="-28" r="10"/><path d="M20.5,-28 l2.8,2.8 l5.5,-5.5"/>
-        </g>
+      <g class="fnode n-schedule">
+        <rect class="fnode-box" x="60" y="170" width="60" height="60" rx="4"/>
+        <use href="#i-gantt" x="78" y="188" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
+        <text class="node-label" x="90" y="248">Schedule update</text>
+        <foreignObject x="34" y="254" width="112" height="14">
+          <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+            <span class="ft-text" style="--ft-w:17ch; animation-delay:0s">checking logic ✓</span><span class="ft-cursor">_</span>
+          </div>
+        </foreignObject>
       </g>
 
-      <g class="n-risk">
-        <circle class="halo" cx="360" cy="170" r="30"/>
-        <circle class="node-circle" cx="360" cy="170" r="26"/>
-        <use href="#i-shield-list" x="348" y="158" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
-        <text class="node-label" x="360" y="216"><tspan class="strong">Risk register</tspan></text>
-        <text class="node-label" x="360" y="230" style="fill:var(--text-dim)">system of record</text>
-        <g class="confirm-badge" transform="translate(360,170)">
-          <circle cx="26" cy="-30" r="11"/><path d="M22,-30 l3,3 l6,-6"/>
-        </g>
+      <g class="fnode n-risk">
+        <rect class="fnode-box" x="340" y="100" width="60" height="60" rx="4"/>
+        <use href="#i-shield-list" x="358" y="118" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
+        <text class="node-label" x="370" y="178">Risk register</text>
+        <foreignObject x="316" y="184" width="108" height="14">
+          <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+            <span class="ft-text" style="--ft-w:19ch; animation-delay:2.4s">reconciling risk ✓</span><span class="ft-cursor">_</span>
+          </div>
+        </foreignObject>
       </g>
 
-      <g class="n-mc">
-        <circle class="halo" cx="680" cy="170" r="30"/>
-        <circle class="node-circle" cx="680" cy="170" r="26"/>
-        <use href="#i-montecarlo" x="668" y="158" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
-        <text class="node-label" x="680" y="130"><tspan class="strong">Monte Carlo</tspan></text>
-        <text class="node-label" x="680" y="116" style="fill:var(--text-dim)">cost + schedule</text>
-        <g class="confirm-badge" transform="translate(680,170)">
-          <circle cx="26" cy="-30" r="11"/><path d="M22,-30 l3,3 l6,-6"/>
-        </g>
+      <g class="fnode n-mc">
+        <rect class="fnode-box" x="620" y="100" width="60" height="60" rx="4"/>
+        <use href="#i-montecarlo" x="638" y="118" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
+        <text class="node-label" x="650" y="178">Monte Carlo</text>
+        <foreignObject x="596" y="184" width="108" height="14">
+          <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+            <span class="ft-text" style="--ft-w:22ch; animation-delay:5s">simulating outcomes ✓</span><span class="ft-cursor">_</span>
+          </div>
+        </foreignObject>
       </g>
 
-      <g class="n-report">
-        <circle class="halo" cx="960" cy="170" r="30"/>
-        <circle class="node-circle" cx="960" cy="170" r="26"/>
-        <use href="#i-report" x="948" y="158" width="24" height="24" class="node-icon" color="var(--accent)"/>
-        <text class="node-label" x="960" y="216"><tspan class="strong" style="fill:var(--accent)">Report</tspan></text>
-        <text class="node-label" x="960" y="230" style="fill:var(--text-dim)">confirmed, sent</text>
-        <g class="confirm-badge" transform="translate(960,170)">
-          <circle cx="26" cy="-30" r="12"/><path d="M21.5,-30 l3.5,3.5 l7,-7"/>
-        </g>
+      <g class="fnode n-report is-terminal">
+        <rect class="fnode-box" x="900" y="100" width="60" height="60" rx="4"/>
+        <use href="#i-report" x="918" y="118" width="24" height="24" class="node-icon" color="var(--accent)"/>
+        <text class="node-label is-accent" x="930" y="178">Report</text>
+        <foreignObject x="878" y="184" width="104" height="14">
+          <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+            <span class="ft-text" style="--ft-w:19ch; animation-delay:7.8s">compiling report ✓</span><span class="ft-cursor">_</span>
+          </div>
+        </foreignObject>
       </g>
-
-      <circle class="traveler traveler-a" r="4.5"/>
-      <circle class="traveler traveler-b" r="4.5"/>
-      <circle class="traveler traveler-c" r="5"/>
     </svg>
 
     <div class="loop-legend">
-      <span><span class="swatch dot"></span> live update propagating</span>
-      <span><span class="swatch person"></span> a person confirms this stage</span>
+      <span><span class="swatch flow"></span> live update propagating</span>
+      <span><span class="swatch confirm"></span> a person confirms this stage ( ✓ )</span>
     </div>
 
     <div class="loop-caption-row">
@@ -856,7 +851,8 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     <p class="eyebrow">Ready when you are</p>
     <h2>See your own schedule, cost, and risk reconcile.</h2>
     <div class="cta-actions">
-      <a class="btn btn-primary" href="mailto:hello@lognos.io">Talk to us — hello@lognos.io</a>
+      <a class="btn btn-primary" href="https://cal.com/facundo.bassi/lognos-demo" target="_blank" rel="noopener"
+         data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}'>Talk to us</a>
       <a class="btn btn-secondary" href="../whitepaper.html">Read the whitepaper</a>
     </div>
     <p class="cta-note">E&amp;C delivery is the beachhead. Every claim on this page ships at [LIVE] maturity — see 02_POSITIONING/CLAIMS.md.</p>
@@ -868,8 +864,8 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 <footer class="sheet">
   <div class="well footer-row">
     <div class="footer-brand">
-      <svg width="16" viewBox="0 0 297.675 194.513" aria-hidden="true" style="height:auto">
-        <g fill="currentColor"><path d="M52.5959 91.8627C50.2072 91.8627 48.0855 91.2027 46.2309 89.8825C44.3763 88.5624 42.9306 86.7395 41.8934 84.4134C40.8561 82.0873 40.3375 79.3845 40.3375 76.304L40.3375 21.0471C40.3375 20.1671 40.6045 19.4754 41.139 18.9726C41.6735 18.4698 42.349 18.2182 43.1664 18.2182C44.0463 18.2182 44.7381 18.4698 45.2408 18.9726C45.7436 19.4754 45.9952 20.1671 45.9952 21.0471L45.9952 76.304C45.9952 79.1959 46.6081 81.5687 47.834 83.4233C49.0598 85.2779 50.647 86.205 52.5959 86.205L54.9532 86.205C55.6446 86.205 56.2104 86.4566 56.6506 86.9594C57.0907 87.4622 57.3106 88.1539 57.3106 89.0339C57.3106 89.8512 57.059 90.5268 56.5563 91.0612C56.0535 91.5957 55.3617 91.8627 54.4818 91.8627L52.5959 91.8627Z"/></g>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
       </svg>
       <span>© 2026 Lognos. E&amp;C delivery, reconciled continuously.</span>
     </div>
@@ -880,6 +876,26 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     </ul>
   </div>
 </footer>
+
+<!-- Cal.com embed — same booking link as the live site's "Demo" nav item,
+     plus the persistent floating button. "Talk to us" everywhere on this
+     page opens this popup (data-cal-link), with the plain href as a
+     no-JS fallback. -->
+<script type="text/javascript">
+  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+  Cal("init", "lognos-demo", {origin:"https://app.cal.com"});
+  Cal.ns["lognos-demo"]("ui", {"styles":{"branding":{"brandColor":"#4D7BFD"}},"hideEventTypeDetails":false,"layout":"month_view"});
+</script>
+<cal-floating-button
+  data-cal-link="facundo.bassi/lognos-demo"
+  data-cal-namespace="lognos-demo"
+  data-cal-config='{"layout":"month_view"}'
+  data-button-text="Book a demo"
+  data-hide-button-icon="false"
+  data-button-position="bottom-right"
+  data-button-color="rgb(77, 123, 253)"
+  data-button-text-color="rgb(7, 7, 7)">
+</cal-floating-button>
 
 <script>
 (function(){
