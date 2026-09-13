@@ -117,6 +117,10 @@ p{ margin:0; }
     var(--hairline-faint) 0px, var(--hairline-faint) 1px,
     transparent 1px, transparent 50%);
   background-size:10px 10px;
+  /* fixed attachment: the hatch is computed from the viewport, not the
+     element, so it never restarts or seams at a section boundary — each
+     .sheet's gutter is a window onto one continuous page-wide texture */
+  background-attachment:fixed;
 }
 .sheet::before{ grid-column:1; border-right:1px solid var(--hairline); }
 .sheet::after{ grid-column:3; border-left:1px solid var(--hairline); }
@@ -232,8 +236,30 @@ p{ margin:0; }
   padding:var(--sp-sm) var(--sp-md); border-bottom:1px solid var(--hairline);
   font-family:var(--font-mono); font-size:.72rem; color:var(--text-dim);
 }
-.frame-chrome .dot{ width:8px; height:8px; border-radius:50%; background:var(--hairline); }
-.hero-frame .frame-body{ padding:var(--sp-xl); min-height:280px; display:flex; align-items:center; justify-content:center; }
+.term-dot{ width:8px; height:8px; border-radius:50%; opacity:.75; }
+.term-dot-r{ background:var(--error); }
+.term-dot-y{ background:var(--warning); }
+.term-dot-g{ background:var(--success); }
+.frame-chrome-label{ margin-left:8px; }
+.hero-frame .frame-body{
+  padding:var(--sp-xl); min-height:220px; display:flex; align-items:center; justify-content:center;
+  /* dotted canvas, simulating a workspace — the diagram sits "on" a grid,
+     like a design-tool surface, echoing Railway's product frames */
+  background-image: radial-gradient(color-mix(in oklab, var(--hairline) 75%, transparent) 1px, transparent 1px);
+  background-size:18px 18px;
+}
+
+/* integrations rail — plain marks, no cards, grey until hovered */
+.integrations-rail{ margin-top:var(--sp-2xl); }
+.integrations-row{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+  gap:var(--sp-2xl); row-gap:var(--sp-lg); margin-top:var(--sp-lg);
+}
+.integrations-row svg{
+  width:22px; height:22px; color:var(--text-dim);
+  transition:color .15s var(--ease-out);
+}
+.integrations-row svg:hover{ color:var(--text-muted); }
 
 /* ============================================================
    SECTIONS
@@ -251,8 +277,7 @@ section{ padding-block:var(--sp-3xl); }
   border:1px solid var(--hairline); border-radius:var(--r-lg); background:var(--surface);
   padding:var(--sp-lg);
 }
-.diff-card .icon{ width:28px; height:28px; color:var(--accent); margin-bottom:var(--sp-md); }
-.diff-card h3{ font-size:1.05rem; font-weight:600; color:var(--text-max); letter-spacing:normal; margin-bottom:var(--sp-sm); }
+.diff-card h3{ font-size:1.1rem; font-weight:400; color:var(--text-max); letter-spacing:normal; margin-bottom:var(--sp-sm); }
 .diff-card p{ color:var(--text-muted); font-size:.925rem; }
 .diff-card .tag{ margin-bottom:var(--sp-md); }
 
@@ -349,7 +374,7 @@ section{ padding-block:var(--sp-3xl); }
   font-family:var(--font-mono); font-size:.75rem; color:var(--text-dim);
   width:24px; flex:none;
 }
-.pcc-body h4{ margin:0; color:var(--text-strong); font-size:.95rem; font-weight:600; }
+.pcc-body h4{ margin:0; color:var(--text-strong); font-size:.95rem; font-weight:400; }
 .pcc-body p{ margin-top:2px; color:var(--text-muted); font-size:.85rem; }
 .pcc-step.is-decision .pcc-num{ color:var(--accent); }
 .pcc-step.is-decision .pcc-body h4{ color:var(--accent); }
@@ -361,7 +386,7 @@ section{ padding-block:var(--sp-3xl); }
 @media (max-width:860px){ .role-grid{ grid-template-columns:1fr; } }
 .role-card{ padding:var(--sp-lg) 0; border-top:1px solid var(--hairline); }
 .role-card .eyebrow{ margin-bottom:var(--sp-sm); }
-.role-card h3{ font-size:1.15rem; font-weight:500; color:var(--text-max); letter-spacing:-.01em; margin-bottom:var(--sp-sm); }
+.role-card h3{ font-size:1.15rem; font-weight:400; color:var(--text-max); letter-spacing:-.01em; margin-bottom:var(--sp-sm); }
 .role-card p{ color:var(--text-muted); font-size:.9rem; }
 
 /* ============================================================
@@ -448,6 +473,38 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
   <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
     <path d="M6 6l12 12M18 6L6 18"/>
   </symbol>
+
+  <!-- Integration marks — generic evocative glyphs, not licensed trademarks.
+       Swap for official brand assets before anything client-facing ships. -->
+  <symbol id="i-int-telegram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 12.5L20 4l-6.5 17-3-6.5L3 12.5z"/><path d="M10.5 14.5L20 4"/>
+  </symbol>
+  <symbol id="i-int-outlook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/>
+  </symbol>
+  <symbol id="i-int-teams" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="9" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.3"/>
+    <path d="M4 19c0-3 2.5-5 5-5s5 2 5 5"/><path d="M14.5 19c0-2.2 1.7-3.7 3.5-3.7s3.5 1.5 3.5 3.7"/>
+  </symbol>
+  <symbol id="i-int-sharepoint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="9" cy="8" r="4.5"/><circle cx="16" cy="8" r="4"/><circle cx="12.5" cy="16" r="4"/>
+  </symbol>
+  <symbol id="i-int-chatgpt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3c1.8 0 3.2 1.1 3.8 2.7 1.8-.3 3.6.6 4.4 2.3.8 1.6.5 3.5-.7 4.8 1.2 1.3 1.5 3.2.7 4.8-.8 1.7-2.6 2.6-4.4 2.3C15.2 21.9 13.8 23 12 23s-3.2-1.1-3.8-2.7c-1.8.3-3.6-.6-4.4-2.3-.8-1.6-.5-3.5.7-4.8-1.2-1.3-1.5-3.2-.7-4.8.8-1.7 2.6-2.6 4.4-2.3C8.8 4.1 10.2 3 12 3z"/>
+    <circle cx="12" cy="13" r="2.6"/>
+  </symbol>
+  <symbol id="i-int-anthropic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 18L10.5 6h1.6L17 18"/><path d="M8.3 13h6.2"/>
+  </symbol>
+  <symbol id="i-int-gemini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3c0 4-2 8-8 9 6 1 8 5 8 9 0-4 2-8 8-9-6-1-8-5-8-9z"/>
+  </symbol>
+  <symbol id="i-int-mcp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 3v5M15 3v5"/><path d="M6 8h12v3a6 6 0 0 1-12 0V8z"/><path d="M12 17v4"/>
+  </symbol>
+  <symbol id="i-int-supabase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M13 3L5 14h6l-1 7 8-11h-6l1-7z"/>
+  </symbol>
 </defs>
 </svg>
 
@@ -466,7 +523,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       <li><a href="#what-we-do">Product</a></li>
       <li><a href="#loop-cost">How it works</a></li>
       <li><a href="#governance">Governance</a></li>
-      <li><a href="https://cal.com/facundo.bassi/lognos-demo" target="_blank" rel="noopener" class="nav-cta"
+      <li><a href="https://cal.com/facundo.bassi/lognos-demo" class="nav-cta"
              data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}'>Talk to us</a></li>
     </ul>
     <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle menu">
@@ -493,7 +550,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#loop-cost">See it reconcile</a>
-        <a class="btn btn-secondary" href="https://cal.com/facundo.bassi/lognos-demo" target="_blank" rel="noopener"
+        <a class="btn btn-secondary" href="https://cal.com/facundo.bassi/lognos-demo"
            data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}'>Talk to us</a>
       </div>
     </div>
@@ -501,32 +558,42 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     <div class="hero-frame-wrap" data-reveal>
       <div class="hero-frame">
         <div class="frame-chrome">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span style="margin-left:8px">reconciliation.lognos — live</span>
+          <span class="term-dot term-dot-r"></span><span class="term-dot term-dot-y"></span><span class="term-dot term-dot-g"></span>
+          <span class="frame-chrome-label">reconciliation.lognos</span>
         </div>
-        <div class="frame-body">
-          <svg viewBox="0 0 900 160" width="100%" role="img" aria-label="A miniature preview of the reconciliation loop: an update moves from schedule to cost forecast to a Monte Carlo simulation to a report.">
+        <div class="frame-body frame-body-dotted">
+          <svg class="loop-diagram loop1" viewBox="0 0 900 160" width="100%" role="img"
+               aria-label="Static preview of the reconciliation loop: site update, schedule, cost forecast, Monte Carlo simulation, report.">
             <path class="conn-base" marker-end="url(#arrow)" d="M80,80 L266,80"/>
-            <path class="conn-flow" d="M80,80 L270,80"/>
             <path class="conn-base" marker-end="url(#arrow)" d="M310,80 L466,80"/>
-            <path class="conn-flow" d="M310,80 L470,80"/>
             <path class="conn-base" marker-end="url(#arrow)" d="M510,80 L666,80"/>
-            <path class="conn-flow" d="M510,80 L670,80"/>
             <path class="conn-base" marker-end="url(#arrow)" d="M710,80 L816,80"/>
-            <path class="conn-flow" d="M710,80 L820,80"/>
-            <g style="stroke:var(--hairline);fill:var(--surface)">
-              <rect x="40" y="60" width="40" height="40" rx="4"/>
-              <rect x="270" y="60" width="40" height="40" rx="4"/>
-              <rect x="470" y="60" width="40" height="40" rx="4"/>
-              <rect x="670" y="60" width="40" height="40" rx="4"/>
-              <rect x="820" y="60" width="40" height="40" rx="4" style="stroke:var(--accent-border)"/>
-            </g>
-            <use href="#i-checklist" x="50" y="70" width="20" height="20" style="color:var(--text-strong)"/>
-            <use href="#i-gantt" x="280" y="70" width="20" height="20" style="color:var(--text-strong)"/>
-            <use href="#i-forecast" x="480" y="70" width="20" height="20" style="color:var(--text-strong)"/>
-            <use href="#i-montecarlo" x="680" y="70" width="20" height="20" style="color:var(--text-strong)"/>
-            <use href="#i-report" x="830" y="70" width="20" height="20" style="color:var(--accent)"/>
+            <g class="fnode"><rect class="fnode-box" x="40" y="60" width="40" height="40" rx="4"/>
+              <use href="#i-checklist" x="50" y="70" width="20" height="20" class="node-icon" color="var(--text-strong)"/></g>
+            <g class="fnode"><rect class="fnode-box" x="270" y="60" width="40" height="40" rx="4"/>
+              <use href="#i-gantt" x="280" y="70" width="20" height="20" class="node-icon" color="var(--text-strong)"/></g>
+            <g class="fnode"><rect class="fnode-box" x="470" y="60" width="40" height="40" rx="4"/>
+              <use href="#i-forecast" x="480" y="70" width="20" height="20" class="node-icon" color="var(--text-strong)"/></g>
+            <g class="fnode"><rect class="fnode-box" x="670" y="60" width="40" height="40" rx="4"/>
+              <use href="#i-montecarlo" x="680" y="70" width="20" height="20" class="node-icon" color="var(--text-strong)"/></g>
+            <g class="fnode is-terminal"><rect class="fnode-box" x="820" y="60" width="40" height="40" rx="4"/>
+              <use href="#i-report" x="830" y="70" width="20" height="20" class="node-icon" color="var(--accent)"/></g>
           </svg>
+        </div>
+      </div>
+
+      <div class="integrations-rail">
+        <p class="eyebrow" style="justify-content:center">Connects where the work already happens</p>
+        <div class="integrations-row">
+          <svg viewBox="0 0 24 24"><title>Telegram</title><use href="#i-int-telegram"/></svg>
+          <svg viewBox="0 0 24 24"><title>Outlook</title><use href="#i-int-outlook"/></svg>
+          <svg viewBox="0 0 24 24"><title>Teams</title><use href="#i-int-teams"/></svg>
+          <svg viewBox="0 0 24 24"><title>SharePoint</title><use href="#i-int-sharepoint"/></svg>
+          <svg viewBox="0 0 24 24"><title>ChatGPT</title><use href="#i-int-chatgpt"/></svg>
+          <svg viewBox="0 0 24 24"><title>Anthropic</title><use href="#i-int-anthropic"/></svg>
+          <svg viewBox="0 0 24 24"><title>Gemini</title><use href="#i-int-gemini"/></svg>
+          <svg viewBox="0 0 24 24"><title>MCP</title><use href="#i-int-mcp"/></svg>
+          <svg viewBox="0 0 24 24"><title>Supabase</title><use href="#i-int-supabase"/></svg>
         </div>
       </div>
     </div>
@@ -536,7 +603,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 <!-- ============================================================
      WHAT WE DO
      ============================================================ -->
-<section class="sheet" id="what-we-do">
+<section class="sheet rule" id="what-we-do">
   <div class="well">
     <div class="section-head" data-reveal>
       <p class="eyebrow">What Lognos does</p>
@@ -553,21 +620,18 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     <div class="diff-grid">
       <div class="diff-card" data-reveal>
         <span class="tag">LIVE</span>
-        <svg class="icon" viewBox="0 0 24 24"><use href="#i-reconcile"/></svg>
         <h3>Reconciled, not reported</h3>
         <p>Schedule, cost, and risk sit in one system that reconciles continuously
         instead of on a monthly cycle — not three tools stitched together after the fact.</p>
       </div>
       <div class="diff-card" data-reveal>
         <span class="tag">LIVE</span>
-        <svg class="icon" viewBox="0 0 24 24"><use href="#i-confirm"/></svg>
         <h3>The confirmation is the decision</h3>
         <p>Nothing writes without prepare → confirm → commit. Not a policy bolted on
         after the fact — the same mechanism that makes the loop worth having.</p>
       </div>
       <div class="diff-card" data-reveal>
         <span class="tag">LIVE</span>
-        <svg class="icon" viewBox="0 0 24 24"><use href="#i-question"/></svg>
         <h3>Says what it doesn't know</h3>
         <p>Per-project, per-question capability declaration — available, unavailable,
         or partial, with a reason. Never a confident wrong answer.</p>
@@ -814,7 +878,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 <!-- ============================================================
      ROLE STRIP
      ============================================================ -->
-<section class="sheet">
+<section class="sheet rule">
   <div class="well">
     <div class="section-head" data-reveal>
       <p class="eyebrow">Built for the people who own the call</p>
@@ -846,12 +910,12 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 <!-- ============================================================
      CTA
      ============================================================ -->
-<section class="sheet" id="contact">
+<section class="sheet rule" id="contact">
   <div class="well cta" data-reveal>
     <p class="eyebrow">Ready when you are</p>
     <h2>See your own schedule, cost, and risk reconcile.</h2>
     <div class="cta-actions">
-      <a class="btn btn-primary" href="https://cal.com/facundo.bassi/lognos-demo" target="_blank" rel="noopener"
+      <a class="btn btn-primary" href="https://cal.com/facundo.bassi/lognos-demo"
          data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}'>Talk to us</a>
       <a class="btn btn-secondary" href="../whitepaper.html">Read the whitepaper</a>
     </div>
