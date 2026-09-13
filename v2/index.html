@@ -135,24 +135,50 @@ p{ margin:0; }
 /* ============================================================
    NAV — hairline, fixed, never changes on scroll
    ============================================================ */
-/* opaque ground, never changes on scroll — the rails run behind it and
-   emerge below, which is how tailwindcss.com's frame starts */
+/* NAV — full-bleed, exactly like tailwindcss.com: the bar spans the
+   viewport with 24px side padding rather than sitting in the content
+   well, 57px tall, opaque ground, hairline rule, no scroll state. */
 .nav{ position:fixed; inset-inline:0; top:0; z-index:50; background:var(--ground); border-bottom:1px solid var(--hairline); }
-.nav .well{ display:flex; align-items:center; justify-content:space-between; height:64px; }
+.nav-inner{ display:flex; align-items:center; justify-content:space-between; gap:var(--sp-md); height:57px; padding-inline:var(--sp-lg); }
+.nav-left{ display:flex; align-items:center; gap:10px; min-width:0; }
+.nav-right{ display:flex; align-items:center; gap:var(--sp-lg); }
+
 .brand{ display:flex; align-items:center; gap:7px; text-decoration:none; }
-.brand-mark{ width:22px; height:22px; fill:none; stroke:var(--accent); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex:none; }
-.brand-word{ font-family:var(--font-display); font-weight:300; font-size:1.2rem; letter-spacing:-0.01em; color:var(--text-strong); }
+.brand-mark{ width:20px; height:20px; fill:none; stroke:var(--accent); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex:none; }
+.brand-word{ font-family:var(--font-display); font-weight:300; font-size:1.15rem; letter-spacing:-0.01em; color:var(--text-strong); }
 .brand:hover .brand-word{ color:var(--text-max); }
+.brand-pill{
+  font-family:var(--font-mono); font-size:.62rem; letter-spacing:.06em;
+  color:var(--text-muted); border:1px solid var(--hairline);
+  border-radius:var(--r-sm); padding:2px 6px; white-space:nowrap;
+}
+
+.nav-search{
+  display:inline-flex; align-items:center; gap:7px;
+  background:var(--surface); border:1px solid var(--hairline); border-radius:var(--r-full);
+  padding:5px 11px; color:var(--text-dim); cursor:pointer;
+  font-family:var(--font-body); font-size:.78rem;
+  transition:border-color .15s var(--ease-out), color .15s var(--ease-out);
+}
+.nav-search:hover{ border-color:var(--text-dim); color:var(--text-muted); }
+.nav-search svg{ width:13px; height:13px; flex:none; }
+.nav-search kbd{ font-family:var(--font-mono); font-size:.62rem; letter-spacing:.04em; }
 
 .nav-links{ display:flex; align-items:center; gap:var(--sp-lg); list-style:none; margin:0; padding:0; }
-.nav-links a{ text-decoration:none; color:var(--text-muted); font-size:.875rem; transition:color .15s var(--ease-out); }
+.nav-links a{ text-decoration:none; color:var(--text-muted); font-size:.85rem; transition:color .15s var(--ease-out); }
 .nav-links a:hover{ color:var(--text-max); }
-.nav-cta{ border:1px solid var(--hairline); border-radius:var(--r-md); padding:var(--sp-xs) var(--sp-md); font-size:.8rem !important; color:var(--text-strong) !important; }
-.nav-cta:hover{ border-color:var(--text-dim); color:var(--text-max) !important; }
+.nav-cta{
+  border:1px solid var(--accent-border); background:var(--accent-surface);
+  border-radius:var(--r-md); padding:4px 12px; font-size:.78rem !important;
+  color:var(--accent) !important;
+}
+.nav-cta:hover{ border-color:var(--accent); color:var(--text-max) !important; }
 .nav-toggle{ display:none; background:none; border:0; color:var(--text-strong); cursor:pointer; padding:var(--sp-xs); }
+
+@media (max-width:1080px){ .nav-search span{ display:none; } }
 @media (max-width:760px){
   .nav-links{
-    position:fixed; top:64px; left:0; right:0; bottom:0; background:var(--ground);
+    position:fixed; top:57px; left:0; right:0; bottom:0; background:var(--ground);
     flex-direction:column; align-items:flex-start; padding:var(--sp-xl) var(--sp-lg);
     gap:var(--sp-lg); border-top:1px solid var(--hairline);
     transform:translateY(-8px); opacity:0; pointer-events:none;
@@ -162,6 +188,32 @@ p{ margin:0; }
   .nav-links a{ font-size:1.1rem; }
   .nav-toggle{ display:block; }
 }
+@media (max-width:520px){ .brand-pill{ display:none; } .nav-search{ display:none; } }
+
+/* ⌘K quick-jump. A real palette, not a decorative search box. */
+.palette[hidden]{ display:none; }
+.palette{ position:fixed; inset:0; z-index:60; display:flex; align-items:flex-start; justify-content:center; padding:12vh var(--sp-md) var(--sp-md); }
+.palette-backdrop{ position:absolute; inset:0; background:color-mix(in oklab, var(--ground) 72%, transparent); }
+.palette-box{
+  position:relative; width:min(520px,100%); background:var(--surface);
+  border:1px solid var(--hairline); border-radius:var(--r-lg); overflow:hidden;
+  box-shadow:0 24px 70px rgba(0,0,0,.65);
+}
+.palette-box input{
+  width:100%; background:transparent; border:0; border-bottom:1px solid var(--hairline);
+  color:var(--text-max); font-family:var(--font-body); font-size:.95rem;
+  padding:var(--sp-md); outline:none;
+}
+.palette-box input::placeholder{ color:var(--text-dim); }
+.palette-box ul{ list-style:none; margin:0; padding:var(--sp-xs); max-height:50vh; overflow:auto; }
+.palette-box li a{
+  display:flex; justify-content:space-between; align-items:center; gap:var(--sp-md);
+  padding:10px var(--sp-md); border-radius:var(--r-sm); text-decoration:none;
+  color:var(--text-body); font-size:.875rem;
+}
+.palette-box li a kbd{ font-family:var(--font-mono); font-size:.68rem; color:var(--text-dim); }
+.palette-box li.is-active a, .palette-box li a:hover{ background:var(--surface-raised); color:var(--text-max); }
+.palette-empty{ padding:var(--sp-md); color:var(--text-dim); font-size:.85rem; }
 
 /* ============================================================
    TYPE HELPERS
@@ -316,9 +368,23 @@ section{ padding-block:var(--sp-3xl); }
 .diff-card .tag{ margin-bottom:var(--sp-md); display:inline-block; }
 
 .integrations{ margin-top:var(--sp-2xl); }
-.int-row{ display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:var(--sp-2xl); row-gap:var(--sp-lg); margin-top:var(--sp-lg); }
-.int-row svg{ width:24px; height:24px; color:var(--text-dim); transition:color .15s var(--ease-out); flex:none; }
-.int-row svg:hover{ color:var(--text-muted); }
+/* the rail scrolls continuously; two identical sets translate -50% so
+   the loop is seamless. Edges fade out via a mask. */
+.marquee{
+  overflow:hidden; margin-top:var(--sp-lg);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 10%,#000 90%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 10%,#000 90%,transparent 100%);
+}
+.marquee-track{ display:flex; width:max-content; animation:marquee 32s linear infinite; }
+.marquee:hover .marquee-track{ animation-play-state:paused; }
+.marquee-set{ display:flex; align-items:center; gap:var(--sp-2xl); padding-right:var(--sp-2xl); flex:none; }
+.marquee-set svg{ width:24px; height:24px; color:var(--text-dim); transition:color .15s var(--ease-out); flex:none; }
+.marquee-set svg:hover{ color:var(--text-muted); }
+@keyframes marquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+@media (prefers-reduced-motion: reduce){
+  .marquee-track{ animation:none; }
+  .marquee{ overflow-x:auto; }
+}
 
 .essence-grid{ display:grid; grid-template-columns:1.1fr .9fr; gap:var(--sp-2xl); align-items:center; }
 @media (max-width:860px){ .essence-grid{ grid-template-columns:1fr; gap:var(--sp-xl); } }
@@ -387,6 +453,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
   <symbol id="i-shield-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
     <path d="M12 3.5l7 2.5v6c0 4.5-3 7.2-7 8.5-4-1.3-7-4-7-8.5V6z"/><path d="M9 11h6M9 14h6M9 17h3.5"/>
   </symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></symbol>
   <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
 
@@ -440,25 +507,44 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 <!-- ============================================================
      NAV
      ============================================================ -->
-<nav class="nav sheet">
-  <div class="well">
-    <a class="brand" href="#top">
-      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
-      <span class="brand-word">lognos</span>
-    </a>
-    <ul class="nav-links" id="nav-links" data-open="false">
-      <li><a href="#what-we-do">Product</a></li>
-      <li><a href="#risk">How it works</a></li>
-      <li><a href="#playbooks">Playbooks</a></li>
-      <li><a href="#governance">Governance</a></li>
-      <li><a href="https://cal.com/facundo.bassi/lognos-demo" class="nav-cta"
-             data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}'>Talk to us</a></li>
-    </ul>
-    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle menu">
-      <svg width="22" height="22"><use href="#i-menu"/></svg>
-    </button>
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a class="brand" href="#top">
+        <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+        <span class="brand-word">lognos</span>
+      </a>
+      <span class="brand-pill" title="Engineering &amp; construction delivery">E&amp;C</span>
+    </div>
+
+    <div class="nav-right">
+      <button class="nav-search" id="nav-search" aria-label="Quick search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg>
+        <span>Quick search</span>
+        <kbd>⌘K</kbd>
+      </button>
+      <ul class="nav-links" id="nav-links" data-open="false">
+        <li><a href="#what-we-do">Product</a></li>
+        <li><a href="#risk">How it works</a></li>
+        <li><a href="#playbooks">Playbooks</a></li>
+        <li><a href="#governance">Governance</a></li>
+        <li><a href="https://cal.com/facundo.bassi/lognos-demo" class="nav-cta"
+               data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}'>Talk to us</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle menu">
+        <svg width="22" height="22"><use href="#i-menu"/></svg>
+      </button>
+    </div>
   </div>
 </nav>
+
+<div class="palette" id="palette" hidden>
+  <div class="palette-backdrop" data-palette-close></div>
+  <div class="palette-box" role="dialog" aria-modal="true" aria-label="Quick search">
+    <input id="palette-input" type="text" placeholder="Jump to a section…" autocomplete="off" spellcheck="false">
+    <ul id="palette-list"></ul>
+  </div>
+</div>
 
 <div class="page">
 
@@ -583,16 +669,31 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 
     <div class="integrations" data-reveal>
       <p class="eyebrow" style="justify-content:center; width:100%">Connects where the work already happens</p>
-      <div class="int-row">
-        <svg viewBox="0 0 24 24"><title>Telegram</title><use href="#i-int-telegram"/></svg>
-        <svg viewBox="0 0 24 24"><title>Outlook</title><use href="#i-int-outlook"/></svg>
-        <svg viewBox="0 0 24 24"><title>Microsoft Teams</title><use href="#i-int-teams"/></svg>
-        <svg viewBox="0 0 24 24"><title>SharePoint</title><use href="#i-int-sharepoint"/></svg>
-        <svg viewBox="0 0 24 24"><title>ChatGPT</title><use href="#i-int-openai"/></svg>
-        <svg viewBox="0 0 24 24"><title>Claude</title><use href="#i-int-claude"/></svg>
-        <svg viewBox="0 0 24 24"><title>Gemini</title><use href="#i-int-gemini"/></svg>
-        <svg viewBox="0 0 24 24"><title>MCP</title><use href="#i-int-mcp"/></svg>
-        <svg viewBox="0 0 24 24"><title>Supabase</title><use href="#i-int-supabase"/></svg>
+      <div class="marquee">
+        <div class="marquee-track">
+          <div class="marquee-set">
+            <svg viewBox="0 0 24 24"><title>Telegram</title><use href="#i-int-telegram"/></svg>
+            <svg viewBox="0 0 24 24"><title>Outlook</title><use href="#i-int-outlook"/></svg>
+            <svg viewBox="0 0 24 24"><title>Microsoft Teams</title><use href="#i-int-teams"/></svg>
+            <svg viewBox="0 0 24 24"><title>SharePoint</title><use href="#i-int-sharepoint"/></svg>
+            <svg viewBox="0 0 24 24"><title>ChatGPT</title><use href="#i-int-openai"/></svg>
+            <svg viewBox="0 0 24 24"><title>Claude</title><use href="#i-int-claude"/></svg>
+            <svg viewBox="0 0 24 24"><title>Gemini</title><use href="#i-int-gemini"/></svg>
+            <svg viewBox="0 0 24 24"><title>MCP</title><use href="#i-int-mcp"/></svg>
+            <svg viewBox="0 0 24 24"><title>Supabase</title><use href="#i-int-supabase"/></svg>
+          </div>
+          <div class="marquee-set" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><use href="#i-int-telegram"/></svg>
+            <svg viewBox="0 0 24 24"><use href="#i-int-outlook"/></svg>
+            <svg viewBox="0 0 24 24"><use href="#i-int-teams"/></svg>
+            <svg viewBox="0 0 24 24"><use href="#i-int-sharepoint"/></svg>
+            <svg viewBox="0 0 24 24"><use href="#i-int-openai"/></svg>
+            <svg viewBox="0 0 24 24"><use href="#i-int-claude"/></svg>
+            <svg viewBox="0 0 24 24"><use href="#i-int-gemini"/></svg>
+            <svg viewBox="0 0 24 24"><use href="#i-int-mcp"/></svg>
+            <svg viewBox="0 0 24 24"><use href="#i-int-supabase"/></svg>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -800,7 +901,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 <!-- ============================================================
      ROLES
      ============================================================ -->
-<section class="sheet rule">
+<section class="sheet rule" id="who">
   <div class="gutter-label">Who it's for</div>
   <div class="well">
     <div class="section-head" data-reveal>
@@ -904,6 +1005,55 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
         toggle.setAttribute('aria-expanded','false');
         toggle.innerHTML = '<svg width="22" height="22"><use href="#i-menu"/></svg>';
       });
+    });
+  }
+
+  /* ⌘K quick-jump palette */
+  var SECTIONS = [
+    { label:'Reconciliation loop — cost & schedule', href:'#top' },
+    { label:'What Lognos does',                      href:'#what-we-do' },
+    { label:'Risk loop — triggered either way',      href:'#risk' },
+    { label:'Playbooks',                             href:'#playbooks' },
+    { label:'Governance — prepare, confirm, commit', href:'#governance' },
+    { label:"Who it's for",                          href:'#who' },
+    { label:'Talk to us',                            href:'#contact' }
+  ];
+  var pal = document.getElementById('palette');
+  var palInput = document.getElementById('palette-input');
+  var palList = document.getElementById('palette-list');
+  var palBtn = document.getElementById('nav-search');
+  var active = 0;
+
+  function render(){
+    var q = palInput.value.trim().toLowerCase();
+    var hits = SECTIONS.filter(function(s){ return s.label.toLowerCase().indexOf(q) !== -1; });
+    if(active >= hits.length) active = 0;
+    if(!hits.length){ palList.innerHTML = '<li class="palette-empty">No section matches.</li>'; return; }
+    palList.innerHTML = hits.map(function(s,i){
+      return '<li class="' + (i===active?'is-active':'') + '"><a href="' + s.href + '">' +
+             s.label.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '<kbd>' + s.href + '</kbd></a></li>';
+    }).join('');
+    [].forEach.call(palList.querySelectorAll('a'), function(a){
+      a.addEventListener('click', function(){ close(); });
+    });
+  }
+  function open(){ pal.hidden = false; palInput.value=''; active=0; render(); palInput.focus(); }
+  function close(){ pal.hidden = true; }
+
+  if(pal && palBtn){
+    palBtn.addEventListener('click', open);
+    pal.querySelector('[data-palette-close]').addEventListener('click', close);
+    palInput.addEventListener('input', function(){ active=0; render(); });
+    palInput.addEventListener('keydown', function(e){
+      var items = palList.querySelectorAll('li a');
+      if(e.key === 'ArrowDown'){ e.preventDefault(); active = Math.min(active+1, items.length-1); render(); }
+      else if(e.key === 'ArrowUp'){ e.preventDefault(); active = Math.max(active-1, 0); render(); }
+      else if(e.key === 'Enter'){ e.preventDefault(); if(items[active]){ items[active].click(); } }
+      else if(e.key === 'Escape'){ close(); }
+    });
+    document.addEventListener('keydown', function(e){
+      if((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'){ e.preventDefault(); pal.hidden ? open() : close(); }
+      else if(e.key === 'Escape' && !pal.hidden){ close(); }
     });
   }
 
