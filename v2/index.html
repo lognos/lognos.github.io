@@ -17,7 +17,7 @@
   --surface:       oklch(0.187 0 0);
   --surface-raised:oklch(0.239 0 0);
   --hairline:      oklch(0.309 0 0);
-  --hairline-faint: rgba(255,255,255,0.035);
+  --hatch-fg:      rgba(255,255,255,0.055);
   --text-dim:      oklch(0.51 0 0);
   --text-muted:    oklch(0.683 0 0);
   --text-body:     oklch(0.764 0 0);
@@ -30,12 +30,15 @@
   --success:       oklch(0.72 0.16 150);
   --warning:       oklch(0.72 0.16 75);
   --error:         oklch(0.72 0.16 25);
+  /* code syntax — a documented exception to the one-accent rule:
+     syntax highlighting is data display, like the status colours. */
+  --code-str:      oklch(0.78 0.11 150);
 
   --gutter: 40px;
   --content-max: 1200px;
 
   --sp-xs: 4px; --sp-sm: 8px; --sp-md: 16px; --sp-lg: 24px;
-  --sp-xl: 40px; --sp-2xl: 80px; --sp-3xl: 160px;
+  --sp-xl: 40px; --sp-2xl: 80px; --sp-3xl: 140px;
 
   --r-sm: 4px; --r-md: 8px; --r-lg: 12px; --r-full: 9999px;
 
@@ -48,37 +51,16 @@
   --ease-inout: cubic-bezier(.65,0,.35,1);
 }
 
-@font-face{
-  font-family:"Public Sans"; font-style:normal; font-weight:300; font-display:swap;
-  src: url("./fonts/PublicSans-300.woff2") format("woff2");
-}
-@font-face{
-  font-family:"Public Sans"; font-style:normal; font-weight:400; font-display:swap;
-  src: url("./fonts/PublicSans-400.woff2") format("woff2");
-}
-@font-face{
-  font-family:"Public Sans"; font-style:normal; font-weight:500; font-display:swap;
-  src: url("./fonts/PublicSans-500.woff2") format("woff2");
-}
-@font-face{
-  font-family:"Public Sans"; font-style:normal; font-weight:600; font-display:swap;
-  src: url("./fonts/PublicSans-600.woff2") format("woff2");
-}
-@font-face{
-  font-family:"Public Sans"; font-style:normal; font-weight:700; font-display:swap;
-  src: url("./fonts/PublicSans-700.woff2") format("woff2");
-}
-@font-face{
-  font-family:"IBM Plex Mono"; font-style:normal; font-weight:400; font-display:swap;
-  src: url("./fonts/IBMPlexMono-400.woff2") format("woff2");
-}
-@font-face{
-  font-family:"IBM Plex Mono"; font-style:normal; font-weight:500; font-display:swap;
-  src: url("./fonts/IBMPlexMono-500.woff2") format("woff2");
-}
+@font-face{ font-family:"Public Sans"; font-style:normal; font-weight:300; font-display:swap; src:url("./fonts/PublicSans-300.woff2") format("woff2"); }
+@font-face{ font-family:"Public Sans"; font-style:normal; font-weight:400; font-display:swap; src:url("./fonts/PublicSans-400.woff2") format("woff2"); }
+@font-face{ font-family:"Public Sans"; font-style:normal; font-weight:500; font-display:swap; src:url("./fonts/PublicSans-500.woff2") format("woff2"); }
+@font-face{ font-family:"Public Sans"; font-style:normal; font-weight:600; font-display:swap; src:url("./fonts/PublicSans-600.woff2") format("woff2"); }
+@font-face{ font-family:"Public Sans"; font-style:normal; font-weight:700; font-display:swap; src:url("./fonts/PublicSans-700.woff2") format("woff2"); }
+@font-face{ font-family:"IBM Plex Mono"; font-style:normal; font-weight:400; font-display:swap; src:url("./fonts/IBMPlexMono-400.woff2") format("woff2"); }
+@font-face{ font-family:"IBM Plex Mono"; font-style:normal; font-weight:500; font-display:swap; src:url("./fonts/IBMPlexMono-500.woff2") format("woff2"); }
 
 *,*::before,*::after{ box-sizing:border-box; }
-html{ color-scheme: dark; scroll-behavior:smooth; }
+html{ color-scheme:dark; scroll-behavior:smooth; }
 body{
   margin:0; background:var(--ground); color:var(--text-body);
   font-family:var(--font-body); font-size:16px; line-height:1.6;
@@ -87,14 +69,10 @@ body{
 img{ max-width:100%; display:block; }
 a{ color:inherit; }
 ::selection{ background:var(--accent-border); color:var(--text-max); }
-
-h1,h2,h3{ margin:0; font-family:var(--font-display); font-weight:300; color:var(--text-max); letter-spacing:-0.03em; }
+h1,h2,h3,h4{ margin:0; font-family:var(--font-display); font-weight:300; color:var(--text-max); letter-spacing:-0.03em; }
 p{ margin:0; }
 
-.sr-only{
-  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
-  overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
-}
+.sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 .skip-link{
   position:absolute; left:var(--sp-md); top:-48px; z-index:100;
   background:var(--surface-raised); color:var(--text-max);
@@ -105,74 +83,78 @@ p{ margin:0; }
 .skip-link:focus{ top:var(--sp-md); }
 
 /* ============================================================
-   SHEET — the three-column drafting grid every section sits in
+   THE SHEET — one three-column grid geometry, shared by every
+   section AND by the page frame, so they align exactly.
    ============================================================ */
 .sheet{
   display:grid; justify-content:center;
   grid-template-columns: var(--gutter) minmax(0,var(--content-max)) var(--gutter);
 }
-.sheet::before,.sheet::after{
-  content:""; grid-row:1; align-self:stretch;
+.sheet > .well{ grid-column:2; grid-row:1; min-width:0; }
+.sheet > .well-bleed{ grid-column:1 / -1; grid-row:1; min-width:0; }
+
+@media (max-width:900px){ :root{ --gutter:22px; } }
+@media (max-width:640px){ :root{ --gutter:16px; } }
+
+.hatch{
   background-image: repeating-linear-gradient(315deg,
-    var(--hairline-faint) 0px, var(--hairline-faint) 1px,
-    transparent 1px, transparent 50%);
+    var(--hatch-fg) 0 1px, transparent 1px 50%);
   background-size:10px 10px;
-  /* fixed attachment: the hatch is computed from the viewport, not the
-     element, so it never restarts or seams at a section boundary — each
-     .sheet's gutter is a window onto one continuous page-wide texture */
-  background-attachment:fixed;
-}
-.sheet::before{ grid-column:1; border-right:1px solid var(--hairline); }
-.sheet::after{ grid-column:3; border-left:1px solid var(--hairline); }
-.sheet > .well{ grid-column:2; min-width:0; }
-.sheet > .well-bleed{ grid-column:1 / -1; min-width:0; }
-
-@media (max-width:900px){
-  .sheet{ grid-template-columns: 20px minmax(0,1fr) 20px; }
-}
-@media (max-width:640px){
-  .sheet{ grid-template-columns: 16px minmax(0,1fr) 16px; }
-  .sheet::before,.sheet::after{ background-image:none; border:0; }
 }
 
+/* The page frame. ONE element per gutter, absolutely positioned over
+   the whole document, so the vertical rules and their hatch are
+   continuous by construction — they are literally a single box each,
+   never restarted per section. This is how tailwindcss.com does it
+   (their rails measure 40 x 10262px, row-span-full). */
+.page{ position:relative; }
+.page-frame{
+  position:absolute; inset:0; z-index:2; pointer-events:none;
+  grid-template-rows:1fr;
+}
+.page-frame .rail{ grid-row:1; }
+.page-frame .rail-l{ grid-column:1; border-inline:1px solid var(--hairline); }
+.page-frame .rail-r{ grid-column:3; border-inline:1px solid var(--hairline); }
+@media (max-width:640px){ .page-frame{ display:none; } }
+
+/* horizontal rules cross the full page width, through the rails */
 .rule{ border-top:1px solid var(--hairline); }
+
+/* vertical section label, set into the gutter — tailwindcss.com's
+   "SPONSORS" device */
+.sheet > .gutter-label{
+  grid-column:1; grid-row:1; position:relative; z-index:3;
+  writing-mode:vertical-rl; transform:rotate(180deg);
+  font-family:var(--font-mono); font-size:.62rem; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--accent);
+  justify-self:center; align-self:start; margin-top:var(--sp-3xl);
+  white-space:nowrap;
+}
+@media (max-width:900px){ .sheet > .gutter-label{ display:none; } }
 
 /* ============================================================
    NAV — hairline, fixed, never changes on scroll
    ============================================================ */
-.nav{
-  position:fixed; inset-inline:0; top:0; z-index:50;
-  background:transparent; border-bottom:1px solid var(--hairline);
-}
-.nav .well{
-  display:flex; align-items:center; justify-content:space-between;
-  height:64px;
-}
+/* opaque ground, never changes on scroll — the rails run behind it and
+   emerge below, which is how tailwindcss.com's frame starts */
+.nav{ position:fixed; inset-inline:0; top:0; z-index:50; background:var(--ground); border-bottom:1px solid var(--hairline); }
+.nav .well{ display:flex; align-items:center; justify-content:space-between; height:64px; }
 .brand{ display:flex; align-items:center; gap:7px; text-decoration:none; }
 .brand-mark{ width:22px; height:22px; fill:none; stroke:var(--accent); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex:none; }
 .brand-word{ font-family:var(--font-display); font-weight:300; font-size:1.2rem; letter-spacing:-0.01em; color:var(--text-strong); }
 .brand:hover .brand-word{ color:var(--text-max); }
 
 .nav-links{ display:flex; align-items:center; gap:var(--sp-lg); list-style:none; margin:0; padding:0; }
-.nav-links a{
-  text-decoration:none; color:var(--text-muted); font-size:.875rem;
-  transition:color .15s var(--ease-out);
-}
+.nav-links a{ text-decoration:none; color:var(--text-muted); font-size:.875rem; transition:color .15s var(--ease-out); }
 .nav-links a:hover{ color:var(--text-max); }
-.nav-cta{
-  border:1px solid var(--hairline); border-radius:var(--r-md);
-  padding:var(--sp-xs) var(--sp-md); font-size:.8rem !important;
-  color:var(--text-strong) !important;
-}
+.nav-cta{ border:1px solid var(--hairline); border-radius:var(--r-md); padding:var(--sp-xs) var(--sp-md); font-size:.8rem !important; color:var(--text-strong) !important; }
 .nav-cta:hover{ border-color:var(--text-dim); color:var(--text-max) !important; }
-
 .nav-toggle{ display:none; background:none; border:0; color:var(--text-strong); cursor:pointer; padding:var(--sp-xs); }
 @media (max-width:760px){
   .nav-links{
-    position:fixed; top:64px; left:0; right:0; bottom:0;
-    background:var(--ground); flex-direction:column; align-items:flex-start;
-    padding:var(--sp-xl) var(--sp-lg); gap:var(--sp-lg);
-    border-top:1px solid var(--hairline);
+    position:fixed; top:64px; left:0; right:0; bottom:0; background:var(--ground);
+    flex-direction:column; align-items:flex-start; padding:var(--sp-xl) var(--sp-lg);
+    gap:var(--sp-lg); border-top:1px solid var(--hairline);
     transform:translateY(-8px); opacity:0; pointer-events:none;
     transition:opacity .2s var(--ease-out), transform .2s var(--ease-out);
   }
@@ -182,7 +164,7 @@ p{ margin:0; }
 }
 
 /* ============================================================
-   EYEBROW / LABEL
+   TYPE HELPERS
    ============================================================ */
 .eyebrow{
   display:inline-flex; align-items:center; gap:var(--sp-sm);
@@ -195,19 +177,19 @@ p{ margin:0; }
   color:var(--accent); background:var(--accent-surface);
 }
 
+section{ padding-block:var(--sp-3xl); }
+@media (max-width:900px){ section{ padding-block:var(--sp-2xl); } }
+.section-head{ max-width:60ch; margin-bottom:var(--sp-2xl); }
+.section-head h2{ font-size:clamp(1.75rem,3.4vw,2.75rem); letter-spacing:-0.025em; line-height:1.1; }
+.section-head p{ margin-top:var(--sp-md); color:var(--text-body); font-size:1.05rem; }
+
 /* ============================================================
    HERO
    ============================================================ */
 .hero{ padding-top:calc(64px + var(--sp-3xl)); padding-bottom:var(--sp-2xl); }
-.hero-grid{ display:grid; gap:var(--sp-xl); }
-.hero h1{
-  font-size:clamp(2.5rem,6vw,5.5rem); line-height:1.02; letter-spacing:-0.04em;
-  max-width:16ch;
-}
+.hero h1{ font-size:clamp(2.5rem,6vw,5.5rem); line-height:1.02; letter-spacing:-0.04em; max-width:16ch; font-weight:300; }
 .hero h1 em{ font-style:normal; color:var(--accent); }
-.hero-sub{
-  max-width:52ch; font-size:1.125rem; color:var(--text-body); margin-top:var(--sp-lg);
-}
+.hero-sub{ max-width:52ch; font-size:1.125rem; color:var(--text-body); margin-top:var(--sp-lg); }
 .hero-actions{ display:flex; gap:var(--sp-md); margin-top:var(--sp-xl); flex-wrap:wrap; }
 
 .btn{
@@ -222,166 +204,133 @@ p{ margin:0; }
 .btn-secondary{ background:transparent; border-color:var(--hairline); color:var(--text-strong); }
 .btn-secondary:hover{ border-color:var(--text-dim); color:var(--text-max); }
 
-/* hero product frame — Railway-style: lit from behind, allowed to bleed the gutter */
-.hero-frame-wrap{ margin-top:var(--sp-2xl); }
-.hero-frame{
-  position:relative; border-radius:var(--r-md); border:1px solid var(--hairline);
+/* ============================================================
+   TERMINAL WINDOW — every workflow and the playbook sit in one.
+   The stage around it is hatched, with rules above and below, so
+   the window reads as mounted on the sheet.
+   ============================================================ */
+.term-stage{
+  padding:var(--sp-xl); border-block:1px solid var(--hairline);
+  margin-top:var(--sp-2xl);
+}
+@media (max-width:640px){ .term-stage{ padding:var(--sp-md); } }
+.term{
+  border-radius:var(--r-md); border:1px solid var(--hairline);
   background:var(--surface); overflow:hidden;
   box-shadow:
-    color-mix(in oklab, var(--primary) 12%, transparent) 0 -12px 127px,
+    color-mix(in oklab, var(--primary) 13%, transparent) 0 -12px 127px,
     color-mix(in oklab, var(--primary) 9%, transparent) 0 -4px 46px;
 }
-.hero-frame .frame-chrome{
+.term-bar{
   display:flex; align-items:center; gap:var(--sp-sm);
   padding:var(--sp-sm) var(--sp-md); border-bottom:1px solid var(--hairline);
   font-family:var(--font-mono); font-size:.72rem; color:var(--text-dim);
 }
-.term-dot{ width:8px; height:8px; border-radius:50%; opacity:.75; }
+.term-dot{ width:8px; height:8px; border-radius:50%; opacity:.75; flex:none; }
 .term-dot-r{ background:var(--error); }
 .term-dot-y{ background:var(--warning); }
 .term-dot-g{ background:var(--success); }
-.frame-chrome-label{ margin-left:8px; }
-.hero-frame .frame-body{
-  padding:var(--sp-xl); min-height:220px; display:flex; align-items:center; justify-content:center;
-  /* dotted canvas, simulating a workspace — the diagram sits "on" a grid,
-     like a design-tool surface, echoing Railway's product frames */
-  background-image: radial-gradient(color-mix(in oklab, var(--hairline) 75%, transparent) 1px, transparent 1px);
+.term-title{ margin-left:var(--sp-sm); }
+.term-status{ margin-left:auto; display:inline-flex; align-items:center; gap:6px; color:var(--text-dim); }
+.term-status i{ width:6px; height:6px; border-radius:50%; background:var(--success); display:inline-block; }
+.term-body{ padding:var(--sp-lg); }
+.term-canvas{
+  /* dotted work area, like a design-tool canvas */
+  background-image: radial-gradient(color-mix(in oklab, var(--hairline) 80%, transparent) 1px, transparent 1px);
   background-size:18px 18px;
 }
 
-/* integrations rail — plain marks, no cards, grey until hovered */
-.integrations-rail{ margin-top:var(--sp-2xl); }
-.integrations-row{
-  display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
-  gap:var(--sp-2xl); row-gap:var(--sp-lg); margin-top:var(--sp-lg);
-}
-.integrations-row svg{
-  width:22px; height:22px; color:var(--text-dim);
-  transition:color .15s var(--ease-out);
-}
-.integrations-row svg:hover{ color:var(--text-muted); }
-
 /* ============================================================
-   SECTIONS
+   FLOW DIAGRAMS — square nodes, right-angle dashed connectors,
+   typed status lines
    ============================================================ */
-section{ padding-block:var(--sp-3xl); }
-@media (max-width:900px){ section{ padding-block:var(--sp-2xl); } }
-.section-head{ max-width:60ch; margin-bottom:var(--sp-2xl); }
-.section-head h2{ font-size:clamp(1.75rem,3.4vw,2.75rem); letter-spacing:-0.02em; line-height:1.1; }
-.section-head p{ margin-top:var(--sp-md); color:var(--text-body); font-size:1.05rem; }
+.flow{ width:100%; height:auto; overflow:visible; display:block; }
+.flow .fnode-box{ fill:var(--surface-raised); stroke:var(--hairline); stroke-width:1.5; }
+.flow .fnode.is-final .fnode-box{ stroke:var(--accent-border); }
+.flow .node-label{ font-family:var(--font-mono); font-size:12px; fill:var(--text-strong); text-anchor:middle; letter-spacing:.01em; }
+.flow .node-label.is-accent{ fill:var(--accent); }
 
-/* what-we-do differentiator cards */
-.diff-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-lg); }
-@media (max-width:860px){ .diff-grid{ grid-template-columns:1fr; } }
-.diff-card{
-  border:1px solid var(--hairline); border-radius:var(--r-lg); background:var(--surface);
-  padding:var(--sp-lg);
-}
-.diff-card h3{ font-size:1.1rem; font-weight:400; color:var(--text-max); letter-spacing:normal; margin-bottom:var(--sp-sm); }
-.diff-card p{ color:var(--text-muted); font-size:.925rem; }
-.diff-card .tag{ margin-bottom:var(--sp-md); }
-
-/* ============================================================
-   LOOP DIAGRAMS — orthogonal connectors, square nodes, typed status
-   ============================================================ */
-.loop-section{ background:var(--surface); border-top:1px solid var(--hairline); border-bottom:1px solid var(--hairline); }
-.loop-diagram{ width:100%; height:auto; overflow:visible; }
-
-.loop-diagram .fnode-box{ fill:var(--surface); stroke:var(--hairline); stroke-width:1.5; }
-.loop-diagram .fnode.is-terminal .fnode-box{ stroke:var(--accent-border); }
-.loop-diagram .node-icon{ color:var(--text-strong); }
-.loop-diagram .node-label{
-  font-family:var(--font-mono); font-size:12px; fill:var(--text-strong);
-  text-anchor:middle; letter-spacing:.01em;
-}
-.loop-diagram .node-label.is-accent{ fill:var(--accent); }
-
-/* connectors: a static hairline guide + an animated dashed accent overlay
-   riding the same right-angle path — the dashes are the "flow of information" */
-.loop-diagram .conn-base{ fill:none; stroke:var(--hairline); stroke-width:1.25; }
-.loop-diagram .conn-flow{
+.flow .conn-base{ fill:none; stroke:var(--hairline); stroke-width:1.25; }
+.flow .conn-flow{
   fill:none; stroke:var(--accent); stroke-width:1.5;
-  stroke-dasharray:5 9; opacity:.85;
-  animation: conn-dash 1.4s linear infinite;
+  stroke-dasharray:5 9; opacity:.9;
+  animation:conn-dash 1.4s linear infinite;
 }
-.loop-diagram .conn-return.conn-base{ stroke-dasharray:2 5; opacity:.6; }
-.loop-diagram .conn-return.conn-flow{
-  stroke-width:1.25; opacity:.5; stroke-dasharray:3 7;
-  animation: conn-dash 2.6s linear infinite;
-}
+.flow .conn-return.conn-base{ stroke-dasharray:2 5; opacity:.55; }
+.flow .conn-return.conn-flow{ stroke-width:1.25; opacity:.45; stroke-dasharray:3 7; animation:conn-dash 2.6s linear infinite; }
 @keyframes conn-dash{ to{ stroke-dashoffset:-28; } }
 
-/* typed status line, hosted in a foreignObject under each node */
-.flow-type{
-  font-family:var(--font-mono); font-size:9px; line-height:1;
-  color:var(--text-muted); display:flex; align-items:baseline;
-  white-space:nowrap; justify-content:center;
-}
-.flow-type .ft-text{
-  display:inline-block; overflow:hidden; width:0; vertical-align:bottom;
-  animation: ft-type 10s steps(30,end) infinite;
-}
-.flow-type .ft-cursor{ margin-left:1px; color:var(--accent); animation: ft-blink .9s steps(2) infinite; }
+.flow-type{ font-family:var(--font-mono); font-size:10px; line-height:1; color:var(--text-muted); display:flex; align-items:baseline; white-space:nowrap; justify-content:center; }
+.flow-type .ft-text{ display:inline-block; overflow:hidden; width:0; vertical-align:bottom; animation:ft-type 10s steps(30,end) infinite; }
+.flow-type .ft-cursor{ margin-left:1px; color:var(--accent); animation:ft-blink .9s steps(2) infinite; }
 @keyframes ft-type{ 0%{width:0} 14%{width:var(--ft-w)} 78%{width:var(--ft-w)} 88%,100%{width:0} }
 @keyframes ft-blink{ 0%,100%{opacity:1} 50%{opacity:0} }
 
-.loop-caption-row{ display:grid; grid-template-columns:repeat(5,1fr); gap:var(--sp-md); margin-top:var(--sp-2xl); }
-@media (max-width:900px){ .loop-caption-row{ grid-template-columns:repeat(2,1fr); } }
-@media (max-width:520px){ .loop-caption-row{ grid-template-columns:1fr; } }
-.loop-caption{ font-size:.8rem; }
-.loop-caption .step-no{ font-family:var(--font-mono); color:var(--text-dim); font-size:.72rem; }
-.loop-caption .step-label{ color:var(--text-strong); display:block; margin-top:2px; font-size:.85rem; }
-.loop-caption .step-desc{ color:var(--text-muted); margin-top:4px; display:block; }
-.loop-legend{ display:flex; gap:var(--sp-lg); margin-top:var(--sp-lg); flex-wrap:wrap; }
-.loop-legend span{ display:inline-flex; align-items:center; gap:6px; font-size:.75rem; color:var(--text-dim); font-family:var(--font-mono); }
-.loop-legend .swatch{ width:14px; height:2px; }
-.loop-legend .swatch.flow{ background:var(--accent); }
-.loop-legend .swatch.confirm{ width:10px; height:10px; border-radius:2px; background:var(--accent-surface); border:1px solid var(--accent); }
+.flow-legend{ display:flex; gap:var(--sp-lg); margin-top:var(--sp-md); flex-wrap:wrap; }
+.flow-legend span{ display:inline-flex; align-items:center; gap:6px; font-size:.72rem; color:var(--text-dim); font-family:var(--font-mono); }
+.flow-legend .sw{ width:14px; height:2px; background:var(--accent); }
+.flow-legend .sw-c{ width:10px; height:10px; border-radius:2px; background:var(--accent-surface); border:1px solid var(--accent); }
+
+.step-row{ display:grid; grid-template-columns:repeat(5,1fr); gap:var(--sp-md); margin-top:var(--sp-xl); }
+@media (max-width:900px){ .step-row{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:520px){ .step-row{ grid-template-columns:1fr; } }
+.step{ font-size:.8rem; border-top:1px solid var(--hairline); padding-top:var(--sp-sm); }
+.step .n{ font-family:var(--font-mono); color:var(--text-dim); font-size:.7rem; }
+.step .t{ color:var(--text-strong); display:block; margin-top:2px; font-size:.85rem; }
+.step .d{ color:var(--text-muted); margin-top:4px; display:block; }
 
 @media (max-width:640px){
-  /* the diagram renders too narrow for small SVG/HTML text to stay legible;
-     the caption row below (real HTML) and the svg's aria-label already
-     carry the same information at readable size. */
-  .loop-diagram .node-label{ display:none; }
-  .loop-diagram foreignObject{ display:none; }
+  .flow .node-label{ display:none; }
+  .flow foreignObject{ display:none; }
 }
-
 @media (prefers-reduced-motion: reduce){
-  .loop-diagram .conn-flow{ animation:none !important; opacity:.6 !important; }
+  .flow .conn-flow{ animation:none !important; opacity:.6 !important; }
   .flow-type .ft-text{ animation:none !important; width:var(--ft-w) !important; }
   .flow-type .ft-cursor{ animation:none !important; opacity:1 !important; }
 }
 
 /* ============================================================
-   ESSENCE / GOVERNANCE
+   CODE BLOCK
    ============================================================ */
-.essence{ text-align:left; }
-.essence blockquote{
-  margin:0; font-family:var(--font-display); font-weight:300;
-  font-size:clamp(1.6rem,3.2vw,2.4rem); line-height:1.25; letter-spacing:-0.02em;
-  color:var(--text-max); max-width:22ch;
+.code{ font-family:var(--font-mono); font-size:.78rem; line-height:1.75; margin:0; overflow-x:auto; counter-reset:ln; }
+.code .l{ display:block; counter-increment:ln; white-space:pre; }
+.code .l::before{
+  content:counter(ln); display:inline-block; width:2.5ch; margin-right:2ch;
+  text-align:right; color:var(--text-dim); opacity:.6; user-select:none;
 }
-.essence blockquote strong{ color:var(--accent); font-weight:300; }
-.essence-grid{ display:grid; grid-template-columns:1.1fr .9fr; gap:var(--sp-2xl); align-items:center; }
-@media (max-width:860px){ .essence-grid{ grid-template-columns:1fr; gap:var(--sp-xl); } }
-.pcc{ display:flex; flex-direction:column; gap:0; }
-.pcc-step{
-  display:flex; align-items:center; gap:var(--sp-md);
-  padding:var(--sp-md) 0; border-bottom:1px solid var(--hairline);
-}
-.pcc-step:last-child{ border-bottom:0; }
-.pcc-num{
-  font-family:var(--font-mono); font-size:.75rem; color:var(--text-dim);
-  width:24px; flex:none;
-}
-.pcc-body h4{ margin:0; color:var(--text-strong); font-size:.95rem; font-weight:400; }
-.pcc-body p{ margin-top:2px; color:var(--text-muted); font-size:.85rem; }
-.pcc-step.is-decision .pcc-num{ color:var(--accent); }
-.pcc-step.is-decision .pcc-body h4{ color:var(--accent); }
+.tok-tag{ color:var(--accent); }
+.tok-attr{ color:var(--text-muted); }
+.tok-str{ color:var(--code-str); }
+.tok-punc{ color:var(--text-dim); }
+.tok-com{ color:var(--text-dim); font-style:italic; }
+.tok-txt{ color:var(--text-body); }
 
 /* ============================================================
-   ROLE STRIP
+   CARDS / INTEGRATIONS / ESSENCE / ROLES / CTA
    ============================================================ */
+.diff-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-lg); }
+@media (max-width:860px){ .diff-grid{ grid-template-columns:1fr; } }
+.diff-card{ border:1px solid var(--hairline); border-radius:var(--r-lg); background:var(--surface); padding:var(--sp-lg); }
+.diff-card h3{ font-size:1.1rem; font-weight:400; color:var(--text-max); letter-spacing:normal; margin-bottom:var(--sp-sm); }
+.diff-card p{ color:var(--text-muted); font-size:.925rem; }
+.diff-card .tag{ margin-bottom:var(--sp-md); display:inline-block; }
+
+.integrations{ margin-top:var(--sp-2xl); }
+.int-row{ display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:var(--sp-2xl); row-gap:var(--sp-lg); margin-top:var(--sp-lg); }
+.int-row svg{ width:24px; height:24px; color:var(--text-dim); transition:color .15s var(--ease-out); flex:none; }
+.int-row svg:hover{ color:var(--text-muted); }
+
+.essence-grid{ display:grid; grid-template-columns:1.1fr .9fr; gap:var(--sp-2xl); align-items:center; }
+@media (max-width:860px){ .essence-grid{ grid-template-columns:1fr; gap:var(--sp-xl); } }
+.essence blockquote{ margin:0; font-family:var(--font-display); font-weight:300; font-size:clamp(1.6rem,3.2vw,2.4rem); line-height:1.25; letter-spacing:-0.02em; color:var(--text-max); max-width:22ch; }
+.essence blockquote strong{ color:var(--accent); font-weight:300; }
+.pcc-step{ display:flex; align-items:center; gap:var(--sp-md); padding:var(--sp-md) 0; border-bottom:1px solid var(--hairline); }
+.pcc-step:last-child{ border-bottom:0; }
+.pcc-num{ font-family:var(--font-mono); font-size:.75rem; color:var(--text-dim); width:24px; flex:none; }
+.pcc-body h4{ color:var(--text-strong); font-size:.95rem; font-weight:400; letter-spacing:normal; }
+.pcc-body p{ margin-top:2px; color:var(--text-muted); font-size:.85rem; }
+.pcc-step.is-decision .pcc-num, .pcc-step.is-decision .pcc-body h4{ color:var(--accent); }
+
 .role-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-lg); }
 @media (max-width:860px){ .role-grid{ grid-template-columns:1fr; } }
 .role-card{ padding:var(--sp-lg) 0; border-top:1px solid var(--hairline); }
@@ -389,11 +338,7 @@ section{ padding-block:var(--sp-3xl); }
 .role-card h3{ font-size:1.15rem; font-weight:400; color:var(--text-max); letter-spacing:-.01em; margin-bottom:var(--sp-sm); }
 .role-card p{ color:var(--text-muted); font-size:.9rem; }
 
-/* ============================================================
-   CTA + FOOTER
-   ============================================================ */
-.cta{ text-align:left; }
-.cta h2{ font-size:clamp(1.75rem,3.6vw,3rem); max-width:18ch; letter-spacing:-0.02em; }
+.cta h2{ font-size:clamp(1.75rem,3.6vw,3rem); max-width:18ch; letter-spacing:-0.025em; }
 .cta-actions{ display:flex; gap:var(--sp-md); margin-top:var(--sp-xl); flex-wrap:wrap; }
 .cta-note{ margin-top:var(--sp-md); font-size:.8rem; color:var(--text-dim); font-family:var(--font-mono); }
 
@@ -404,7 +349,6 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 .footer-links a:hover{ color:var(--text-muted); }
 .footer-brand{ display:flex; align-items:center; gap:var(--sp-sm); color:var(--text-dim); font-size:.8rem; font-family:var(--font-mono); }
 
-/* reveal-on-scroll */
 [data-reveal]{ opacity:0; transform:translateY(14px); transition:opacity .5s var(--ease-out), transform .5s var(--ease-out); }
 [data-reveal].is-visible{ opacity:1; transform:none; }
 
@@ -414,96 +358,81 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 <a class="skip-link" href="#main">Skip to content</a>
 
 <!-- ============================================================
-     ICON DEFS
+     DEFS
      ============================================================ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <defs>
   <marker id="arrow" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
     <path d="M0,0 L8,4 L0,8 Z" style="fill:var(--hairline)"/>
   </marker>
+
   <symbol id="i-checklist" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="4" y="3" width="16" height="18" rx="1.5"/>
-    <path d="M8 8h8M8 12l1.5 1.5L12 11M8 16h8"/>
+    <rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M8 8h8M8 12l1.5 1.5L12 11M8 16h8"/>
   </symbol>
   <symbol id="i-gantt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4 6h8M4 12h13M4 18h6"/>
-    <circle cx="16" cy="6" r="1.4" fill="currentColor" stroke="none"/>
-    <circle cx="11" cy="18" r="1.4" fill="currentColor" stroke="none"/>
+    <path d="M4 6h8M4 12h13M4 18h6"/><circle cx="16" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="11" cy="18" r="1.4" fill="currentColor" stroke="none"/>
   </symbol>
   <symbol id="i-forecast" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4 18V6M4 18h16"/>
-    <path d="M6 15l4-5 3 3 5-7" stroke-dasharray="1 3.2"/>
-    <path d="M6 15l4-5 3 3 5-7"/>
+    <path d="M4 18V6M4 18h16"/><path d="M6 15l4-5 3 3 5-7"/>
   </symbol>
   <symbol id="i-montecarlo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4 19h16"/>
-    <path d="M6 19v-3M9 19v-6M12 19v-9M15 19v-6M18 19v-3"/>
+    <path d="M4 19h16"/><path d="M6 19v-3M9 19v-6M12 19v-9M15 19v-6M18 19v-3"/>
   </symbol>
   <symbol id="i-report" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/>
-    <path d="M9.5 12h5M9.5 15h5M9.5 18h3"/>
+    <path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 12h5M9.5 15h5M9.5 18h3"/>
   </symbol>
   <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="8.5"/>
-    <path d="M3.5 12h17M12 3.5c3 3 3 14 0 17M12 3.5c-3 3-3 14 0 17"/>
+    <circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c3 3 3 14 0 17M12 3.5c-3 3-3 14 0 17"/>
   </symbol>
   <symbol id="i-shield-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3.5l7 2.5v6c0 4.5-3 7.2-7 8.5-4-1.3-7-4-7-8.5V6z"/>
-    <path d="M9 11h6M9 14h6M9 17h3.5"/>
+    <path d="M12 3.5l7 2.5v6c0 4.5-3 7.2-7 8.5-4-1.3-7-4-7-8.5V6z"/><path d="M9 11h6M9 14h6M9 17h3.5"/>
   </symbol>
-  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M5 12.5l4.5 4.5L19 7.5"/>
-  </symbol>
-  <symbol id="i-reconcile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-    <circle cx="9" cy="9" r="5.5"/><circle cx="15.5" cy="9" r="5.5"/><circle cx="12.25" cy="15" r="5.5"/>
-  </symbol>
-  <symbol id="i-confirm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3.5" y="6" width="17" height="13" rx="1.5"/>
-    <path d="M3.5 9.5h17M8 6V4M16 6V4"/>
-    <path d="M8.5 14l2 2 4.5-4.5"/>
-  </symbol>
-  <symbol id="i-question" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="8.5" stroke-dasharray="2.5 3.2"/>
-    <path d="M9.8 9.8a2.3 2.3 0 1 1 3.4 2c-.9.6-1.2 1.1-1.2 2.1" />
-    <circle cx="12" cy="17" r=".6" fill="currentColor" stroke="none"/>
-  </symbol>
-  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-    <path d="M4 7h16M4 12h16M4 17h16"/>
-  </symbol>
-  <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-    <path d="M6 6l12 12M18 6L6 18"/>
-  </symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
 
-  <!-- Integration marks — generic evocative glyphs, not licensed trademarks.
-       Swap for official brand assets before anything client-facing ships. -->
-  <symbol id="i-int-telegram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M3 12.5L20 4l-6.5 17-3-6.5L3 12.5z"/><path d="M10.5 14.5L20 4"/>
+  <!-- Integration marks. Approximations drawn to be recognisable at
+       24px, NOT licensed trademark files. Replace with each vendor's
+       official brand-kit SVG before this is client-facing. -->
+  <symbol id="i-int-telegram" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
   </symbol>
-  <symbol id="i-int-outlook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/>
+  <symbol id="i-int-outlook" viewBox="0 0 24 24">
+    <path fill="currentColor" fill-rule="evenodd" d="M8.4 3.6C4.86 3.6 2 7.36 2 12s2.86 8.4 6.4 8.4 6.4-3.76 6.4-8.4S11.94 3.6 8.4 3.6zm0 3.3c1.72 0 3.1 2.28 3.1 5.1s-1.38 5.1-3.1 5.1S5.3 14.82 5.3 12s1.38-5.1 3.1-5.1z"/>
+    <path fill="currentColor" d="M15.8 7.1H22v9.3c0 .6-.5 1.1-1.1 1.1h-5.1V7.1zm.9 1.9v1l2.6 1.7 2.6-1.7V9l-2.6 1.7L16.7 9z"/>
   </symbol>
-  <symbol id="i-int-teams" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="9" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.3"/>
-    <path d="M4 19c0-3 2.5-5 5-5s5 2 5 5"/><path d="M14.5 19c0-2.2 1.7-3.7 3.5-3.7s3.5 1.5 3.5 3.7"/>
+  <symbol id="i-int-teams" viewBox="0 0 24 24">
+    <path fill="currentColor" fill-rule="evenodd" d="M3.4 5.9h11.9v12.6c0 .9-.75 1.6-1.65 1.6H5.05c-.9 0-1.65-.7-1.65-1.6V5.9zm2.7 2.3v2.05h2.6v6.9h2.3v-6.9h2.6V8.2H6.1z"/>
+    <circle cx="18.3" cy="6.4" r="2.8" fill="currentColor"/>
+    <path fill="currentColor" d="M16.5 10.3h4.1c.77 0 1.4.63 1.4 1.4v3.1a3.3 3.3 0 0 1-5.5 2.46V10.3z"/>
   </symbol>
-  <symbol id="i-int-sharepoint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="9" cy="8" r="4.5"/><circle cx="16" cy="8" r="4"/><circle cx="12.5" cy="16" r="4"/>
+  <symbol id="i-int-sharepoint" viewBox="0 0 24 24">
+    <circle cx="8.6" cy="7.8" r="5.3" fill="currentColor" opacity=".45"/>
+    <circle cx="16.2" cy="9.4" r="4.6" fill="currentColor" opacity=".7"/>
+    <path fill="currentColor" fill-rule="evenodd" d="M12.4 11.6a5.2 5.2 0 1 0 0 10.4 5.2 5.2 0 0 0 0-10.4zm1.55 3.05v1.15c-.5-.3-1.05-.45-1.6-.45-.62 0-1 .25-1 .64 0 .3.2.48.95.75 1.3.47 1.8.98 1.8 1.93 0 1.06-.83 1.78-2.1 1.78-.62 0-1.22-.14-1.72-.4v-1.2c.55.36 1.12.54 1.66.54.66 0 1.03-.26 1.03-.67 0-.33-.2-.52-.93-.79-1.3-.47-1.82-.98-1.82-1.9 0-1.02.82-1.73 2.04-1.73.6 0 1.18.12 1.69.35z"/>
   </symbol>
-  <symbol id="i-int-chatgpt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3c1.8 0 3.2 1.1 3.8 2.7 1.8-.3 3.6.6 4.4 2.3.8 1.6.5 3.5-.7 4.8 1.2 1.3 1.5 3.2.7 4.8-.8 1.7-2.6 2.6-4.4 2.3C15.2 21.9 13.8 23 12 23s-3.2-1.1-3.8-2.7c-1.8.3-3.6-.6-4.4-2.3-.8-1.6-.5-3.5.7-4.8-1.2-1.3-1.5-3.2-.7-4.8.8-1.7 2.6-2.6 4.4-2.3C8.8 4.1 10.2 3 12 3z"/>
-    <circle cx="12" cy="13" r="2.6"/>
+  <symbol id="i-int-openai" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/>
   </symbol>
-  <symbol id="i-int-anthropic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M6 18L10.5 6h1.6L17 18"/><path d="M8.3 13h6.2"/>
+  <symbol id="i-int-claude" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <path d="M14.5 12H21.5"/>
+    <path d="M13.77 10.23L18.72 5.28"/>
+    <path d="M12 9.5V2.5"/>
+    <path d="M10.23 10.23L5.28 5.28"/>
+    <path d="M9.5 12H2.5"/>
+    <path d="M10.23 13.77L5.28 18.72"/>
+    <path d="M12 14.5V21.5"/>
+    <path d="M13.77 13.77L18.72 18.72"/>
   </symbol>
-  <symbol id="i-int-gemini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3c0 4-2 8-8 9 6 1 8 5 8 9 0-4 2-8 8-9-6-1-8-5-8-9z"/>
+  <symbol id="i-int-gemini" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 1.6c0 5.74 4.66 10.4 10.4 10.4-5.74 0-10.4 4.66-10.4 10.4 0-5.74-4.66-10.4-10.4-10.4C7.34 12 12 7.34 12 1.6z"/>
   </symbol>
-  <symbol id="i-int-mcp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M9 3v5M15 3v5"/><path d="M6 8h12v3a6 6 0 0 1-12 0V8z"/><path d="M12 17v4"/>
+  <symbol id="i-int-mcp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 2.8v5.4M15 2.8v5.4"/>
+    <path d="M5.8 8.2h12.4v3.1a6.2 6.2 0 0 1-12.4 0V8.2z"/>
+    <path d="M12 17.5v3.7"/>
   </symbol>
-  <symbol id="i-int-supabase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M13 3L5 14h6l-1 7 8-11h-6l1-7z"/>
+  <symbol id="i-int-supabase" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M13.55 1.9c.55-.68 1.65-.3 1.65.58v7.2h5.7c1.05 0 1.62 1.22.96 2.03l-9.05 11.06c-.55.68-1.65.3-1.65-.58v-7.2H5.46c-1.05 0-1.62-1.22-.96-2.03L13.55 1.9z"/>
   </symbol>
 </defs>
 </svg>
@@ -514,14 +443,13 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 <nav class="nav sheet">
   <div class="well">
     <a class="brand" href="#top">
-      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="12" r="10"/>
-      </svg>
+      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
       <span class="brand-word">lognos</span>
     </a>
     <ul class="nav-links" id="nav-links" data-open="false">
       <li><a href="#what-we-do">Product</a></li>
-      <li><a href="#loop-cost">How it works</a></li>
+      <li><a href="#risk">How it works</a></li>
+      <li><a href="#playbooks">Playbooks</a></li>
       <li><a href="#governance">Governance</a></li>
       <li><a href="https://cal.com/facundo.bassi/lognos-demo" class="nav-cta"
              data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}'>Talk to us</a></li>
@@ -532,13 +460,21 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
   </div>
 </nav>
 
+<div class="page">
+
+  <!-- one continuous frame over the whole document -->
+  <div class="page-frame sheet" aria-hidden="true">
+    <span class="rail rail-l hatch"></span>
+    <span class="rail rail-r hatch"></span>
+  </div>
+
 <main id="main">
 
 <!-- ============================================================
-     HERO
+     HERO — the reconciliation flow, animated, in a terminal
      ============================================================ -->
 <section class="hero sheet" id="top">
-  <div class="well hero-grid">
+  <div class="well">
     <div data-reveal>
       <p class="eyebrow">Project controls, reconciled continuously <span class="tag">LIVE</span></p>
       <h1>Stop deciding on <em>last month's</em> picture.</h1>
@@ -549,52 +485,114 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
         something <em>is</em> the decision moment.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#loop-cost">See it reconcile</a>
+        <a class="btn btn-primary" href="#risk">See it reconcile</a>
         <a class="btn btn-secondary" href="https://cal.com/facundo.bassi/lognos-demo"
            data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}'>Talk to us</a>
       </div>
     </div>
 
-    <div class="hero-frame-wrap" data-reveal>
-      <div class="hero-frame">
-        <div class="frame-chrome">
+    <div class="term-stage hatch" data-reveal>
+      <div class="term">
+        <div class="term-bar">
           <span class="term-dot term-dot-r"></span><span class="term-dot term-dot-y"></span><span class="term-dot term-dot-g"></span>
-          <span class="frame-chrome-label">reconciliation.lognos</span>
+          <span class="term-title">reconciliation.lognos — cost &amp; schedule</span>
+          <span class="term-status"><i></i> running</span>
         </div>
-        <div class="frame-body frame-body-dotted">
-          <svg class="loop-diagram loop1" viewBox="0 0 900 160" width="100%" role="img"
-               aria-label="Static preview of the reconciliation loop: site update, schedule, cost forecast, Monte Carlo simulation, report.">
-            <path class="conn-base" marker-end="url(#arrow)" d="M80,80 L266,80"/>
-            <path class="conn-base" marker-end="url(#arrow)" d="M310,80 L466,80"/>
-            <path class="conn-base" marker-end="url(#arrow)" d="M510,80 L666,80"/>
-            <path class="conn-base" marker-end="url(#arrow)" d="M710,80 L816,80"/>
-            <g class="fnode"><rect class="fnode-box" x="40" y="60" width="40" height="40" rx="4"/>
-              <use href="#i-checklist" x="50" y="70" width="20" height="20" class="node-icon" color="var(--text-strong)"/></g>
-            <g class="fnode"><rect class="fnode-box" x="270" y="60" width="40" height="40" rx="4"/>
-              <use href="#i-gantt" x="280" y="70" width="20" height="20" class="node-icon" color="var(--text-strong)"/></g>
-            <g class="fnode"><rect class="fnode-box" x="470" y="60" width="40" height="40" rx="4"/>
-              <use href="#i-forecast" x="480" y="70" width="20" height="20" class="node-icon" color="var(--text-strong)"/></g>
-            <g class="fnode"><rect class="fnode-box" x="670" y="60" width="40" height="40" rx="4"/>
-              <use href="#i-montecarlo" x="680" y="70" width="20" height="20" class="node-icon" color="var(--text-strong)"/></g>
-            <g class="fnode is-terminal"><rect class="fnode-box" x="820" y="60" width="40" height="40" rx="4"/>
-              <use href="#i-report" x="830" y="70" width="20" height="20" class="node-icon" color="var(--accent)"/></g>
+        <div class="term-body term-canvas">
+          <svg class="flow" viewBox="0 0 1120 200" role="img"
+               aria-label="A site progress update updates the schedule, which triggers a cost forecast, which triggers a Monte Carlo simulation of cost and schedule, which produces a report that feeds the next update. A person confirms each stage.">
+            <path class="conn-return conn-base" d="M1030,110 L1030,172 L90,172 L90,110"/>
+            <path class="conn-return conn-flow" d="M1030,110 L1030,172 L90,172 L90,110"/>
+
+            <path class="conn-base" marker-end="url(#arrow)" d="M120,80 L286,80"/>
+            <path class="conn-flow" d="M120,80 L290,80"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M350,80 L526,80"/>
+            <path class="conn-flow" d="M350,80 L530,80"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M590,80 L766,80"/>
+            <path class="conn-flow" d="M590,80 L770,80"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M830,80 L996,80"/>
+            <path class="conn-flow" d="M830,80 L1000,80"/>
+
+            <g class="fnode">
+              <rect class="fnode-box" x="60" y="50" width="60" height="60" rx="4"/>
+              <use href="#i-checklist" x="78" y="68" width="24" height="24" color="var(--text-strong)"/>
+              <text class="node-label" x="90" y="130">Site update</text>
+              <foreignObject x="34" y="138" width="112" height="16">
+                <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+                  <span class="ft-text" style="--ft-w:21ch; animation-delay:0s">capturing progress ✓</span><span class="ft-cursor">_</span>
+                </div>
+              </foreignObject>
+            </g>
+            <g class="fnode">
+              <rect class="fnode-box" x="290" y="50" width="60" height="60" rx="4"/>
+              <use href="#i-gantt" x="308" y="68" width="24" height="24" color="var(--text-strong)"/>
+              <text class="node-label" x="320" y="130">Schedule</text>
+              <foreignObject x="262" y="138" width="116" height="16">
+                <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+                  <span class="ft-text" style="--ft-w:22ch; animation-delay:2s">recalculating logic ✓</span><span class="ft-cursor">_</span>
+                </div>
+              </foreignObject>
+            </g>
+            <g class="fnode">
+              <rect class="fnode-box" x="530" y="50" width="60" height="60" rx="4"/>
+              <use href="#i-forecast" x="548" y="68" width="24" height="24" color="var(--text-strong)"/>
+              <text class="node-label" x="560" y="130">Cost forecast</text>
+              <foreignObject x="502" y="138" width="116" height="16">
+                <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+                  <span class="ft-text" style="--ft-w:22ch; animation-delay:4s">re-forecasting cost ✓</span><span class="ft-cursor">_</span>
+                </div>
+              </foreignObject>
+            </g>
+            <g class="fnode">
+              <rect class="fnode-box" x="770" y="50" width="60" height="60" rx="4"/>
+              <use href="#i-montecarlo" x="788" y="68" width="24" height="24" color="var(--text-strong)"/>
+              <text class="node-label" x="800" y="130">Monte Carlo</text>
+              <foreignObject x="742" y="138" width="116" height="16">
+                <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+                  <span class="ft-text" style="--ft-w:22ch; animation-delay:6s">simulating outcomes ✓</span><span class="ft-cursor">_</span>
+                </div>
+              </foreignObject>
+            </g>
+            <g class="fnode is-final">
+              <rect class="fnode-box" x="1000" y="50" width="60" height="60" rx="4"/>
+              <use href="#i-report" x="1018" y="68" width="24" height="24" color="var(--accent)"/>
+              <text class="node-label is-accent" x="1030" y="130">Report</text>
+              <foreignObject x="974" y="138" width="112" height="16">
+                <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+                  <span class="ft-text" style="--ft-w:19ch; animation-delay:8s">compiling report ✓</span><span class="ft-cursor">_</span>
+                </div>
+              </foreignObject>
+            </g>
           </svg>
         </div>
       </div>
 
-      <div class="integrations-rail">
-        <p class="eyebrow" style="justify-content:center">Connects where the work already happens</p>
-        <div class="integrations-row">
-          <svg viewBox="0 0 24 24"><title>Telegram</title><use href="#i-int-telegram"/></svg>
-          <svg viewBox="0 0 24 24"><title>Outlook</title><use href="#i-int-outlook"/></svg>
-          <svg viewBox="0 0 24 24"><title>Teams</title><use href="#i-int-teams"/></svg>
-          <svg viewBox="0 0 24 24"><title>SharePoint</title><use href="#i-int-sharepoint"/></svg>
-          <svg viewBox="0 0 24 24"><title>ChatGPT</title><use href="#i-int-chatgpt"/></svg>
-          <svg viewBox="0 0 24 24"><title>Anthropic</title><use href="#i-int-anthropic"/></svg>
-          <svg viewBox="0 0 24 24"><title>Gemini</title><use href="#i-int-gemini"/></svg>
-          <svg viewBox="0 0 24 24"><title>MCP</title><use href="#i-int-mcp"/></svg>
-          <svg viewBox="0 0 24 24"><title>Supabase</title><use href="#i-int-supabase"/></svg>
-        </div>
+      <div class="flow-legend">
+        <span><span class="sw"></span> live update propagating</span>
+        <span><span class="sw-c"></span> a person confirms this stage ( ✓ )</span>
+      </div>
+
+      <div class="step-row">
+        <div class="step"><span class="n">01</span><span class="t">Site update</span><span class="d">Field progress is captured against the plan.</span></div>
+        <div class="step"><span class="n">02</span><span class="t">Schedule</span><span class="d">The Gantt updates; the planner confirms the logic still holds.</span></div>
+        <div class="step"><span class="n">03</span><span class="t">Cost forecast</span><span class="d">The change forces a new forecast; the cost controller signs off.</span></div>
+        <div class="step"><span class="n">04</span><span class="t">Monte Carlo</span><span class="d">Cost and schedule are re-simulated together, not separately.</span></div>
+        <div class="step"><span class="n">05</span><span class="t">Report</span><span class="d">The PM confirms — that confirmation is the decision moment.</span></div>
+      </div>
+    </div>
+
+    <div class="integrations" data-reveal>
+      <p class="eyebrow" style="justify-content:center; width:100%">Connects where the work already happens</p>
+      <div class="int-row">
+        <svg viewBox="0 0 24 24"><title>Telegram</title><use href="#i-int-telegram"/></svg>
+        <svg viewBox="0 0 24 24"><title>Outlook</title><use href="#i-int-outlook"/></svg>
+        <svg viewBox="0 0 24 24"><title>Microsoft Teams</title><use href="#i-int-teams"/></svg>
+        <svg viewBox="0 0 24 24"><title>SharePoint</title><use href="#i-int-sharepoint"/></svg>
+        <svg viewBox="0 0 24 24"><title>ChatGPT</title><use href="#i-int-openai"/></svg>
+        <svg viewBox="0 0 24 24"><title>Claude</title><use href="#i-int-claude"/></svg>
+        <svg viewBox="0 0 24 24"><title>Gemini</title><use href="#i-int-gemini"/></svg>
+        <svg viewBox="0 0 24 24"><title>MCP</title><use href="#i-int-mcp"/></svg>
+        <svg viewBox="0 0 24 24"><title>Supabase</title><use href="#i-int-supabase"/></svg>
       </div>
     </div>
   </div>
@@ -604,6 +602,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
      WHAT WE DO
      ============================================================ -->
 <section class="sheet rule" id="what-we-do">
+  <div class="gutter-label">What it is</div>
   <div class="well">
     <div class="section-head" data-reveal>
       <p class="eyebrow">What Lognos does</p>
@@ -616,7 +615,6 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
         an update old.
       </p>
     </div>
-
     <div class="diff-grid">
       <div class="diff-card" data-reveal>
         <span class="tag">LIVE</span>
@@ -641,113 +639,13 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 </section>
 
 <!-- ============================================================
-     LOOP 1 — reporting → schedule → cost forecast → monte carlo → report
+     RISK FLOW — second terminal
      ============================================================ -->
-<section class="loop-section" id="loop-cost">
-  <div class="sheet">
-    <div class="well">
-      <div class="section-head" data-reveal>
-        <p class="eyebrow">The loop <span class="tag">LIVE</span></p>
-        <h2>Cost & schedule, reconciling in real time</h2>
-        <p>A site progress update doesn't wait for month end to matter. It moves
-        through the schedule, forces a new cost forecast, runs a Monte Carlo pass
-        against both, and lands in the report someone actually reads — with a person
-        validating each stage it passes through.</p>
-      </div>
-
-      <svg class="loop-diagram loop1" viewBox="0 0 1120 240" role="img"
-           aria-label="Diagram: a site progress update updates the schedule Gantt, which triggers a cost forecast, which triggers a Monte Carlo simulation of cost and schedule, which produces a report, which feeds the next update. A person confirms each stage.">
-        <path class="conn-return conn-base" d="M1030,130 L1030,196 L90,196 L90,130"/>
-        <path class="conn-return conn-flow" d="M1030,130 L1030,196 L90,196 L90,130"/>
-
-        <path class="conn-base" marker-end="url(#arrow)" d="M120,100 L286,100"/>
-        <path class="conn-flow" d="M120,100 L290,100"/>
-        <path class="conn-base" marker-end="url(#arrow)" d="M350,100 L526,100"/>
-        <path class="conn-flow" d="M350,100 L530,100"/>
-        <path class="conn-base" marker-end="url(#arrow)" d="M590,100 L766,100"/>
-        <path class="conn-flow" d="M590,100 L770,100"/>
-        <path class="conn-base" marker-end="url(#arrow)" d="M830,100 L996,100"/>
-        <path class="conn-flow" d="M830,100 L1000,100"/>
-
-        <g class="fnode n1">
-          <rect class="fnode-box" x="60" y="70" width="60" height="60" rx="4"/>
-          <use href="#i-checklist" x="78" y="88" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
-          <text class="node-label" x="90" y="150">Site update</text>
-          <foreignObject x="38" y="156" width="104" height="14">
-            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-              <span class="ft-text" style="--ft-w:21ch; animation-delay:0s">capturing progress ✓</span><span class="ft-cursor">_</span>
-            </div>
-          </foreignObject>
-        </g>
-
-        <g class="fnode n2">
-          <rect class="fnode-box" x="290" y="70" width="60" height="60" rx="4"/>
-          <use href="#i-gantt" x="308" y="88" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
-          <text class="node-label" x="320" y="150">Schedule</text>
-          <foreignObject x="266" y="156" width="108" height="14">
-            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-              <span class="ft-text" style="--ft-w:22ch; animation-delay:2s">recalculating logic ✓</span><span class="ft-cursor">_</span>
-            </div>
-          </foreignObject>
-        </g>
-
-        <g class="fnode n3">
-          <rect class="fnode-box" x="530" y="70" width="60" height="60" rx="4"/>
-          <use href="#i-forecast" x="548" y="88" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
-          <text class="node-label" x="560" y="150">Cost forecast</text>
-          <foreignObject x="506" y="156" width="108" height="14">
-            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-              <span class="ft-text" style="--ft-w:22ch; animation-delay:4s">re-forecasting cost ✓</span><span class="ft-cursor">_</span>
-            </div>
-          </foreignObject>
-        </g>
-
-        <g class="fnode n4">
-          <rect class="fnode-box" x="770" y="70" width="60" height="60" rx="4"/>
-          <use href="#i-montecarlo" x="788" y="88" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
-          <text class="node-label" x="800" y="150">Monte Carlo</text>
-          <foreignObject x="746" y="156" width="108" height="14">
-            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-              <span class="ft-text" style="--ft-w:22ch; animation-delay:6s">simulating outcomes ✓</span><span class="ft-cursor">_</span>
-            </div>
-          </foreignObject>
-        </g>
-
-        <g class="fnode n5 is-terminal">
-          <rect class="fnode-box" x="1000" y="70" width="60" height="60" rx="4"/>
-          <use href="#i-report" x="1018" y="88" width="24" height="24" class="node-icon" color="var(--accent)"/>
-          <text class="node-label is-accent" x="1030" y="150">Report</text>
-          <foreignObject x="978" y="156" width="104" height="14">
-            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-              <span class="ft-text" style="--ft-w:19ch; animation-delay:8s">compiling report ✓</span><span class="ft-cursor">_</span>
-            </div>
-          </foreignObject>
-        </g>
-      </svg>
-
-      <div class="loop-legend">
-        <span><span class="swatch flow"></span> live update propagating</span>
-        <span><span class="swatch confirm"></span> a person confirms this stage ( ✓ )</span>
-      </div>
-
-      <div class="loop-caption-row">
-        <div class="loop-caption"><span class="step-no">01</span><span class="step-label">Site update</span><span class="step-desc">Field progress is captured against the plan.</span></div>
-        <div class="loop-caption"><span class="step-no">02</span><span class="step-label">Schedule</span><span class="step-desc">The Gantt updates; the planner confirms the logic still holds.</span></div>
-        <div class="loop-caption"><span class="step-no">03</span><span class="step-label">Cost forecast</span><span class="step-desc">The change forces a new forecast; the cost controller signs off.</span></div>
-        <div class="loop-caption"><span class="step-no">04</span><span class="step-label">Monte Carlo</span><span class="step-desc">Cost and schedule are re-simulated together, not separately.</span></div>
-        <div class="loop-caption"><span class="step-no">05</span><span class="step-label">Report</span><span class="step-desc">The PM confirms — that confirmation is the decision moment.</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     LOOP 2 — schedule + world signal → risk register → monte carlo → report
-     ============================================================ -->
-<section class="sheet" id="loop-risk">
+<section class="sheet rule" id="risk">
+  <div class="gutter-label">Risk</div>
   <div class="well">
     <div class="section-head" data-reveal>
-      <p class="eyebrow">The loop <span class="tag">LIVE</span></p>
+      <p class="eyebrow">The second loop <span class="tag">LIVE</span></p>
       <h2>Risk, triggered from either direction</h2>
       <p>A schedule slip and an outside event — a supplier delay, a weather pattern,
       a code change — both land in the same system of record. The risk register
@@ -755,96 +653,131 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       named person validating each stage.</p>
     </div>
 
-    <svg class="loop-diagram loop2" viewBox="0 0 1040 280" role="img"
-         aria-label="Diagram: a schedule update and an external world signal both feed the risk register, which triggers a Monte Carlo simulation of cost and schedule, which produces a report, which feeds the next cycle. A person confirms each stage.">
-      <path class="conn-return conn-base" d="M930,100 L930,10 L90,10 L90,30"/>
-      <path class="conn-return conn-flow" d="M930,100 L930,10 L90,10 L90,30"/>
+    <div class="term-stage hatch" data-reveal style="margin-top:0">
+      <div class="term">
+        <div class="term-bar">
+          <span class="term-dot term-dot-r"></span><span class="term-dot term-dot-y"></span><span class="term-dot term-dot-g"></span>
+          <span class="term-title">risk-register.lognos — exposure</span>
+          <span class="term-status"><i></i> running</span>
+        </div>
+        <div class="term-body term-canvas">
+          <svg class="flow" viewBox="0 0 1040 280" role="img"
+               aria-label="A schedule update and an external world signal both feed the risk register, which triggers a Monte Carlo simulation of cost and schedule, which produces a report that feeds the next cycle. A person confirms each stage.">
+            <path class="conn-return conn-base" d="M930,95 L930,12 L90,12 L90,25"/>
+            <path class="conn-return conn-flow" d="M930,95 L930,12 L90,12 L90,25"/>
 
-      <path class="conn-base" marker-end="url(#arrow)" d="M120,60 L260,60 L260,126 L336,126"/>
-      <path class="conn-flow" d="M120,60 L260,60 L260,130 L340,130"/>
-      <path class="conn-base" marker-end="url(#arrow)" d="M120,200 L260,200 L260,134 L336,134"/>
-      <path class="conn-flow" d="M120,200 L260,200 L260,130 L340,130"/>
-      <path class="conn-base" marker-end="url(#arrow)" d="M400,130 L616,130"/>
-      <path class="conn-flow" d="M400,130 L620,130"/>
-      <path class="conn-base" marker-end="url(#arrow)" d="M680,130 L896,130"/>
-      <path class="conn-flow" d="M680,130 L900,130"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M120,55 L260,55 L260,121 L336,121"/>
+            <path class="conn-flow" d="M120,55 L260,55 L260,125 L340,125"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M120,190 L260,190 L260,129 L336,129"/>
+            <path class="conn-flow" d="M120,190 L260,190 L260,125 L340,125"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M400,125 L616,125"/>
+            <path class="conn-flow" d="M400,125 L620,125"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M680,125 L896,125"/>
+            <path class="conn-flow" d="M680,125 L900,125"/>
 
-      <g class="fnode n-world">
-        <rect class="fnode-box" x="60" y="30" width="60" height="60" rx="4"/>
-        <use href="#i-globe" x="78" y="48" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
-        <text class="node-label" x="90" y="108">World signal</text>
-        <foreignObject x="34" y="114" width="112" height="14">
-          <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-            <span class="ft-text" style="--ft-w:20ch; animation-delay:0s">verifying signal ✓</span><span class="ft-cursor">_</span>
-          </div>
-        </foreignObject>
-      </g>
+            <g class="fnode">
+              <rect class="fnode-box" x="60" y="25" width="60" height="60" rx="4"/>
+              <use href="#i-globe" x="78" y="43" width="24" height="24" color="var(--text-strong)"/>
+              <text class="node-label" x="90" y="105">World signal</text>
+              <foreignObject x="30" y="113" width="120" height="16">
+                <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+                  <span class="ft-text" style="--ft-w:20ch; animation-delay:0s">verifying signal ✓</span><span class="ft-cursor">_</span>
+                </div>
+              </foreignObject>
+            </g>
+            <g class="fnode">
+              <rect class="fnode-box" x="60" y="160" width="60" height="60" rx="4"/>
+              <use href="#i-gantt" x="78" y="178" width="24" height="24" color="var(--text-strong)"/>
+              <text class="node-label" x="90" y="240">Schedule update</text>
+              <foreignObject x="30" y="248" width="120" height="16">
+                <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+                  <span class="ft-text" style="--ft-w:17ch; animation-delay:0s">checking logic ✓</span><span class="ft-cursor">_</span>
+                </div>
+              </foreignObject>
+            </g>
+            <g class="fnode">
+              <rect class="fnode-box" x="340" y="95" width="60" height="60" rx="4"/>
+              <use href="#i-shield-list" x="358" y="113" width="24" height="24" color="var(--text-strong)"/>
+              <text class="node-label" x="370" y="175">Risk register</text>
+              <foreignObject x="312" y="183" width="116" height="16">
+                <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+                  <span class="ft-text" style="--ft-w:19ch; animation-delay:2.4s">reconciling risk ✓</span><span class="ft-cursor">_</span>
+                </div>
+              </foreignObject>
+            </g>
+            <g class="fnode">
+              <rect class="fnode-box" x="620" y="95" width="60" height="60" rx="4"/>
+              <use href="#i-montecarlo" x="638" y="113" width="24" height="24" color="var(--text-strong)"/>
+              <text class="node-label" x="650" y="175">Monte Carlo</text>
+              <foreignObject x="592" y="183" width="116" height="16">
+                <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+                  <span class="ft-text" style="--ft-w:22ch; animation-delay:5s">simulating outcomes ✓</span><span class="ft-cursor">_</span>
+                </div>
+              </foreignObject>
+            </g>
+            <g class="fnode is-final">
+              <rect class="fnode-box" x="900" y="95" width="60" height="60" rx="4"/>
+              <use href="#i-report" x="918" y="113" width="24" height="24" color="var(--accent)"/>
+              <text class="node-label is-accent" x="930" y="175">Report</text>
+              <foreignObject x="874" y="183" width="112" height="16">
+                <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
+                  <span class="ft-text" style="--ft-w:19ch; animation-delay:7.8s">compiling report ✓</span><span class="ft-cursor">_</span>
+                </div>
+              </foreignObject>
+            </g>
+          </svg>
+        </div>
+      </div>
 
-      <g class="fnode n-schedule">
-        <rect class="fnode-box" x="60" y="170" width="60" height="60" rx="4"/>
-        <use href="#i-gantt" x="78" y="188" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
-        <text class="node-label" x="90" y="248">Schedule update</text>
-        <foreignObject x="34" y="254" width="112" height="14">
-          <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-            <span class="ft-text" style="--ft-w:17ch; animation-delay:0s">checking logic ✓</span><span class="ft-cursor">_</span>
-          </div>
-        </foreignObject>
-      </g>
+      <div class="flow-legend">
+        <span><span class="sw"></span> live update propagating</span>
+        <span><span class="sw-c"></span> a person confirms this stage ( ✓ )</span>
+      </div>
 
-      <g class="fnode n-risk">
-        <rect class="fnode-box" x="340" y="100" width="60" height="60" rx="4"/>
-        <use href="#i-shield-list" x="358" y="118" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
-        <text class="node-label" x="370" y="178">Risk register</text>
-        <foreignObject x="316" y="184" width="108" height="14">
-          <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-            <span class="ft-text" style="--ft-w:19ch; animation-delay:2.4s">reconciling risk ✓</span><span class="ft-cursor">_</span>
-          </div>
-        </foreignObject>
-      </g>
-
-      <g class="fnode n-mc">
-        <rect class="fnode-box" x="620" y="100" width="60" height="60" rx="4"/>
-        <use href="#i-montecarlo" x="638" y="118" width="24" height="24" class="node-icon" color="var(--text-strong)"/>
-        <text class="node-label" x="650" y="178">Monte Carlo</text>
-        <foreignObject x="596" y="184" width="108" height="14">
-          <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-            <span class="ft-text" style="--ft-w:22ch; animation-delay:5s">simulating outcomes ✓</span><span class="ft-cursor">_</span>
-          </div>
-        </foreignObject>
-      </g>
-
-      <g class="fnode n-report is-terminal">
-        <rect class="fnode-box" x="900" y="100" width="60" height="60" rx="4"/>
-        <use href="#i-report" x="918" y="118" width="24" height="24" class="node-icon" color="var(--accent)"/>
-        <text class="node-label is-accent" x="930" y="178">Report</text>
-        <foreignObject x="878" y="184" width="104" height="14">
-          <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-            <span class="ft-text" style="--ft-w:19ch; animation-delay:7.8s">compiling report ✓</span><span class="ft-cursor">_</span>
-          </div>
-        </foreignObject>
-      </g>
-    </svg>
-
-    <div class="loop-legend">
-      <span><span class="swatch flow"></span> live update propagating</span>
-      <span><span class="swatch confirm"></span> a person confirms this stage ( ✓ )</span>
-    </div>
-
-    <div class="loop-caption-row">
-      <div class="loop-caption"><span class="step-no">01</span><span class="step-label">World signal</span><span class="step-desc">An external event enters the system — verified before it counts.</span></div>
-      <div class="loop-caption"><span class="step-no">02</span><span class="step-label">Schedule update</span><span class="step-desc">Or a logic/duration change lands from the schedule side.</span></div>
-      <div class="loop-caption"><span class="step-no">03</span><span class="step-label">Risk register</span><span class="step-desc">The risk manager reconciles both into one system of record.</span></div>
-      <div class="loop-caption"><span class="step-no">04</span><span class="step-label">Monte Carlo</span><span class="step-desc">Cost and schedule exposure is re-simulated together.</span></div>
-      <div class="loop-caption"><span class="step-no">05</span><span class="step-label">Report</span><span class="step-desc">The PM confirms — the decision moment, made current.</span></div>
-    </div>
+      <div class="step-row">
+        <div class="step"><span class="n">01</span><span class="t">World signal</span><span class="d">An external event enters the system — verified before it counts.</span></div>
+        <div class="step"><span class="n">02</span><span class="t">Schedule update</span><span class="d">Or a logic/duration change lands from the schedule side.</span></div>
+        <div class="step"><span class="n">03</span><span class="t">Risk register</span><span class="d">The risk manager reconciles both into one system of record.</span></div>
+        <div class="step"><span class="n">04</span><span class="t">Monte Carlo</span><span class="d">Cost and schedule exposure is re-simulated together.</span></div>
+        <div class="step"><span class="n">05</span><span class="t">Report</span><span class="d">The PM confirms — the decision moment, made current.</span></div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ============================================================
-     ESSENCE / GOVERNANCE
+     PLAYBOOKS — the XML that drives a predefined workflow
+     ============================================================ -->
+<section class="sheet rule" id="playbooks">
+  <div class="gutter-label">Playbooks</div>
+  <div class="well">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">Playbooks <span class="tag">LIVE</span></p>
+      <h2>Every loop is a playbook you can read</h2>
+      <p>A workflow isn't a black box inside the agent. It's a declared document —
+      which engines run, in what order, under which guardrail, and exactly where a
+      named human has to confirm before anything commits.</p>
+    </div>
+
+    <div class="term-stage hatch" data-reveal style="margin-top:0">
+      <div class="term">
+        <div class="term-bar">
+          <span class="term-dot term-dot-r"></span><span class="term-dot term-dot-y"></span><span class="term-dot term-dot-g"></span>
+          <span class="term-title">playbooks/cost-reconciliation.xml</span>
+        </div>
+        <div class="term-body">
+<pre class="code"><span class="l"><span class="tok-com">&lt;!-- schedule → cost → risk, then ask a human --&gt;</span></span><span class="l"><span class="tok-punc">&lt;</span><span class="tok-tag">playbook</span> <span class="tok-attr">id</span><span class="tok-punc">=</span><span class="tok-str">"cost-reconciliation"</span> <span class="tok-attr">version</span><span class="tok-punc">=</span><span class="tok-str">"4"</span><span class="tok-punc">&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">trigger</span> <span class="tok-attr">on</span><span class="tok-punc">=</span><span class="tok-str">"progress.updated"</span> <span class="tok-attr">scope</span><span class="tok-punc">=</span><span class="tok-str">"project"</span> <span class="tok-punc">/&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">step</span> <span class="tok-attr">engine</span><span class="tok-punc">=</span><span class="tok-str">"schedule"</span> <span class="tok-attr">name</span><span class="tok-punc">=</span><span class="tok-str">"recalculate"</span><span class="tok-punc">&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">guardrail</span> <span class="tok-attr">mode</span><span class="tok-punc">=</span><span class="tok-str">"deterministic"</span> <span class="tok-punc">/&gt;</span></span><span class="l">  <span class="tok-punc">&lt;/</span><span class="tok-tag">step</span><span class="tok-punc">&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">step</span> <span class="tok-attr">engine</span><span class="tok-punc">=</span><span class="tok-str">"cost"</span> <span class="tok-attr">name</span><span class="tok-punc">=</span><span class="tok-str">"forecast"</span> <span class="tok-attr">after</span><span class="tok-punc">=</span><span class="tok-str">"recalculate"</span><span class="tok-punc">&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">method</span><span class="tok-punc">&gt;</span><span class="tok-txt">earned-value</span><span class="tok-punc">&lt;/</span><span class="tok-tag">method</span><span class="tok-punc">&gt;</span></span><span class="l">  <span class="tok-punc">&lt;/</span><span class="tok-tag">step</span><span class="tok-punc">&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">step</span> <span class="tok-attr">engine</span><span class="tok-punc">=</span><span class="tok-str">"risk"</span> <span class="tok-attr">name</span><span class="tok-punc">=</span><span class="tok-str">"simulate"</span> <span class="tok-attr">after</span><span class="tok-punc">=</span><span class="tok-str">"forecast"</span><span class="tok-punc">&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">montecarlo</span> <span class="tok-attr">iterations</span><span class="tok-punc">=</span><span class="tok-str">"10000"</span> <span class="tok-attr">report</span><span class="tok-punc">=</span><span class="tok-str">"p80"</span> <span class="tok-punc">/&gt;</span></span><span class="l">  <span class="tok-punc">&lt;/</span><span class="tok-tag">step</span><span class="tok-punc">&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">confirm</span> <span class="tok-attr">role</span><span class="tok-punc">=</span><span class="tok-str">"project-manager"</span><span class="tok-punc">&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">render</span> <span class="tok-attr">template</span><span class="tok-punc">=</span><span class="tok-str">"impact-summary"</span> <span class="tok-attr">immutable</span><span class="tok-punc">=</span><span class="tok-str">"true"</span> <span class="tok-punc">/&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">fingerprint</span> <span class="tok-attr">algorithm</span><span class="tok-punc">=</span><span class="tok-str">"sha-256"</span> <span class="tok-punc">/&gt;</span></span><span class="l">  <span class="tok-punc">&lt;/</span><span class="tok-tag">confirm</span><span class="tok-punc">&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">commit</span> <span class="tok-attr">idempotency-key</span><span class="tok-punc">=</span><span class="tok-str">"{{run}}"</span> <span class="tok-attr">audit</span><span class="tok-punc">=</span><span class="tok-str">"true"</span> <span class="tok-punc">/&gt;</span></span><span class="l"><span class="tok-punc">&lt;/</span><span class="tok-tag">playbook</span><span class="tok-punc">&gt;</span></span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     GOVERNANCE
      ============================================================ -->
 <section class="sheet rule" id="governance">
+  <div class="gutter-label">Governance</div>
   <div class="well essence essence-grid">
     <div data-reveal>
       <p class="eyebrow">Why this is governed, not just fast</p>
@@ -857,28 +790,18 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       </p>
     </div>
     <div data-reveal>
-      <div class="pcc">
-        <div class="pcc-step">
-          <span class="pcc-num">01</span>
-          <div class="pcc-body"><h4>Prepare</h4><p>An immutable draft is rendered — schedule, cost, and risk impact, in full.</p></div>
-        </div>
-        <div class="pcc-step is-decision">
-          <span class="pcc-num">02</span>
-          <div class="pcc-body"><h4>Confirm</h4><p>A named person reviews the draft and confirms. This is the decision.</p></div>
-        </div>
-        <div class="pcc-step">
-          <span class="pcc-num">03</span>
-          <div class="pcc-body"><h4>Commit</h4><p>The write lands with a content fingerprint and an audit trail. Not before.</p></div>
-        </div>
-      </div>
+      <div class="pcc-step"><span class="pcc-num">01</span><div class="pcc-body"><h4>Prepare</h4><p>An immutable draft is rendered — schedule, cost, and risk impact, in full.</p></div></div>
+      <div class="pcc-step is-decision"><span class="pcc-num">02</span><div class="pcc-body"><h4>Confirm</h4><p>A named person reviews the draft and confirms. This is the decision.</p></div></div>
+      <div class="pcc-step"><span class="pcc-num">03</span><div class="pcc-body"><h4>Commit</h4><p>The write lands with a content fingerprint and an audit trail. Not before.</p></div></div>
     </div>
   </div>
 </section>
 
 <!-- ============================================================
-     ROLE STRIP
+     ROLES
      ============================================================ -->
 <section class="sheet rule">
+  <div class="gutter-label">Who it's for</div>
   <div class="well">
     <div class="section-head" data-reveal>
       <p class="eyebrow">Built for the people who own the call</p>
@@ -899,7 +822,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       </div>
       <div class="role-card" data-reveal>
         <p class="eyebrow">Freed from the assembly</p>
-        <h3>Planners & cost controllers</h3>
+        <h3>Planners &amp; cost controllers</h3>
         <p>Spend the month assembling the picture instead of judging it. Lognos takes
         the assembly; the judgment stays theirs.</p>
       </div>
@@ -941,10 +864,11 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
   </div>
 </footer>
 
-<!-- Cal.com embed — same booking link as the live site's "Demo" nav item,
-     plus the persistent floating button. "Talk to us" everywhere on this
-     page opens this popup (data-cal-link), with the plain href as a
-     no-JS fallback. -->
+</div><!-- /.page -->
+
+<!-- Cal.com embed — same booking link as the live site's "Demo" nav
+     item, plus the persistent floating button. "Talk to us" opens this
+     popup (data-cal-link); the href is the no-JS fallback, same tab. -->
 <script type="text/javascript">
   (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
   Cal("init", "lognos-demo", {origin:"https://app.cal.com"});
@@ -988,7 +912,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       entries.forEach(function(e){
         if(e.isIntersecting){ e.target.classList.add('is-visible'); obs.unobserve(e.target); }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.08 });
     document.querySelectorAll('[data-reveal]').forEach(function(el){ obs.observe(el); });
   } else {
     document.querySelectorAll('[data-reveal]').forEach(function(el){ el.classList.add('is-visible'); });
