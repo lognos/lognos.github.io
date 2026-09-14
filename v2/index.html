@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lognos — Project controls, reconciled continuously</title>
-<meta name="description" content="Schedule, cost, and risk reconcile against each other continuously — one system, not three tools stitched together. Nothing writes without your confirmation, and that confirmation is the decision.">
+<title>Lognos: Project controls, reconciled continuously</title>
+<meta name="description" content="The schedule says one date, the cost report another, the risk register neither. Lognos reconciles all three continuously, and nothing commits until you confirm.">
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
 <style>
 
 /* ============================================================
-   TOKENS — from ../03_BRAND/DESIGN.md (00_POSMKT repo). Do not
+   TOKENS. From ../03_BRAND/DESIGN.md (00_POSMKT repo). Do not
    hand-edit values here without updating that file to match.
    ============================================================ */
 :root{
@@ -30,7 +30,7 @@
   --success:       oklch(0.72 0.16 150);
   --warning:       oklch(0.72 0.16 75);
   --error:         oklch(0.72 0.16 25);
-  /* code syntax — a documented exception to the one-accent rule:
+  /* code syntax: a documented exception to the one-accent rule:
      syntax highlighting is data display, like the status colours. */
   --code-str:      oklch(0.78 0.11 150);
 
@@ -83,7 +83,7 @@ p{ margin:0; }
 .skip-link:focus{ top:var(--sp-md); }
 
 /* ============================================================
-   THE SHEET — one three-column grid geometry, shared by every
+   THE SHEET. One three-column grid geometry, shared by every
    section AND by the page frame, so they align exactly.
    ============================================================ */
 .sheet{
@@ -104,7 +104,7 @@ p{ margin:0; }
 
 /* The page frame. ONE element per gutter, absolutely positioned over
    the whole document, so the vertical rules and their hatch are
-   continuous by construction — they are literally a single box each,
+   continuous by construction. They are literally a single box each,
    never restarted per section. This is how tailwindcss.com does it
    (their rails measure 40 x 10262px, row-span-full). */
 .page{ position:relative; }
@@ -120,7 +120,7 @@ p{ margin:0; }
 /* horizontal rules cross the full page width, through the rails */
 .rule{ border-top:1px solid var(--hairline); }
 
-/* vertical section label, set into the gutter — tailwindcss.com's
+/* vertical section label, set into the gutter, tailwindcss.com's
    "SPONSORS" device */
 .sheet > .gutter-label{
   grid-column:1; grid-row:1; position:relative; z-index:3;
@@ -133,9 +133,9 @@ p{ margin:0; }
 @media (max-width:900px){ .sheet > .gutter-label{ display:none; } }
 
 /* ============================================================
-   NAV — hairline, fixed, never changes on scroll
+   NAV. Hairline, fixed, never changes on scroll
    ============================================================ */
-/* NAV — full-bleed, exactly like tailwindcss.com: the bar spans the
+/* NAV, full-bleed, exactly like tailwindcss.com: the bar spans the
    viewport with 24px side padding rather than sitting in the content
    well, 57px tall, opaque ground, hairline rule, no scroll state. */
 .nav{ position:fixed; inset-inline:0; top:0; z-index:50; background:var(--ground); border-bottom:1px solid var(--hairline); }
@@ -286,7 +286,7 @@ section{ padding-block:var(--sp-3xl); }
 .btn-secondary:hover{ border-color:var(--text-dim); color:var(--text-max); }
 
 /* ============================================================
-   TERMINAL WINDOW — every workflow and the playbook sit in one.
+   TERMINAL WINDOW. Every workflow and the playbook sit in one.
    The stage around it is hatched, with rules above and below, so
    the window reads as mounted on the sheet.
    ============================================================ */
@@ -322,7 +322,7 @@ section{ padding-block:var(--sp-3xl); }
 }
 
 /* ============================================================
-   FLOW DIAGRAMS — square nodes, right-angle dashed connectors,
+   FLOW DIAGRAMS. Square nodes, right-angle dashed connectors,
    typed status lines
    ============================================================ */
 .flow{ width:100%; height:auto; overflow:visible; display:block; }
@@ -586,7 +586,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 <main id="main">
 
 <!-- ============================================================
-     HERO — the reconciliation flow, animated, in a terminal
+     HERO. The reconciliation flow, animated, in a terminal
      ============================================================ -->
 <section class="hero sheet" id="top">
   <div class="site-backdrop" aria-hidden="true">
@@ -599,7 +599,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     <style>.site-backdrop .knock{ fill:var(--ground,#141414); }</style>
 
     <!-- ============================================================
-         BACKDROP — pines, tower cranes, ridge. Thinnest weight.
+         BACKDROP. Pines, tower cranes, ridge. Thinnest weight.
          ============================================================ -->
     <g stroke-width="1" opacity="0.32" vector-effect="non-scaling-stroke">
       <path d="M92 372 L92 300 M62 348 L92 286 L122 348 Z M70 320 L92 268 L114 320 Z M76 296 L92 254 L108 296 Z"/>
@@ -641,7 +641,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     </g>
 
     <!-- ============================================================
-         SPOIL MOUNDS — placed in the gaps between the machines.
+         SPOIL MOUNDS. Placed in the gaps between the machines.
          ============================================================ -->
     <g stroke-width="1.25" opacity="0.4" vector-effect="non-scaling-stroke">
       <path d="M388 470 C428 408 476 394 522 410 C554 422 580 444 602 470"/>
@@ -653,7 +653,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     </g>
 
     <!-- ============================================================
-         GROUND — the line everything stands on, plus fissures.
+         GROUND. The line everything stands on, plus fissures.
          ============================================================ -->
     <g stroke-width="1.25" opacity="0.5" vector-effect="non-scaling-stroke">
       <path d="M0 470 L1440 470" opacity="0.8"/>
@@ -664,7 +664,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     </g>
 
     <!-- ============================================================
-         WHEEL LOADER — left, facing right. Ground line at y=470.
+         WHEEL LOADER. Left, facing right. Ground line at y=470.
          ============================================================ -->
     <g transform="translate(64,274)" stroke-width="1.6" vector-effect="non-scaling-stroke" opacity="0.9">
       <path class="knock" d="M20 112 h54 v54 h-54 a8 8 0 0 1 -8 -8 v-38 a8 8 0 0 1 8 -8 z"/>
@@ -697,7 +697,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     </g>
 
     <!-- ============================================================
-         EXCAVATOR — right, facing left, boom raised. Ground at y=470.
+         EXCAVATOR. Right, facing left, boom raised. Ground at y=470.
          ============================================================ -->
     <g transform="translate(936,224)" stroke-width="1.6" vector-effect="non-scaling-stroke" opacity="0.9">
       <!-- tracks -->
@@ -735,7 +735,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     </g>
 
     <!-- ============================================================
-         WORKER + WHEELBARROW — foreground, centre. Heaviest weight.
+         WORKER + WHEELBARROW. Foreground, centre. Heaviest weight.
          The tray is knocked out so it passes in front of his legs.
          ============================================================ -->
     <g transform="translate(578,344)" stroke-width="1.8" vector-effect="non-scaling-stroke">
@@ -777,12 +777,12 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
   <div class="well">
     <div data-reveal>
       <p class="eyebrow">Project controls &amp; risk management <span class="tag">LIVE</span></p>
-      <h1>Schedule, cost, and risk — reconciled by AI, <em>governed by your team.</em></h1>
+      <h1>Schedule, cost, and risk. Reconciled by AI, <em>governed by your team.</em></h1>
       <p class="hero-sub">
         The schedule says one date, the cost report implies another, and the risk
         register hasn't caught up with either. Lognos reconciles all three
         continuously, so your team works from one current picture instead of three
-        that disagree — and nothing commits until a named person confirms it.
+        that disagree. Nothing commits until a named person confirms it.
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#risk">See it reconcile</a>
@@ -795,7 +795,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       <div class="term">
         <div class="term-bar">
           <span class="term-dot term-dot-r"></span><span class="term-dot term-dot-y"></span><span class="term-dot term-dot-g"></span>
-          <span class="term-title">reconciliation.lognos — cost &amp; schedule</span>
+          <span class="term-title">reconciliation.lognos: cost &amp; schedule</span>
           <span class="term-status"><i></i> running</span>
         </div>
         <div class="term-body term-canvas">
@@ -877,12 +877,12 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
         <div class="step"><span class="n">02</span><span class="t">Schedule</span><span class="d">The Gantt updates; the planner confirms the logic still holds.</span></div>
         <div class="step"><span class="n">03</span><span class="t">Cost forecast</span><span class="d">The change forces a new forecast; the cost controller signs off.</span></div>
         <div class="step"><span class="n">04</span><span class="t">Monte Carlo</span><span class="d">Cost and schedule are re-simulated together, not separately.</span></div>
-        <div class="step"><span class="n">05</span><span class="t">Report</span><span class="d">The PM confirms — that confirmation is the decision moment.</span></div>
+        <div class="step"><span class="n">05</span><span class="t">Report</span><span class="d">The PM confirms. That confirmation is the decision moment.</span></div>
       </div>
     </div>
 
     <div class="integrations" data-reveal>
-      <p class="eyebrow" style="justify-content:center; width:100%">Open at the edges — reachable over MCP by any compatible agent</p>
+      <p class="eyebrow" style="justify-content:center; width:100%">Open at the edges: reachable over MCP by any compatible agent</p>
       <div class="marquee">
         <div class="marquee-track">
           <div class="marquee-set">
@@ -924,7 +924,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       <h2>Project controls, done continuously</h2>
       <p>
         Three teams maintain three versions of the truth, and they only agree on the
-        day the report goes out. That isn't carelessness — it's arithmetic. A validated,
+        day the report goes out. That isn't carelessness. It's arithmetic. A validated,
         reconciled forecast used to take days of expert work, so it happened monthly,
         and everyone agreed to call that current. That constraint is gone. Lognos
         reconciles schedule, cost, and risk against each other continuously, so the
@@ -936,7 +936,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
         <span class="tag">LIVE</span>
         <h3>One picture, not three</h3>
         <p>Schedule, cost, and risk aren't separate products wired together after the
-        fact — they run as three engines over a single record, reconciling against each
+        fact. They run as three engines over a single record, reconciling against each
         other continuously. Most tools in this market do one of the three well and leave
         the reconciliation between them to you and a spreadsheet.</p>
       </div>
@@ -944,19 +944,19 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
         <span class="tag">LIVE</span>
         <h3>The confirmation is the decision</h3>
         <p>Nothing writes without prepare → confirm → commit. Not a policy bolted on
-        after the fact — the same mechanism that makes the loop worth having.</p>
+        after the fact. It's the same mechanism that makes the loop worth having.</p>
       </div>
       <div class="diff-card" data-reveal>
         <span class="tag">LIVE</span>
         <h3>Open at the edges</h3>
         <p>Integrated inside, open outside. The engines are reachable over MCP by any
-        compatible agent — Claude, ChatGPT, or one your own team builds. You shouldn't
+        compatible agent: Claude, ChatGPT, or one your own team builds. You shouldn't
         have to adopt our interface to get value from our reasoning.</p>
       </div>
       <div class="diff-card" data-reveal>
         <span class="tag">LIVE</span>
         <h3>Says what it doesn't know</h3>
-        <p>Per-project, per-question capability declaration — available, unavailable,
+        <p>Per-project, per-question capability declaration: available, unavailable,
         or partial, with a reason. Never a confident wrong answer.</p>
       </div>
     </div>
@@ -964,7 +964,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 </section>
 
 <!-- ============================================================
-     RISK FLOW — second terminal
+     RISK FLOW. Second terminal
      ============================================================ -->
 <section class="sheet rule" id="risk">
   <div class="gutter-label">Risk</div>
@@ -972,8 +972,8 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     <div class="section-head" data-reveal>
       <p class="eyebrow">The second loop <span class="tag">LIVE</span></p>
       <h2>Risk, triggered from either direction</h2>
-      <p>A schedule slip and an outside event — a supplier delay, a weather pattern,
-      a code change — both land in the same system of record. The risk register
+      <p>A schedule slip and an outside event (a supplier delay, a weather pattern,
+      a code change) both land in the same system of record. The risk register
       doesn't wait to be asked; it reconciles, re-simulates, and reports, with a
       named person validating each stage.</p>
     </div>
@@ -982,7 +982,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       <div class="term">
         <div class="term-bar">
           <span class="term-dot term-dot-r"></span><span class="term-dot term-dot-y"></span><span class="term-dot term-dot-g"></span>
-          <span class="term-title">risk-register.lognos — exposure</span>
+          <span class="term-title">risk-register.lognos: exposure</span>
           <span class="term-status"><i></i> running</span>
         </div>
         <div class="term-body term-canvas">
@@ -1060,18 +1060,18 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       </div>
 
       <div class="step-row">
-        <div class="step"><span class="n">01</span><span class="t">World signal</span><span class="d">An external event enters the system — verified before it counts.</span></div>
+        <div class="step"><span class="n">01</span><span class="t">World signal</span><span class="d">An external event enters the system, verified before it counts.</span></div>
         <div class="step"><span class="n">02</span><span class="t">Schedule update</span><span class="d">Or a logic/duration change lands from the schedule side.</span></div>
         <div class="step"><span class="n">03</span><span class="t">Risk register</span><span class="d">The risk manager reconciles both into one system of record.</span></div>
         <div class="step"><span class="n">04</span><span class="t">Monte Carlo</span><span class="d">Cost and schedule exposure is re-simulated together.</span></div>
-        <div class="step"><span class="n">05</span><span class="t">Report</span><span class="d">The PM confirms — the decision moment, made current.</span></div>
+        <div class="step"><span class="n">05</span><span class="t">Report</span><span class="d">The PM confirms. The decision moment, made current.</span></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============================================================
-     PLAYBOOKS — the XML that drives a predefined workflow
+     PLAYBOOKS. The XML that drives a predefined workflow
      ============================================================ -->
 <section class="sheet rule" id="playbooks">
   <div class="gutter-label">Playbooks</div>
@@ -1079,7 +1079,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     <div class="section-head" data-reveal>
       <p class="eyebrow">Playbooks <span class="tag">LIVE</span></p>
       <h2>Every loop is a playbook you can read</h2>
-      <p>A workflow isn't a black box inside the agent. It's a declared document —
+      <p>A workflow isn't a black box inside the agent. It's a declared document:
       which engines run, in what order, under which guardrail, and exactly where a
       named human has to confirm before anything commits.</p>
     </div>
@@ -1108,14 +1108,14 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       <p class="eyebrow">Why this is governed, not just fast</p>
       <blockquote>The confirmation <strong>is</strong> the decision.</blockquote>
       <p class="hero-sub" style="margin-top:var(--sp-lg); max-width:44ch;">
-        In most agentic tools, governance is the tax paid for automation — bolted on
+        In most agentic tools, governance is the tax paid for automation, bolted on
         after the agent already acts. For Lognos the confirmation step and the
         decision moment are the same event. The loop runs continuously so that when
         you're asked, you're asked at the moment that matters, with a current picture.
       </p>
     </div>
     <div data-reveal>
-      <div class="pcc-step"><span class="pcc-num">01</span><div class="pcc-body"><h4>Prepare</h4><p>An immutable draft is rendered — schedule, cost, and risk impact, in full.</p></div></div>
+      <div class="pcc-step"><span class="pcc-num">01</span><div class="pcc-body"><h4>Prepare</h4><p>An immutable draft is rendered: schedule, cost, and risk impact, in full.</p></div></div>
       <div class="pcc-step is-decision"><span class="pcc-num">02</span><div class="pcc-body"><h4>Confirm</h4><p>A named person reviews the draft and confirms. This is the decision.</p></div></div>
       <div class="pcc-step"><span class="pcc-num">03</span><div class="pcc-body"><h4>Commit</h4><p>The write lands with a content fingerprint and an audit trail. Not before.</p></div></div>
     </div>
@@ -1136,7 +1136,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       <div class="role-card" data-reveal>
         <p class="eyebrow">Owns the call</p>
         <h3>The project manager</h3>
-        <p>Owns the delivery decision and its consequences. The forecast isn't wrong —
+        <p>Owns the delivery decision and its consequences. The forecast isn't wrong.
         it arrives too late to act on. Lognos closes that gap.</p>
       </div>
       <div class="role-card" data-reveal>
@@ -1163,13 +1163,13 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     <p class="eyebrow">Ready when you are</p>
     <h2>Stop deciding on last month's picture.</h2>
     <p class="hero-sub" style="max-width:46ch">See your own schedule, cost, and risk
-    reconcile — on your project, with your data.</p>
+    reconcile on your project, with your data.</p>
     <div class="cta-actions">
       <a class="btn btn-primary" href="https://cal.com/facundo.bassi/lognos-demo"
          data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}'>Talk to us</a>
       <a class="btn btn-secondary" href="../whitepaper.html">Read the whitepaper</a>
     </div>
-    <p class="cta-note">E&amp;C delivery is the beachhead. Every claim on this page ships at [LIVE] maturity — see 02_POSITIONING/CLAIMS.md.</p>
+    <p class="cta-note">E&amp;C delivery is the beachhead. Every claim on this page ships at [LIVE] maturity. See 02_POSITIONING/CLAIMS.md.</p>
   </div>
 </section>
 
@@ -1193,7 +1193,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 
 </div><!-- /.page -->
 
-<!-- Cal.com embed — same booking link as the live site's "Demo" nav
+<!-- Cal.com embed. Same booking link as the live site's "Demo" nav
      item, plus the persistent floating button. "Talk to us" opens this
      popup (data-cal-link); the href is the no-JS fallback, same tab. -->
 <script type="text/javascript">
@@ -1236,11 +1236,11 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 
   /* ⌘K quick-jump palette */
   var SECTIONS = [
-    { label:'Reconciliation loop — cost & schedule', href:'#top' },
+    { label:'Reconciliation loop: cost & schedule', href:'#top' },
     { label:'What Lognos does',                      href:'#what-we-do' },
-    { label:'Risk loop — triggered either way',      href:'#risk' },
+    { label:'Risk loop: triggered either way',      href:'#risk' },
     { label:'Playbooks',                             href:'#playbooks' },
-    { label:'Governance — prepare, confirm, commit', href:'#governance' },
+    { label:'Governance: prepare, confirm, commit', href:'#governance' },
     { label:"Who it's for",                          href:'#who' },
     { label:'Talk to us',                            href:'#contact' }
   ];
