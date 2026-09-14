@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lognos — Project controls, reconciled continuously</title>
-<meta name="description" content="Lognos runs project controls as one continuously reconciling system. Schedule, cost, and risk update each other in real time — and every write still goes through you.">
+<meta name="description" content="Schedule, cost, and risk reconcile against each other continuously — one system, not three tools stitched together. Nothing writes without your confirmation, and that confirmation is the decision.">
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
 <style>
 
@@ -239,7 +239,7 @@ section{ padding-block:var(--sp-3xl); }
    HERO
    ============================================================ */
 .hero{ padding-top:calc(64px + var(--sp-3xl)); padding-bottom:var(--sp-2xl); }
-.hero h1{ font-size:clamp(2.5rem,6vw,5.5rem); line-height:1.02; letter-spacing:-0.04em; max-width:16ch; font-weight:300; }
+.hero h1{ font-size:clamp(2.5rem,6vw,5.5rem); line-height:1.02; letter-spacing:-0.04em; max-width:18ch; font-weight:300; }
 .hero h1 em{ font-style:normal; color:var(--accent); }
 .hero-sub{ max-width:52ch; font-size:1.125rem; color:var(--text-body); margin-top:var(--sp-lg); }
 .hero-actions{ display:flex; gap:var(--sp-md); margin-top:var(--sp-xl); flex-wrap:wrap; }
@@ -360,7 +360,7 @@ section{ padding-block:var(--sp-3xl); }
 /* ============================================================
    CARDS / INTEGRATIONS / ESSENCE / ROLES / CTA
    ============================================================ */
-.diff-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-lg); }
+.diff-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:var(--sp-lg); }
 @media (max-width:860px){ .diff-grid{ grid-template-columns:1fr; } }
 .diff-card{ border:1px solid var(--hairline); border-radius:var(--r-lg); background:var(--surface); padding:var(--sp-lg); }
 .diff-card h3{ font-size:1.1rem; font-weight:400; color:var(--text-max); letter-spacing:normal; margin-bottom:var(--sp-sm); }
@@ -562,13 +562,13 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 <section class="hero sheet" id="top">
   <div class="well">
     <div data-reveal>
-      <p class="eyebrow">Project controls, reconciled continuously <span class="tag">LIVE</span></p>
-      <h1>Stop deciding on <em>last month's</em> picture.</h1>
+      <p class="eyebrow">Project controls &amp; risk management <span class="tag">LIVE</span></p>
+      <h1>The reconciliation runs itself. <em>The decision is still yours.</em></h1>
       <p class="hero-sub">
-        Lognos runs project controls as one continuously reconciling system.
-        Schedule, cost, and risk update each other in real time — and every
-        write still goes through you. The moment Lognos asks you to confirm
-        something <em>is</em> the decision moment.
+        Schedule, cost, and risk reconcile against each other continuously — one
+        system, not three tools stitched together. Nothing writes without your
+        confirmation, and that confirmation <em>is</em> the decision. And you can
+        reach all of it from the tools your team already uses, not only from ours.
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#risk">See it reconcile</a>
@@ -668,7 +668,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     </div>
 
     <div class="integrations" data-reveal>
-      <p class="eyebrow" style="justify-content:center; width:100%">Connects where the work already happens</p>
+      <p class="eyebrow" style="justify-content:center; width:100%">Open at the edges — reachable over MCP by any compatible agent</p>
       <div class="marquee">
         <div class="marquee-track">
           <div class="marquee-set">
@@ -719,15 +719,24 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     <div class="diff-grid">
       <div class="diff-card" data-reveal>
         <span class="tag">LIVE</span>
-        <h3>Reconciled, not reported</h3>
-        <p>Schedule, cost, and risk sit in one system that reconciles continuously
-        instead of on a monthly cycle — not three tools stitched together after the fact.</p>
+        <h3>Three engines, one system of record</h3>
+        <p>Schedule, cost, and risk aren't separate products wired together after the
+        fact — they run as three engines over a single record, reconciling against each
+        other continuously. Most tools in this market do one of the three well and leave
+        the reconciliation between them to you and a spreadsheet.</p>
       </div>
       <div class="diff-card" data-reveal>
         <span class="tag">LIVE</span>
         <h3>The confirmation is the decision</h3>
         <p>Nothing writes without prepare → confirm → commit. Not a policy bolted on
         after the fact — the same mechanism that makes the loop worth having.</p>
+      </div>
+      <div class="diff-card" data-reveal>
+        <span class="tag">LIVE</span>
+        <h3>Open at the edges</h3>
+        <p>Integrated inside, open outside. The engines are reachable over MCP by any
+        compatible agent — Claude, ChatGPT, or one your own team builds. You shouldn't
+        have to adopt our interface to get value from our reasoning.</p>
       </div>
       <div class="diff-card" data-reveal>
         <span class="tag">LIVE</span>
@@ -937,7 +946,9 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 <section class="sheet rule" id="contact">
   <div class="well cta" data-reveal>
     <p class="eyebrow">Ready when you are</p>
-    <h2>See your own schedule, cost, and risk reconcile.</h2>
+    <h2>Stop deciding on last month's picture.</h2>
+    <p class="hero-sub" style="max-width:46ch">See your own schedule, cost, and risk
+    reconcile — on your project, with your data.</p>
     <div class="cta-actions">
       <a class="btn btn-primary" href="https://cal.com/facundo.bassi/lognos-demo"
          data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}'>Talk to us</a>
