@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lognos: Project controls, reconciled continuously</title>
-<meta name="description" content="The schedule says one date, the cost report another, the risk register neither. Lognos reconciles all three continuously, and nothing commits until you confirm.">
+<title>Lognos — Project controls, reconciled continuously</title>
+<meta name="description" content="Schedule, cost, and risk reconcile against each other continuously — one system, not three tools stitched together. Nothing writes without your confirmation, and that confirmation is the decision.">
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
 <style>
 
 /* ============================================================
-   TOKENS. From ../03_BRAND/DESIGN.md (00_POSMKT repo). Do not
+   TOKENS — from ../03_BRAND/DESIGN.md (00_POSMKT repo). Do not
    hand-edit values here without updating that file to match.
    ============================================================ */
 :root{
@@ -30,7 +30,7 @@
   --success:       oklch(0.72 0.16 150);
   --warning:       oklch(0.72 0.16 75);
   --error:         oklch(0.72 0.16 25);
-  /* code syntax: a documented exception to the one-accent rule:
+  /* code syntax — a documented exception to the one-accent rule:
      syntax highlighting is data display, like the status colours. */
   --code-str:      oklch(0.78 0.11 150);
 
@@ -83,7 +83,7 @@ p{ margin:0; }
 .skip-link:focus{ top:var(--sp-md); }
 
 /* ============================================================
-   THE SHEET. One three-column grid geometry, shared by every
+   THE SHEET — one three-column grid geometry, shared by every
    section AND by the page frame, so they align exactly.
    ============================================================ */
 .sheet{
@@ -104,7 +104,7 @@ p{ margin:0; }
 
 /* The page frame. ONE element per gutter, absolutely positioned over
    the whole document, so the vertical rules and their hatch are
-   continuous by construction. They are literally a single box each,
+   continuous by construction — they are literally a single box each,
    never restarted per section. This is how tailwindcss.com does it
    (their rails measure 40 x 10262px, row-span-full). */
 .page{ position:relative; }
@@ -120,7 +120,7 @@ p{ margin:0; }
 /* horizontal rules cross the full page width, through the rails */
 .rule{ border-top:1px solid var(--hairline); }
 
-/* vertical section label, set into the gutter, tailwindcss.com's
+/* vertical section label, set into the gutter — tailwindcss.com's
    "SPONSORS" device */
 .sheet > .gutter-label{
   grid-column:1; grid-row:1; position:relative; z-index:3;
@@ -133,9 +133,9 @@ p{ margin:0; }
 @media (max-width:900px){ .sheet > .gutter-label{ display:none; } }
 
 /* ============================================================
-   NAV. Hairline, fixed, never changes on scroll
+   NAV — hairline, fixed, never changes on scroll
    ============================================================ */
-/* NAV, full-bleed, exactly like tailwindcss.com: the bar spans the
+/* NAV — full-bleed, exactly like tailwindcss.com: the bar spans the
    viewport with 24px side padding rather than sitting in the content
    well, 57px tall, opaque ground, hairline rule, no scroll state. */
 .nav{ position:fixed; inset-inline:0; top:0; z-index:50; background:var(--ground); border-bottom:1px solid var(--hairline); }
@@ -238,40 +238,26 @@ section{ padding-block:var(--sp-3xl); }
 /* ============================================================
    HERO
    ============================================================ */
-.hero{ position:relative; padding-top:calc(64px + var(--sp-3xl)); padding-bottom:var(--sp-2xl); }
-.hero > .well{ position:relative; z-index:1; }
-
-/* Full-bleed line drawing of a site, sitting behind the hero.
-   Strokes are currentColor; the knocked-out fills pick up --ground,
-   so occlusion works on whatever the section background is. */
-.site-backdrop{
-  position:absolute; inset-inline:0; top:0; z-index:0;
-  height:clamp(460px, 74vh, 780px);
-  grid-column:1 / -1; grid-row:1;
-  overflow:hidden; line-height:0;
-  pointer-events:none; user-select:none;
-  color:var(--text-max); opacity:.13;
-  /* Two masks, intersected: fade in from the top, and hold the drawing back
-     on the left where the headline and copy live. */
-  -webkit-mask-image:
-    linear-gradient(to bottom, transparent 0%, #000 34%, #000 82%, transparent 100%),
-    linear-gradient(to right, rgba(0,0,0,.22) 0%, rgba(0,0,0,.34) 30%, #000 58%);
-  mask-image:
-    linear-gradient(to bottom, transparent 0%, #000 34%, #000 82%, transparent 100%),
-    linear-gradient(to right, rgba(0,0,0,.22) 0%, rgba(0,0,0,.34) 30%, #000 58%);
-  -webkit-mask-composite:source-in; mask-composite:intersect;
-}
-.site-backdrop svg{
-  display:block; width:100%; height:100%;
-}
-@media (prefers-reduced-motion:no-preference){
-  .site-backdrop{ transition:opacity .6s var(--ease-out); }
-}
-@media (max-width:640px){ .site-backdrop{ opacity:.09; height:clamp(320px, 46vh, 460px); } }
-.hero h1{ font-size:clamp(2.5rem,6vw,5.5rem); line-height:1.02; letter-spacing:-0.04em; max-width:18ch; font-weight:300; }
+/* Hero type and arrangement taken from livekit.com, measured off their
+   live page at 1440 and 768. Their scale is a two-step breakpoint, not a
+   fluid clamp: the headline caps at 48px and does not grow past it, even
+   at 1920. Column 896 centred, tracking -0.025em at both steps, rhythm
+   8px headline-to-sub then 32px sub-to-buttons.
+   NOTE: their display face is served under an obfuscated family name
+   ("displayFont") and cannot be identified or licensed from the page.
+   These are their metrics applied to Public Sans, which is what LiveKit
+   itself uses for body copy and what we already self-host. */
+.hero{ padding-top:calc(57px + var(--sp-3xl)); padding-bottom:var(--sp-2xl); }
+.hero-copy{ max-width:896px; margin-inline:auto; text-align:center; }
+.hero h1{ font-size:48px; font-weight:300; line-height:1; letter-spacing:-0.025em; max-width:none; text-wrap:balance; }
 .hero h1 em{ font-style:normal; color:var(--accent); }
-.hero-sub{ max-width:52ch; font-size:1.125rem; color:var(--text-body); margin-top:var(--sp-lg); }
-.hero-actions{ display:flex; gap:var(--sp-md); margin-top:var(--sp-xl); flex-wrap:wrap; }
+.hero-sub{ font-size:20px; line-height:1.6; letter-spacing:.01em; color:var(--text-body); max-width:none; margin-top:8px; text-wrap:pretty; }
+.hero-actions{ display:flex; gap:var(--sp-md); margin-top:32px; flex-wrap:wrap; justify-content:center; }
+.hero .btn{ font-size:14px; font-weight:600; letter-spacing:.01em; padding-block:8px; }
+@media (max-width:1024px){
+  .hero h1{ font-size:36px; line-height:1.111; }
+  .hero-sub{ font-size:16px; line-height:1.7; }
+}
 
 .btn{
   display:inline-flex; align-items:center; gap:var(--sp-sm);
@@ -286,7 +272,7 @@ section{ padding-block:var(--sp-3xl); }
 .btn-secondary:hover{ border-color:var(--text-dim); color:var(--text-max); }
 
 /* ============================================================
-   TERMINAL WINDOW. Every workflow and the playbook sit in one.
+   TERMINAL WINDOW — every workflow and the playbook sit in one.
    The stage around it is hatched, with rules above and below, so
    the window reads as mounted on the sheet.
    ============================================================ */
@@ -322,7 +308,7 @@ section{ padding-block:var(--sp-3xl); }
 }
 
 /* ============================================================
-   FLOW DIAGRAMS. Square nodes, right-angle dashed connectors,
+   FLOW DIAGRAMS — square nodes, right-angle dashed connectors,
    typed status lines
    ============================================================ */
 .flow{ width:100%; height:auto; overflow:visible; display:block; }
@@ -586,203 +572,18 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 <main id="main">
 
 <!-- ============================================================
-     HERO. The reconciliation flow, animated, in a terminal
+     HERO — the reconciliation flow, animated, in a terminal
      ============================================================ -->
 <section class="hero sheet" id="top">
-  <div class="site-backdrop" aria-hidden="true">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax meet"
-       fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-       aria-hidden="true" focusable="false">
-
-    <!-- Occlusion fill. Inline in a page and it picks up --ground; standalone it
-         falls back to the Lognos ground colour. -->
-    <style>.site-backdrop .knock{ fill:var(--ground,#141414); }</style>
-
-    <!-- ============================================================
-         BACKDROP. Pines, tower cranes, ridge. Thinnest weight.
-         ============================================================ -->
-    <g stroke-width="1" opacity="0.32" vector-effect="non-scaling-stroke">
-      <path d="M92 372 L92 300 M62 348 L92 286 L122 348 Z M70 320 L92 268 L114 320 Z M76 296 L92 254 L108 296 Z"/>
-      <path d="M158 372 L158 316 M136 352 L158 306 L180 352 Z M142 330 L158 290 L174 330 Z"/>
-      <path d="M246 372 L246 330 M228 358 L246 322 L264 358 Z M232 340 L246 306 L260 340 Z"/>
-      <path d="M1332 372 L1332 302 M1300 350 L1332 288 L1364 350 Z M1308 322 L1332 268 L1356 322 Z"/>
-      <path d="M1396 372 L1396 322 M1376 356 L1396 312 L1416 356 Z M1382 334 L1396 296 L1410 334 Z"/>
-
-      <!-- tower crane, left of centre -->
-      <g>
-        <path d="M486 372 L486 128 M470 372 L470 128 M502 372 L502 128"/>
-        <path d="M470 356 L502 332 M502 356 L470 332 M470 320 L502 296 M502 320 L470 296
-                 M470 284 L502 260 M502 284 L470 260 M470 248 L502 224 M502 248 L470 224
-                 M470 212 L502 188 M502 212 L470 188 M470 176 L502 152 M502 176 L470 152"/>
-        <path d="M456 128 L534 128 M462 116 L520 116 L520 128 M462 116 L462 128"/>
-        <path d="M520 112 L714 112 M520 100 L648 100 M520 100 L520 112"/>
-        <path d="M648 100 L714 112 M596 100 L596 112 M660 104 L660 112"/>
-        <path d="M462 112 L392 112 M462 100 L406 100 L392 112"/>
-        <path d="M490 90 L492 62 L660 104 M492 62 L406 100"/>
-        <path d="M632 112 L632 196 M622 196 L642 196 L638 212 L626 212 Z"/>
-      </g>
-
-      <!-- tower crane, far right -->
-      <g opacity="0.72">
-        <path d="M1148 372 L1148 196 M1136 372 L1136 196 M1160 372 L1160 196"/>
-        <path d="M1136 358 L1160 340 M1160 358 L1136 340 M1136 326 L1160 308 M1160 326 L1136 308
-                 M1136 294 L1160 276 M1160 294 L1136 276 M1136 262 L1160 244 M1160 262 L1136 244
-                 M1136 230 L1160 212 M1160 230 L1136 212"/>
-        <path d="M1124 196 L1180 196"/>
-        <path d="M1172 186 L1300 186 M1172 176 L1262 176 M1262 176 L1300 186 M1172 176 L1172 186"/>
-        <path d="M1124 186 L1076 186 M1124 176 L1086 176 L1076 186"/>
-        <path d="M1146 166 L1148 146 L1262 176 M1148 146 L1086 176"/>
-        <path d="M1248 186 L1248 240 M1241 240 L1255 240 L1252 252 L1244 252 Z"/>
-      </g>
-
-      <!-- distant ridge -->
-      <path d="M0 372 L118 316 L196 352 L286 302 L372 344 L448 318 L520 356 L612 322
-               L700 358 L790 312 L880 350 L966 314 L1058 352 L1140 318 L1226 356 L1320 320 L1440 360"/>
-    </g>
-
-    <!-- ============================================================
-         SPOIL MOUNDS. Placed in the gaps between the machines.
-         ============================================================ -->
-    <g stroke-width="1.25" opacity="0.4" vector-effect="non-scaling-stroke">
-      <path d="M388 470 C428 408 476 394 522 410 C554 422 580 444 602 470"/>
-      <path d="M424 456 C454 428 488 422 516 434"/>
-      <path d="M816 470 C850 424 888 414 924 428 C942 436 956 452 968 470"/>
-      <path d="M846 458 C868 436 896 430 918 440"/>
-      <path d="M1206 470 C1248 406 1296 392 1342 408 C1378 420 1408 444 1434 470"/>
-      <path d="M1244 454 C1276 426 1310 420 1338 432"/>
-    </g>
-
-    <!-- ============================================================
-         GROUND. The line everything stands on, plus fissures.
-         ============================================================ -->
-    <g stroke-width="1.25" opacity="0.5" vector-effect="non-scaling-stroke">
-      <path d="M0 470 L1440 470" opacity="0.8"/>
-      <path d="M70 512 L128 500 L112 524 L178 514 L160 534 L214 528"/>
-      <path d="M1246 502 L1306 492 L1292 512 L1352 504"/>
-      <path d="M352 560 L406 550 L392 570"/>
-      <path d="M262 486 h22 M300 492 h16 M1180 484 h20 M962 492 h18 M604 486 h20 M860 500 h16"/>
-    </g>
-
-    <!-- ============================================================
-         WHEEL LOADER. Left, facing right. Ground line at y=470.
-         ============================================================ -->
-    <g transform="translate(64,274)" stroke-width="1.6" vector-effect="non-scaling-stroke" opacity="0.9">
-      <path class="knock" d="M20 112 h54 v54 h-54 a8 8 0 0 1 -8 -8 v-38 a8 8 0 0 1 8 -8 z"/>
-      <path d="M32 124 v30 M44 124 v30 M56 124 v30" stroke-width="1" opacity="0.65"/>
-      <path class="knock" d="M74 110 h98 v56 h-98 z"/>
-      <path d="M118 110 v56" stroke-width="1" opacity="0.55"/>
-      <!-- cab -->
-      <path class="knock" d="M88 46 h74 v64 h-74 z"/>
-      <path d="M96 55 h58 v44 h-58 z" stroke-width="1.1"/>
-      <path d="M125 55 v44" stroke-width="1" opacity="0.6"/>
-      <path d="M82 45 h86" stroke-width="1.2"/>
-      <path d="M100 45 v-16 M94 27 h12"/>
-      <path d="M78 128 h-12 M78 142 h-12 M78 156 h-12" stroke-width="1" opacity="0.7"/>
-      <!-- wheels -->
-      <circle class="knock" cx="64" cy="168" r="30"/><circle cx="64" cy="168" r="18" stroke-width="1.1"/><circle cx="64" cy="168" r="6" stroke-width="1"/>
-      <circle class="knock" cx="180" cy="168" r="30"/><circle cx="180" cy="168" r="18" stroke-width="1.1"/><circle cx="180" cy="168" r="6" stroke-width="1"/>
-      <g stroke-width="1" opacity="0.6">
-        <path d="M64 138 v-8 M94 168 h8 M64 198 v8 M34 168 h-8 M85 147 l6 -6 M85 189 l6 6 M43 189 l-6 6 M43 147 l-6 -6"/>
-        <path d="M180 138 v-8 M210 168 h8 M180 198 v8 M150 168 h-8 M201 147 l6 -6 M201 189 l6 6 M159 189 l-6 6 M159 147 l-6 -6"/>
-      </g>
-      <!-- loader arms + bucket -->
-      <path class="knock" d="M162 102 L248 132 L248 148 L162 120 Z"/>
-      <path d="M156 88 L214 116" stroke-width="1.2"/>
-      <path d="M208 112 l14 6" stroke-width="1"/>
-      <path class="knock" d="M248 118 L312 116 L326 152 L256 162 Z"/>
-      <path d="M256 162 L326 152" stroke-width="1" opacity="0.6"/>
-      <g stroke-width="1.1">
-        <path d="M272 160 l4 10 M290 158 l4 10 M308 156 l4 10 M322 154 l3 9"/>
-      </g>
-    </g>
-
-    <!-- ============================================================
-         EXCAVATOR. Right, facing left, boom raised. Ground at y=470.
-         ============================================================ -->
-    <g transform="translate(936,224)" stroke-width="1.6" vector-effect="non-scaling-stroke" opacity="0.9">
-      <!-- tracks -->
-      <path class="knock" d="M36 182 h206 a32 32 0 0 1 0 64 h-206 a32 32 0 0 1 0 -64 z"/>
-      <path d="M52 196 h174 a18 18 0 0 1 0 36 h-174 a18 18 0 0 1 0 -36 z" stroke-width="1.1" opacity="0.7"/>
-      <circle cx="52" cy="214" r="14" stroke-width="1.1"/>
-      <circle cx="226" cy="214" r="14" stroke-width="1.1"/>
-      <g stroke-width="1" opacity="0.6">
-        <circle cx="100" cy="230" r="7"/><circle cx="139" cy="230" r="7"/><circle cx="178" cy="230" r="7"/>
-        <path d="M62 250 v6 M90 252 v6 M118 253 v6 M146 253 v6 M174 252 v6 M202 250 v6"/>
-      </g>
-      <!-- slew deck, engine, cab -->
-      <path class="knock" d="M52 158 h178 l-10 24 h-158 z"/>
-      <path class="knock" d="M70 112 h76 v46 h-76 z"/>
-      <path d="M82 124 v22 M94 124 v22 M106 124 v22 M118 124 v22" stroke-width="1" opacity="0.6"/>
-      <path d="M70 112 l0 -12 h24" stroke-width="1.1" opacity="0.7"/>
-      <path class="knock" d="M152 76 h78 v82 h-78 z"/>
-      <path d="M161 86 h60 v50 h-60 z" stroke-width="1.1"/>
-      <path d="M191 86 v50 M161 144 h60" stroke-width="1" opacity="0.6"/>
-      <path d="M146 74 h92" stroke-width="1.2"/>
-      <!-- boom -->
-      <path class="knock" d="M146 124 L56 38 L78 16 L168 106 Z"/>
-      <circle cx="154" cy="116" r="5" stroke-width="1.1"/>
-      <path d="M138 110 L80 52" stroke-width="1.2"/>
-      <!-- stick -->
-      <path class="knock" d="M70 24 L4 102 L28 122 L94 44 Z"/>
-      <circle cx="78" cy="28" r="5" stroke-width="1.1"/>
-      <path d="M70 46 L36 88" stroke-width="1.2"/>
-      <!-- bucket, loaded -->
-      <path class="knock" d="M8 96 L-20 116 L-14 152 L36 148 L38 110 Z"/>
-      <path d="M8 96 C24 82 38 84 38 110" stroke-width="1.1" opacity="0.7"/>
-      <g stroke-width="1.1">
-        <path d="M-10 150 l-3 10 M4 149 l-2 10 M18 148 l-1 10 M33 148 l0 10"/>
-      </g>
-    </g>
-
-    <!-- ============================================================
-         WORKER + WHEELBARROW. Foreground, centre. Heaviest weight.
-         The tray is knocked out so it passes in front of his legs.
-         ============================================================ -->
-    <g transform="translate(578,344)" stroke-width="1.8" vector-effect="non-scaling-stroke">
-      <!-- wheelbarrow, side on, wheel leading -->
-      <path class="knock" d="M-30 150 L96 142 L74 184 L0 186 Z"/>
-      <path d="M-26 159 L92 151" stroke-width="1.2" opacity="0.6"/>
-      <path d="M-22 148 C10 124 60 124 92 142" stroke-width="1.3" opacity="0.75"/>
-      <path d="M-30 150 L-44 190" stroke-width="1.4"/>
-      <path class="knock" d="M-44 208 m-18 0 a18 18 0 1 0 36 0 a18 18 0 1 0 -36 0"/>
-      <circle cx="-44" cy="208" r="6" stroke-width="1.2"/>
-      <path d="M62 185 v20 M69 205 h-14" stroke-width="1.4"/>
-      <!-- handles -->
-      <path d="M96 142 L136 127 M92 153 L147 139" stroke-width="1.5"/>
-
-      <!-- hard hat -->
-      <path class="knock" d="M128 32 a22 18 0 0 1 44 0 z"/>
-      <path d="M121 32 h58" stroke-width="1.4"/>
-      <path d="M150 14 v18" stroke-width="1.1" opacity="0.5"/>
-      <!-- head and neck -->
-      <path class="knock" d="M136 32 v17 a14 16 0 0 0 28 0 v-17 z"/>
-      <path d="M144 50 v10 M156 50 v10" stroke-width="1.2"/>
-      <!-- torso, collar, bib -->
-      <path class="knock" d="M132 60 h36 v80 h-36 z"/>
-      <path d="M134 60 L150 74 L166 60" stroke-width="1.3"/>
-      <path d="M139 60 v14 M161 60 v14" stroke-width="1.2"/>
-      <path d="M139 80 h22 v22 h-22 z" stroke-width="1.1" opacity="0.6"/>
-      <!-- arms down onto the handles -->
-      <path d="M132 70 L120 100 L132 125" stroke-width="1.8"/>
-      <path d="M168 72 L163 105 L150 137" stroke-width="1.8"/>
-      <path d="M128 124 a8 8 0 0 0 10 6" stroke-width="1.4"/>
-      <path d="M145 136 a8 8 0 0 0 10 6" stroke-width="1.4"/>
-      <!-- legs and boots -->
-      <path d="M136 140 v78 M150 140 v78 M164 140 v78"/>
-      <path class="knock" d="M128 218 h18 l3 11 h-24 z"/>
-      <path class="knock" d="M154 218 h18 l3 11 h-24 z"/>
-    </g>
-  </svg>
-  </div>
   <div class="well">
-    <div data-reveal>
+    <div class="hero-copy" data-reveal>
       <p class="eyebrow">Project controls &amp; risk management <span class="tag">LIVE</span></p>
-      <h1>Schedule, cost, and risk. Reconciled by AI, <em>governed by your team.</em></h1>
+      <h1>Schedule, cost, and risk — reconciled by AI, <em>governed by your team.</em></h1>
       <p class="hero-sub">
         The schedule says one date, the cost report implies another, and the risk
         register hasn't caught up with either. Lognos reconciles all three
         continuously, so your team works from one current picture instead of three
-        that disagree. Nothing commits until a named person confirms it.
+        that disagree — and nothing commits until a named person confirms it.
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#risk">See it reconcile</a>
@@ -795,7 +596,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       <div class="term">
         <div class="term-bar">
           <span class="term-dot term-dot-r"></span><span class="term-dot term-dot-y"></span><span class="term-dot term-dot-g"></span>
-          <span class="term-title">reconciliation.lognos: cost &amp; schedule</span>
+          <span class="term-title">reconciliation.lognos — cost &amp; schedule</span>
           <span class="term-status"><i></i> running</span>
         </div>
         <div class="term-body term-canvas">
@@ -877,12 +678,12 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
         <div class="step"><span class="n">02</span><span class="t">Schedule</span><span class="d">The Gantt updates; the planner confirms the logic still holds.</span></div>
         <div class="step"><span class="n">03</span><span class="t">Cost forecast</span><span class="d">The change forces a new forecast; the cost controller signs off.</span></div>
         <div class="step"><span class="n">04</span><span class="t">Monte Carlo</span><span class="d">Cost and schedule are re-simulated together, not separately.</span></div>
-        <div class="step"><span class="n">05</span><span class="t">Report</span><span class="d">The PM confirms. That confirmation is the decision moment.</span></div>
+        <div class="step"><span class="n">05</span><span class="t">Report</span><span class="d">The PM confirms — that confirmation is the decision moment.</span></div>
       </div>
     </div>
 
     <div class="integrations" data-reveal>
-      <p class="eyebrow" style="justify-content:center; width:100%">Open at the edges: reachable over MCP by any compatible agent</p>
+      <p class="eyebrow" style="justify-content:center; width:100%">Open at the edges — reachable over MCP by any compatible agent</p>
       <div class="marquee">
         <div class="marquee-track">
           <div class="marquee-set">
@@ -924,7 +725,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       <h2>Project controls, done continuously</h2>
       <p>
         Three teams maintain three versions of the truth, and they only agree on the
-        day the report goes out. That isn't carelessness. It's arithmetic. A validated,
+        day the report goes out. That isn't carelessness — it's arithmetic. A validated,
         reconciled forecast used to take days of expert work, so it happened monthly,
         and everyone agreed to call that current. That constraint is gone. Lognos
         reconciles schedule, cost, and risk against each other continuously, so the
@@ -936,7 +737,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
         <span class="tag">LIVE</span>
         <h3>One picture, not three</h3>
         <p>Schedule, cost, and risk aren't separate products wired together after the
-        fact. They run as three engines over a single record, reconciling against each
+        fact — they run as three engines over a single record, reconciling against each
         other continuously. Most tools in this market do one of the three well and leave
         the reconciliation between them to you and a spreadsheet.</p>
       </div>
@@ -944,19 +745,19 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
         <span class="tag">LIVE</span>
         <h3>The confirmation is the decision</h3>
         <p>Nothing writes without prepare → confirm → commit. Not a policy bolted on
-        after the fact. It's the same mechanism that makes the loop worth having.</p>
+        after the fact — the same mechanism that makes the loop worth having.</p>
       </div>
       <div class="diff-card" data-reveal>
         <span class="tag">LIVE</span>
         <h3>Open at the edges</h3>
         <p>Integrated inside, open outside. The engines are reachable over MCP by any
-        compatible agent: Claude, ChatGPT, or one your own team builds. You shouldn't
+        compatible agent — Claude, ChatGPT, or one your own team builds. You shouldn't
         have to adopt our interface to get value from our reasoning.</p>
       </div>
       <div class="diff-card" data-reveal>
         <span class="tag">LIVE</span>
         <h3>Says what it doesn't know</h3>
-        <p>Per-project, per-question capability declaration: available, unavailable,
+        <p>Per-project, per-question capability declaration — available, unavailable,
         or partial, with a reason. Never a confident wrong answer.</p>
       </div>
     </div>
@@ -964,7 +765,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 </section>
 
 <!-- ============================================================
-     RISK FLOW. Second terminal
+     RISK FLOW — second terminal
      ============================================================ -->
 <section class="sheet rule" id="risk">
   <div class="gutter-label">Risk</div>
@@ -972,8 +773,8 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     <div class="section-head" data-reveal>
       <p class="eyebrow">The second loop <span class="tag">LIVE</span></p>
       <h2>Risk, triggered from either direction</h2>
-      <p>A schedule slip and an outside event (a supplier delay, a weather pattern,
-      a code change) both land in the same system of record. The risk register
+      <p>A schedule slip and an outside event — a supplier delay, a weather pattern,
+      a code change — both land in the same system of record. The risk register
       doesn't wait to be asked; it reconciles, re-simulates, and reports, with a
       named person validating each stage.</p>
     </div>
@@ -982,7 +783,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       <div class="term">
         <div class="term-bar">
           <span class="term-dot term-dot-r"></span><span class="term-dot term-dot-y"></span><span class="term-dot term-dot-g"></span>
-          <span class="term-title">risk-register.lognos: exposure</span>
+          <span class="term-title">risk-register.lognos — exposure</span>
           <span class="term-status"><i></i> running</span>
         </div>
         <div class="term-body term-canvas">
@@ -1060,18 +861,18 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       </div>
 
       <div class="step-row">
-        <div class="step"><span class="n">01</span><span class="t">World signal</span><span class="d">An external event enters the system, verified before it counts.</span></div>
+        <div class="step"><span class="n">01</span><span class="t">World signal</span><span class="d">An external event enters the system — verified before it counts.</span></div>
         <div class="step"><span class="n">02</span><span class="t">Schedule update</span><span class="d">Or a logic/duration change lands from the schedule side.</span></div>
         <div class="step"><span class="n">03</span><span class="t">Risk register</span><span class="d">The risk manager reconciles both into one system of record.</span></div>
         <div class="step"><span class="n">04</span><span class="t">Monte Carlo</span><span class="d">Cost and schedule exposure is re-simulated together.</span></div>
-        <div class="step"><span class="n">05</span><span class="t">Report</span><span class="d">The PM confirms. The decision moment, made current.</span></div>
+        <div class="step"><span class="n">05</span><span class="t">Report</span><span class="d">The PM confirms — the decision moment, made current.</span></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============================================================
-     PLAYBOOKS. The XML that drives a predefined workflow
+     PLAYBOOKS — the XML that drives a predefined workflow
      ============================================================ -->
 <section class="sheet rule" id="playbooks">
   <div class="gutter-label">Playbooks</div>
@@ -1079,7 +880,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     <div class="section-head" data-reveal>
       <p class="eyebrow">Playbooks <span class="tag">LIVE</span></p>
       <h2>Every loop is a playbook you can read</h2>
-      <p>A workflow isn't a black box inside the agent. It's a declared document:
+      <p>A workflow isn't a black box inside the agent. It's a declared document —
       which engines run, in what order, under which guardrail, and exactly where a
       named human has to confirm before anything commits.</p>
     </div>
@@ -1108,14 +909,14 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       <p class="eyebrow">Why this is governed, not just fast</p>
       <blockquote>The confirmation <strong>is</strong> the decision.</blockquote>
       <p class="hero-sub" style="margin-top:var(--sp-lg); max-width:44ch;">
-        In most agentic tools, governance is the tax paid for automation, bolted on
+        In most agentic tools, governance is the tax paid for automation — bolted on
         after the agent already acts. For Lognos the confirmation step and the
         decision moment are the same event. The loop runs continuously so that when
         you're asked, you're asked at the moment that matters, with a current picture.
       </p>
     </div>
     <div data-reveal>
-      <div class="pcc-step"><span class="pcc-num">01</span><div class="pcc-body"><h4>Prepare</h4><p>An immutable draft is rendered: schedule, cost, and risk impact, in full.</p></div></div>
+      <div class="pcc-step"><span class="pcc-num">01</span><div class="pcc-body"><h4>Prepare</h4><p>An immutable draft is rendered — schedule, cost, and risk impact, in full.</p></div></div>
       <div class="pcc-step is-decision"><span class="pcc-num">02</span><div class="pcc-body"><h4>Confirm</h4><p>A named person reviews the draft and confirms. This is the decision.</p></div></div>
       <div class="pcc-step"><span class="pcc-num">03</span><div class="pcc-body"><h4>Commit</h4><p>The write lands with a content fingerprint and an audit trail. Not before.</p></div></div>
     </div>
@@ -1136,7 +937,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
       <div class="role-card" data-reveal>
         <p class="eyebrow">Owns the call</p>
         <h3>The project manager</h3>
-        <p>Owns the delivery decision and its consequences. The forecast isn't wrong.
+        <p>Owns the delivery decision and its consequences. The forecast isn't wrong —
         it arrives too late to act on. Lognos closes that gap.</p>
       </div>
       <div class="role-card" data-reveal>
@@ -1163,13 +964,13 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
     <p class="eyebrow">Ready when you are</p>
     <h2>Stop deciding on last month's picture.</h2>
     <p class="hero-sub" style="max-width:46ch">See your own schedule, cost, and risk
-    reconcile on your project, with your data.</p>
+    reconcile — on your project, with your data.</p>
     <div class="cta-actions">
       <a class="btn btn-primary" href="https://cal.com/facundo.bassi/lognos-demo"
          data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}'>Talk to us</a>
       <a class="btn btn-secondary" href="../whitepaper.html">Read the whitepaper</a>
     </div>
-    <p class="cta-note">E&amp;C delivery is the beachhead. Every claim on this page ships at [LIVE] maturity. See 02_POSITIONING/CLAIMS.md.</p>
+    <p class="cta-note">E&amp;C delivery is the beachhead. Every claim on this page ships at [LIVE] maturity — see 02_POSITIONING/CLAIMS.md.</p>
   </div>
 </section>
 
@@ -1193,7 +994,7 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 
 </div><!-- /.page -->
 
-<!-- Cal.com embed. Same booking link as the live site's "Demo" nav
+<!-- Cal.com embed — same booking link as the live site's "Demo" nav
      item, plus the persistent floating button. "Talk to us" opens this
      popup (data-cal-link); the href is the no-JS fallback, same tab. -->
 <script type="text/javascript">
@@ -1236,11 +1037,11 @@ footer{ border-top:1px solid var(--hairline); padding-block:var(--sp-xl); }
 
   /* ⌘K quick-jump palette */
   var SECTIONS = [
-    { label:'Reconciliation loop: cost & schedule', href:'#top' },
+    { label:'Reconciliation loop — cost & schedule', href:'#top' },
     { label:'What Lognos does',                      href:'#what-we-do' },
-    { label:'Risk loop: triggered either way',      href:'#risk' },
+    { label:'Risk loop — triggered either way',      href:'#risk' },
     { label:'Playbooks',                             href:'#playbooks' },
-    { label:'Governance: prepare, confirm, commit', href:'#governance' },
+    { label:'Governance — prepare, confirm, commit', href:'#governance' },
     { label:"Who it's for",                          href:'#who' },
     { label:'Talk to us',                            href:'#contact' }
   ];
