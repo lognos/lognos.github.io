@@ -28,7 +28,7 @@
       hero: {
         title: "Schedule, cost, and risk.<br>Reconciled by AI, <em>governed by your team.</em>",
         sub:
-          "Our agents and yours reach the same engines, over MCP or from Teams, Outlook and other channels. Every confirmation is authenticated and attributed to a named person.",
+          "Our agents and yours reach the same engines, over MCP or from Teams, Outlook and other channels. Every confirmation is human-authenticated and attributed. Your know-how stays readable and portable, never locked inside a model.",
         running: "running",
         cascadeAria:
           "Field progress is queued. A guardrail either writes into the schedule engine or holds for a planner. Cost actuals pass a readiness gate into a waterfall forecast and cost sign-off. Both join the risk engine, then a report the PM confirms.",
@@ -210,7 +210,7 @@
       hero: {
         title: "Échéancier, coûts et risques.<br>Réconciliés par l'IA, <em>gouvernés par votre équipe.</em>",
         sub:
-          "Nos agents et les vôtres atteignent les mêmes moteurs, via MCP ou depuis Teams, Outlook et d'autres canaux. Chaque confirmation est authentifiée et attribuée à une personne nommée.",
+          "Nos agents et les vôtres atteignent les mêmes moteurs, via MCP ou depuis Teams, Outlook et d'autres canaux. Chaque confirmation est authentifiée par un humain et attribuée. Votre savoir-faire reste lisible et portable, jamais enfermé dans un modèle.",
         running: "en cours",
         cascadeAria:
           "L'avancement terrain est mis en file. Un garde-fou écrit dans le Schedule engine ou retient pour un planificateur. Les réels de coûts passent une porte de préparation vers une prévision waterfall et une validation coûts. Les deux rejoignent le Risk engine, puis un rapport que le GP confirme.",
@@ -392,7 +392,7 @@
       hero: {
         title: "Cronograma, costo y riesgo.<br>Reconciliados por IA, <em>gobernados por tu equipo.</em>",
         sub:
-          "Nuestros agentes y los tuyos llegan a los mismos motores, por MCP o desde Teams, Outlook y otros canales. Cada confirmación está autenticada y atribuida a una persona identificada.",
+          "Nuestros agentes y los tuyos llegan a los mismos motores, por MCP o desde Teams, Outlook y otros canales. Cada confirmación está autenticada por una persona y atribuida. Tu know-how permanece legible y portable, nunca encerrado en un modelo.",
         running: "en curso",
         cascadeAria:
           "El avance de obra entra en cola. Un guardrail escribe en el Schedule engine o retiene para un planificador. Los reales de costo pasan una puerta de preparación hacia un pronóstico waterfall y la firma de costos. Ambos se unen al Risk engine, luego un informe que el PM confirma.",
