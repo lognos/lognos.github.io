@@ -6,6 +6,10 @@
 <title>Lognos: Project controls, reconciled continuously</title>
 <meta name="description" content="Schedule, cost, and risk reconcile against each other continuously. One system, not three tools stitched together. Nothing writes without your confirmation, and that confirmation is the decision.">
 <link rel="canonical" href="https://lognos.io/">
+<link rel="alternate" hreflang="en" href="https://lognos.io/">
+<link rel="alternate" hreflang="fr" href="https://lognos.io/?lang=fr">
+<link rel="alternate" hreflang="es" href="https://lognos.io/?lang=es">
+<link rel="alternate" hreflang="x-default" href="https://lognos.io/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://lognos.io/">
 <meta property="og:title" content="Lognos: Project controls, reconciled continuously">
@@ -253,9 +257,11 @@ p{ margin:0; }
   color:var(--text-max); white-space:nowrap;
 }
 .news-banner{
-  display:flex; align-items:center; justify-content:center; gap:.45rem;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  align-items:center;
   min-height:var(--news-h);
-  padding:.4rem 1.5rem;
+  padding:.4rem 1rem;
   background:color-mix(in oklab, var(--accent) 14%, var(--ground));
   border-bottom:1px solid var(--accent-border);
   color:var(--accent);
@@ -264,22 +270,55 @@ p{ margin:0; }
   letter-spacing:.02em;
   text-align:center;
 }
+@media (min-width:40rem){ .news-banner{ padding-inline:1.5rem; } }
+.news-banner-copy{
+  grid-column:1 / -1;
+  grid-row:1;
+  justify-self:center;
+  display:flex; align-items:center; justify-content:center; gap:.45rem;
+  min-width:0; max-width:calc(100% - 7.5rem);
+}
 .news-banner svg{
   width:14px; height:14px; flex:none;
   stroke:currentColor; fill:none;
 }
-.news-banner p{ margin:0; min-width:0; white-space:nowrap; }
+.news-banner p{ margin:0; min-width:0; }
 .news-banner b{ font-weight:700; color:var(--accent-ink); }
-@media (max-width:640px){
-  :root{ --news-h: 3.15rem; }
+.lang-switch{
+  grid-column:3;
+  grid-row:1;
+  justify-self:end;
+  z-index:1;
+  display:inline-flex; align-items:center; gap:.1rem;
+  font-family:var(--font-mono);
+  font-size:.68rem; font-weight:500; letter-spacing:.04em;
+}
+.lang-switch button{
+  appearance:none; background:none; border:0; cursor:pointer;
+  color:var(--text-dim); padding:.15rem .38rem; border-radius:.35rem;
+  font:inherit; letter-spacing:inherit;
+}
+.lang-switch button:hover{ color:var(--text-max); }
+.lang-switch button[aria-pressed="true"]{
+  color:var(--accent);
+  background:var(--accent-surface);
+}
+.nav-overlay .lang-switch{
+  display:flex; justify-content:flex-start;
+  grid-column:auto; grid-row:auto;
+  margin:0 1rem 1.25rem; padding:0;
+}
+@media (max-width:720px){
+  :root{ --news-h: 3.35rem; }
   .news-banner{
-    align-items:flex-start;
-    justify-content:center;
-    padding:.5rem 1rem;
+    display:flex; flex-wrap:wrap; justify-content:center; gap:.35rem .75rem;
+    padding:.45rem 1rem;
     line-height:1.35;
   }
+  .news-banner-copy{ max-width:100%; }
   .news-banner svg{ margin-top:.12rem; }
   .news-banner p{ white-space:normal; text-align:left; }
+  .lang-switch{ justify-self:center; }
 }
 
 .nav-search{
@@ -744,7 +783,7 @@ footer{ padding-block:2.5rem .5rem; }
 
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
 
 <!-- ============================================================
      DEFS
@@ -850,38 +889,45 @@ footer{ padding-block:2.5rem .5rem; }
      ============================================================ -->
 <div class="nav-fixed">
   <div class="news-banner" role="status">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-rocket"/></svg>
-    <p><b>News!</b> v1.0 shipped with Claude / ChatGPT / Gemini connectors</p>
+    <div class="news-banner-copy">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-rocket"/></svg>
+      <p data-i18n-html="news.html"><b>News!</b> v1.0 shipped with Claude / ChatGPT / Gemini connectors</p>
+    </div>
+    <div class="lang-switch" role="group" data-i18n-aria="nav.lang" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+      <button type="button" data-lang="es" aria-pressed="false">ES</button>
+    </div>
   </div>
 <nav class="nav">
   <div class="nav-left">
-    <a class="brand" href="#top" aria-label="Home">
+    <a class="brand" href="#top" data-i18n-aria="nav.home" aria-label="Home">
       <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
       <span class="brand-word">lognos</span>
     </a>
-    <span class="brand-pill" title="Engineering &amp; construction delivery">E&amp;C</span>
+    <span class="brand-pill" data-i18n-title="nav.ec" title="Engineering &amp; construction delivery">E&amp;C</span>
   </div>
 
   <div class="nav-right nav-right-desktop">
-    <button class="nav-search" id="nav-search" aria-label="Quick search">
+    <button class="nav-search" id="nav-search" data-i18n-aria="nav.search" aria-label="Quick search">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd"/></svg>
       <kbd>⌘K</kbd>
     </button>
     <ul class="nav-links">
-      <li><a href="#what-we-do">Product</a></li>
-      <li><a href="#risk">How it works</a></li>
-      <li><a href="#playbooks">Playbooks</a></li>
-      <li><a href="#governance">Governance</a></li>
+      <li><a href="#what-we-do" data-i18n="nav.product">Product</a></li>
+      <li><a href="#risk" data-i18n="nav.how">How it works</a></li>
+      <li><a href="#playbooks" data-i18n="nav.playbooks">Playbooks</a></li>
+      <li><a href="#governance" data-i18n="nav.governance">Governance</a></li>
       <li><a href="https://cal.com/facundo.bassi/lognos-demo"
-             data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}'>Contact</a></li>
+             data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}' data-i18n="nav.contact">Contact</a></li>
     </ul>
   </div>
 
   <div class="nav-right nav-right-mobile">
-    <button class="nav-mobile-search" id="nav-search-mobile" aria-label="Search">
+    <button class="nav-mobile-search" id="nav-search-mobile" data-i18n-aria="nav.search" aria-label="Search">
       <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd"/></svg>
     </button>
-    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-overlay" aria-label="Navigation">
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-overlay" data-i18n-aria="nav.menu" aria-label="Navigation">
       <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16" aria-hidden="true"><path d="M8 2a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM8 6.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM9.5 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z"/></svg>
     </button>
   </div>
@@ -890,31 +936,36 @@ footer{ padding-block:2.5rem .5rem; }
 
 <div class="nav-overlay" id="nav-overlay" hidden>
   <div class="nav-overlay-bar">
-    <a class="brand" href="#top" aria-label="Home">
+    <a class="brand" href="#top" data-i18n-aria="nav.home" aria-label="Home">
       <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
       <span class="brand-word">lognos</span>
     </a>
-    <button class="nav-toggle" id="nav-close" aria-label="Close menu" style="display:grid">
+    <button class="nav-toggle" id="nav-close" data-i18n-aria="nav.close" aria-label="Close menu" style="display:grid">
       <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16" aria-hidden="true"><path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/></svg>
     </button>
   </div>
   <p class="nav-overlay-release">
     <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-rocket"/></svg>
-    <span><b>News!</b> v1.0 shipped with Claude / ChatGPT / Gemini connectors</span>
+      <span data-i18n-html="news.html"><b>News!</b> v1.0 shipped with Claude / ChatGPT / Gemini connectors</span>
   </p>
   <ul class="nav-overlay-links">
-    <li><a href="#what-we-do">Product</a></li>
-    <li><a href="#risk">How it works</a></li>
-    <li><a href="#playbooks">Playbooks</a></li>
-    <li><a href="#governance">Governance</a></li>
-    <li><a href="https://cal.com/facundo.bassi/lognos-demo" data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}'>Contact</a></li>
+    <li><a href="#what-we-do" data-i18n="nav.product">Product</a></li>
+    <li><a href="#risk" data-i18n="nav.how">How it works</a></li>
+    <li><a href="#playbooks" data-i18n="nav.playbooks">Playbooks</a></li>
+    <li><a href="#governance" data-i18n="nav.governance">Governance</a></li>
+    <li><a href="https://cal.com/facundo.bassi/lognos-demo" data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}' data-i18n="nav.contact">Contact</a></li>
   </ul>
+  <div class="lang-switch" role="group" data-i18n-aria="nav.lang" aria-label="Language">
+    <button type="button" data-lang="en" aria-pressed="true">EN</button>
+    <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+    <button type="button" data-lang="es" aria-pressed="false">ES</button>
+  </div>
 </div>
 
 <div class="palette" id="palette" hidden>
   <div class="palette-backdrop" data-palette-close></div>
-  <div class="palette-box" role="dialog" aria-modal="true" aria-label="Quick search">
-    <input id="palette-input" type="text" placeholder="Jump to a section…" autocomplete="off" spellcheck="false">
+  <div class="palette-box" role="dialog" aria-modal="true" data-i18n-aria="palette.aria" aria-label="Quick search">
+    <input id="palette-input" type="text" data-i18n-placeholder="palette.placeholder" placeholder="Jump to a section…" autocomplete="off" spellcheck="false">
     <ul id="palette-list"></ul>
   </div>
 </div>
@@ -932,8 +983,8 @@ footer{ padding-block:2.5rem .5rem; }
 <section class="hero" id="top">
   <div class="hero-spacer" aria-hidden="true"></div>
   <div class="rule" data-reveal>
-    <h1 class="pad">Schedule, cost, and risk.<br>Reconciled by AI, <em>governed by your team.</em></h1>
-    <p class="hero-sub pad">
+    <h1 class="pad" data-i18n-html="hero.title">Schedule, cost, and risk.<br>Reconciled by AI, <em>governed by your team.</em></h1>
+    <p class="hero-sub pad" data-i18n="hero.sub">
       Our agents and yours reach the same engines, over MCP or from Teams, Outlook
       and other channels. Every confirmation is authenticated and attributed to a
       named person.
@@ -946,10 +997,11 @@ footer{ padding-block:2.5rem .5rem; }
         <div class="term-bar">
           <span class="term-dot term-dot-r"></span><span class="term-dot term-dot-y"></span><span class="term-dot term-dot-g"></span>
           <span class="term-title">orchestration.lognos: cascade</span>
-          <span class="term-status"><i></i> running</span>
+          <span class="term-status"><i></i> <span data-i18n="hero.running">running</span></span>
         </div>
         <div class="term-body term-canvas">
           <svg class="flow" viewBox="0 0 1080 488" role="img"
+               data-i18n-aria="hero.cascadeAria"
                aria-label="Field progress is queued. A guardrail either writes into the schedule engine or holds for a planner. Cost actuals pass a readiness gate into a waterfall forecast and cost sign-off. Both join the risk engine, then a report the PM confirms.">
             <path class="conn-return conn-base" d="M990,264 L990,288 L1048,288 L1048,464 L28,464 L28,144 L80,144 L80,120"/>
             <path class="conn-return conn-flow" d="M990,264 L990,288 L1048,288 L1048,464 L28,464 L28,144 L80,144 L80,120"/>
@@ -980,20 +1032,20 @@ footer{ padding-block:2.5rem .5rem; }
             <g class="fnode">
               <foreignObject x="16" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:18ch; animation-delay:0s">capturing progress ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="cascade.tField" style="--ft-w:18ch; animation-delay:0s">capturing progress ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label" x="80" y="50">Field progress</text>
+              <text class="node-label" x="80" y="50" data-i18n="cascade.nField">Field progress</text>
               <rect class="fnode-box" x="56" y="72" width="48" height="48" rx="4"/>
               <use href="#i-checklist" x="68" y="84" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode">
               <foreignObject x="166" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:16ch; animation-delay:1.2s">triaging updates ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="cascade.tQueue" style="--ft-w:16ch; animation-delay:1.2s">triaging updates ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label" x="230" y="50">Update queue</text>
+              <text class="node-label" x="230" y="50" data-i18n="cascade.nQueue">Update queue</text>
               <rect class="fnode-box" x="206" y="72" width="48" height="48" rx="4"/>
               <use href="#i-inbox" x="218" y="84" width="24" height="24" color="var(--text-strong)"/>
             </g>
@@ -1003,20 +1055,20 @@ footer{ padding-block:2.5rem .5rem; }
             <g class="fnode is-human">
               <foreignObject x="306" y="160" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:16ch; animation-delay:2.8s">held for planner ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="cascade.tPlanner" style="--ft-w:16ch; animation-delay:2.8s">held for planner ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label is-accent" x="370" y="194">Planner</text>
+              <text class="node-label is-accent" x="370" y="194" data-i18n="cascade.nPlanner">Planner</text>
               <rect class="fnode-box" x="346" y="216" width="48" height="48" rx="4"/>
               <use href="#i-user" x="358" y="228" width="24" height="24" color="var(--accent)"/>
             </g>
             <g class="fnode">
               <foreignObject x="466" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:16ch; animation-delay:2.4s">writing schedule ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="cascade.tSched" style="--ft-w:16ch; animation-delay:2.4s">writing schedule ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label" x="530" y="50">Schedule engine</text>
+              <text class="node-label" x="530" y="50" data-i18n="cascade.nSched">Schedule engine</text>
               <rect class="fnode-box" x="506" y="72" width="48" height="48" rx="4"/>
               <use href="#i-gantt" x="518" y="84" width="24" height="24" color="var(--text-strong)"/>
             </g>
@@ -1024,10 +1076,10 @@ footer{ padding-block:2.5rem .5rem; }
             <g class="fnode">
               <foreignObject x="16" y="312" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:17ch; animation-delay:0.4s">ingesting actuals ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="cascade.tActuals" style="--ft-w:17ch; animation-delay:0.4s">ingesting actuals ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label" x="80" y="346">Actuals in</text>
+              <text class="node-label" x="80" y="346" data-i18n="cascade.nActuals">Actuals in</text>
               <rect class="fnode-box" x="56" y="368" width="48" height="48" rx="4"/>
               <use href="#i-forecast" x="68" y="380" width="24" height="24" color="var(--text-strong)"/>
             </g>
@@ -1037,20 +1089,20 @@ footer{ padding-block:2.5rem .5rem; }
             <g class="fnode">
               <foreignObject x="216" y="312" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:12ch; animation-delay:4s">forecasting ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="cascade.tWaterfall" style="--ft-w:12ch; animation-delay:4s">forecasting ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label" x="280" y="346">Waterfall</text>
+              <text class="node-label" x="280" y="346" data-i18n="cascade.nWaterfall">Waterfall</text>
               <rect class="fnode-box" x="256" y="368" width="48" height="48" rx="4"/>
               <use href="#i-forecast" x="268" y="380" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode is-human">
               <foreignObject x="466" y="312" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:16ch; animation-delay:5s">awaiting sign-off ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="cascade.tCost" style="--ft-w:16ch; animation-delay:5s">awaiting sign-off ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label is-accent" x="530" y="346">Cost signs off</text>
+              <text class="node-label is-accent" x="530" y="346" data-i18n="cascade.nCost">Cost signs off</text>
               <rect class="fnode-box" x="506" y="368" width="48" height="48" rx="4"/>
               <use href="#i-user" x="518" y="380" width="24" height="24" color="var(--accent)"/>
             </g>
@@ -1058,30 +1110,30 @@ footer{ padding-block:2.5rem .5rem; }
             <g class="fnode">
               <foreignObject x="626" y="160" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:18ch; animation-delay:6s">simulating composite ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="cascade.tRisk" style="--ft-w:18ch; animation-delay:6s">simulating composite ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label" x="690" y="194">Risk engine</text>
+              <text class="node-label" x="690" y="194" data-i18n="cascade.nRisk">Risk engine</text>
               <rect class="fnode-box" x="666" y="216" width="48" height="48" rx="4"/>
               <use href="#i-montecarlo" x="678" y="228" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode is-final">
               <foreignObject x="776" y="160" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:16ch; animation-delay:7.5s">compiling report ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="cascade.tReport" style="--ft-w:16ch; animation-delay:7.5s">compiling report ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label is-accent" x="840" y="194">Report</text>
+              <text class="node-label is-accent" x="840" y="194" data-i18n="cascade.nReport">Report</text>
               <rect class="fnode-box" x="816" y="216" width="48" height="48" rx="4"/>
               <use href="#i-report" x="828" y="228" width="24" height="24" color="var(--accent)"/>
             </g>
             <g class="fnode is-human">
               <foreignObject x="926" y="160" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:16ch; animation-delay:8.5s">awaiting confirm ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="cascade.tPm" style="--ft-w:16ch; animation-delay:8.5s">awaiting confirm ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label is-accent" x="990" y="194">PM confirms</text>
+              <text class="node-label is-accent" x="990" y="194" data-i18n="cascade.nPm">PM confirms</text>
               <rect class="fnode-box" x="966" y="216" width="48" height="48" rx="4"/>
               <use href="#i-user" x="978" y="228" width="24" height="24" color="var(--accent)"/>
             </g>
@@ -1094,22 +1146,23 @@ footer{ padding-block:2.5rem .5rem; }
         <div class="clip-card">
           <video id="hero-clip-video" src="images/lognos_home.mp4"
                  autoplay muted loop playsinline preload="metadata"
+                 data-i18n-aria="hero.video"
                  aria-label="Lognos product walkthrough"></video>
         </div>
       </div>
     </div>
 
       <div class="step-row">
-        <div class="step"><span class="n">01</span><span class="t">Field progress</span><span class="d">Site capture enters the cascade. Cost actuals can start the same loop from the other side.</span></div>
-        <div class="step"><span class="n">02</span><span class="t">Schedule engine</span><span class="d">Queued updates pass a guardrail. Direct and mechanical fixes write; second-order or unclear changes are held for a planner.</span></div>
-        <div class="step"><span class="n">03</span><span class="t">Waterfall forecast</span><span class="d">A deterministic commitment + accrual forecast, signed off by the cost controller. Not the risk engine.</span></div>
-        <div class="step"><span class="n">04</span><span class="t">Risk engine</span><span class="d">A separate computation: cost × schedule × the risk register, producing a risk-adjusted forecast.</span></div>
-        <div class="step"><span class="n">05</span><span class="t">Report</span><span class="d">The PM confirms. That confirmation is the decision. Pending tasks start the next cycle.</span></div>
+        <div class="step"><span class="n">01</span><span class="t" data-i18n="cascade.s1t">Field progress</span><span class="d" data-i18n="cascade.s1d">Site capture enters the cascade. Cost actuals can start the same loop from the other side.</span></div>
+        <div class="step"><span class="n">02</span><span class="t" data-i18n="cascade.s2t">Schedule engine</span><span class="d" data-i18n="cascade.s2d">Queued updates pass a guardrail. Direct and mechanical fixes write; second-order or unclear changes are held for a planner.</span></div>
+        <div class="step"><span class="n">03</span><span class="t" data-i18n="cascade.s3t">Waterfall forecast</span><span class="d" data-i18n="cascade.s3d">A deterministic commitment + accrual forecast, signed off by the cost controller. Not the risk engine.</span></div>
+        <div class="step"><span class="n">04</span><span class="t" data-i18n="cascade.s4t">Risk engine</span><span class="d" data-i18n="cascade.s4d">A separate computation: cost × schedule × the risk register, producing a risk-adjusted forecast.</span></div>
+        <div class="step"><span class="n">05</span><span class="t" data-i18n="cascade.s5t">Report</span><span class="d" data-i18n="cascade.s5d">The PM confirms. That confirmation is the decision. Pending tasks start the next cycle.</span></div>
       </div>
     </div>
 
     <div class="rule integrations" data-reveal>
-      <div class="marquee" aria-label="Compatible agents and tools">
+      <div class="marquee" data-i18n-aria="hero.integrations" aria-label="Compatible agents and tools">
         <div class="marquee-track">
           <div class="marquee-set">
             <svg viewBox="0 0 24 24"><title>Telegram</title><use href="#i-int-telegram"/></svg>
@@ -1143,46 +1196,39 @@ footer{ padding-block:2.5rem .5rem; }
      ============================================================ -->
 <section id="what-we-do">
   <div class="rule section-head" data-reveal>
-    <p class="cat pad">What it is</p>
-    <h2 class="pad">Project controls, done continuously</h2>
+    <p class="cat pad" data-i18n="what.cat">What it is</p>
+    <h2 class="pad" data-i18n="what.title">Project controls, done continuously</h2>
   </div>
   <div class="rule">
-    <p class="pad" style="color:var(--text-muted);font-size:1rem;line-height:1.75rem;max-width:48rem;padding-block:1.875rem">
-      Three teams maintain three versions of the truth, and they only agree on the
-      day the report goes out. That isn't carelessness. It's arithmetic. A validated,
-      reconciled forecast used to take days of expert work, so it happened monthly,
-      and everyone agreed to call that current. That constraint is gone. Lognos
-      reconciles schedule, cost, and risk against each other continuously, so the
-      picture a decision gets made against is never more than an update old.
-    </p>
+    <p class="pad" data-i18n="what.lede" style="color:var(--text-muted);font-size:1rem;line-height:1.75rem;max-width:48rem;padding-block:1.875rem">Three teams maintain three versions of the truth, and they only agree on the day the report goes out. That isn't carelessness. It's arithmetic. A validated, reconciled forecast used to take days of expert work, so it happened monthly, and everyone agreed to call that current. That constraint is gone. Lognos reconciles schedule, cost, and risk against each other continuously, so the picture a decision gets made against is never more than an update old.</p>
   </div>
   <div class="rule">
     <div class="diff-grid">
       <div class="diff-card" data-reveal>
-        <span class="tag">LIVE</span>
-        <h3>One picture, not three</h3>
-        <p>Schedule, cost, and risk aren't separate products wired together after the
+        <span class="tag" data-i18n="tag.live">LIVE</span>
+        <h3 data-i18n="what.t1">One picture, not three</h3>
+        <p data-i18n="what.b1">Schedule, cost, and risk aren't separate products wired together after the
         fact. They run as three engines over a single record, reconciling against each
         other continuously. Most tools in this market do one of the three well and leave
         the reconciliation between them to you and a spreadsheet.</p>
       </div>
       <div class="diff-card" data-reveal>
-        <span class="tag">LIVE</span>
-        <h3>The confirmation is the decision</h3>
-        <p>Nothing writes without prepare → confirm → commit. Not a policy bolted on
+        <span class="tag" data-i18n="tag.live">LIVE</span>
+        <h3 data-i18n="what.t2">The confirmation is the decision</h3>
+        <p data-i18n="what.b2">Nothing writes without prepare → confirm → commit. Not a policy bolted on
         after the fact. It's the same mechanism that makes the loop worth having.</p>
       </div>
       <div class="diff-card" data-reveal>
-        <span class="tag">LIVE</span>
-        <h3>Open at the edges</h3>
-        <p>Integrated inside, open outside. The engines are reachable over MCP by any
+        <span class="tag" data-i18n="tag.live">LIVE</span>
+        <h3 data-i18n="what.t3">Open at the edges</h3>
+        <p data-i18n="what.b3">Integrated inside, open outside. The engines are reachable over MCP by any
         compatible agent: Claude, ChatGPT, or one your own team builds. You shouldn't
         have to adopt our interface to get value from our reasoning.</p>
       </div>
       <div class="diff-card" data-reveal>
-        <span class="tag">LIVE</span>
-        <h3>Says what it doesn't know</h3>
-        <p>Per-project, per-question capability declaration: available, unavailable,
+        <span class="tag" data-i18n="tag.live">LIVE</span>
+        <h3 data-i18n="what.t4">Says what it doesn't know</h3>
+        <p data-i18n="what.b4">Per-project, per-question capability declaration: available, unavailable,
         or partial, with a reason. Never a confident wrong answer.</p>
       </div>
     </div>
@@ -1194,11 +1240,11 @@ footer{ padding-block:2.5rem .5rem; }
      ============================================================ -->
 <section id="risk">
   <div class="rule section-head" data-reveal>
-    <p class="cat pad">Risk</p>
-    <h2 class="pad">Risk, triggered from more than one place</h2>
+    <p class="cat pad" data-i18n="risk.cat">Risk</p>
+    <h2 class="pad" data-i18n="risk.title">Risk, triggered from more than one place</h2>
   </div>
   <div class="rule">
-    <p class="pad" style="color:var(--text-muted);font-size:1rem;line-height:1.75rem;max-width:48rem;padding-block:1.875rem">Project communications, ingested documents, live world signals, and schedule or cost deltas all land in the same identification step. Matches update the register; new actions open a governed review. The reviewer-commit path is still being hardened. Everything around it is live.</p>
+    <p class="pad" data-i18n="risk.lede" style="color:var(--text-muted);font-size:1rem;line-height:1.75rem;max-width:48rem;padding-block:1.875rem">Project communications, ingested documents, live world signals, and schedule or cost deltas all land in the same identification step. Matches update the register; new actions open a governed review. The reviewer-commit path is still being hardened. Everything around it is live.</p>
   </div>
 
   <div class="rule term-stage" data-reveal>
@@ -1206,10 +1252,11 @@ footer{ padding-block:2.5rem .5rem; }
         <div class="term-bar">
           <span class="term-dot term-dot-r"></span><span class="term-dot term-dot-y"></span><span class="term-dot term-dot-g"></span>
           <span class="term-title">risk-register.lognos: identification</span>
-          <span class="term-status"><i></i> running</span>
+          <span class="term-status"><i></i> <span data-i18n="hero.running">running</span></span>
         </div>
         <div class="term-body term-canvas">
           <svg class="flow" viewBox="0 0 1260 640" role="img"
+               data-i18n-aria="risk.aria"
                aria-label="Four signal sources (communications, documents, world search, and schedule or cost deltas) feed extraction and de-duplication, then a match against the existing register. Classification updates the register and opens a proposed-to-review workflow. The reviewer commit step is in progress. The register feeds the same risk engine, then a risk board and tasks back to owners.">
             <path class="conn-return conn-base" d="M1150,120 L1150,144 L1224,144 L1224,608 L28,608 L28,144 L80,144 L80,120"/>
             <path class="conn-return conn-flow" d="M1150,120 L1150,144 L1224,144 L1224,608 L28,608 L28,144 L80,144 L80,120"/>
@@ -1249,40 +1296,40 @@ footer{ padding-block:2.5rem .5rem; }
             <g class="fnode">
               <foreignObject x="16" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:14ch; animation-delay:0s">reading comms ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="risk.tComms" style="--ft-w:14ch; animation-delay:0s">reading comms ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label" x="80" y="50">Communications</text>
+              <text class="node-label" x="80" y="50" data-i18n="risk.nComms">Communications</text>
               <rect class="fnode-box" x="56" y="72" width="48" height="48" rx="4"/>
               <use href="#i-mail" x="68" y="84" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode is-progress">
               <foreignObject x="16" y="160" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type is-progress">
-                  <span class="ft-text" style="--ft-w:15ch; animation-delay:0.4s">ingesting docs …</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="risk.tDocs" style="--ft-w:15ch; animation-delay:0.4s">ingesting docs …</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label" x="80" y="194">Documents</text>
+              <text class="node-label" x="80" y="194" data-i18n="risk.nDocs">Documents</text>
               <rect class="fnode-box" x="56" y="216" width="48" height="48" rx="4"/>
               <use href="#i-file" x="68" y="228" width="24" height="24" color="#93c5fd"/>
             </g>
             <g class="fnode">
               <foreignObject x="16" y="304" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:16ch; animation-delay:0.8s">searching world ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="risk.tWorld" style="--ft-w:16ch; animation-delay:0.8s">searching world ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label" x="80" y="338">World signals</text>
+              <text class="node-label" x="80" y="338" data-i18n="risk.nWorld">World signals</text>
               <rect class="fnode-box" x="56" y="360" width="48" height="48" rx="4"/>
               <use href="#i-globe" x="68" y="372" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode">
               <foreignObject x="16" y="448" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:16ch; animation-delay:1.2s">reading deltas ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="risk.tDelta" style="--ft-w:16ch; animation-delay:1.2s">reading deltas ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label" x="80" y="482">Schedule &amp; cost</text>
+              <text class="node-label" x="80" y="482" data-i18n="risk.nDelta">Schedule &amp; cost</text>
               <rect class="fnode-box" x="56" y="504" width="48" height="48" rx="4"/>
               <use href="#i-gantt" x="68" y="516" width="24" height="24" color="var(--text-strong)"/>
             </g>
@@ -1290,10 +1337,10 @@ footer{ padding-block:2.5rem .5rem; }
             <g class="fnode">
               <foreignObject x="206" y="160" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:15ch; animation-delay:1.8s">de-duplicating ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="risk.tExtract" style="--ft-w:15ch; animation-delay:1.8s">de-duplicating ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label" x="270" y="194">Extract</text>
+              <text class="node-label" x="270" y="194" data-i18n="risk.nExtract">Extract</text>
               <rect class="fnode-box" x="246" y="216" width="48" height="48" rx="4"/>
               <use href="#i-search" x="258" y="228" width="24" height="24" color="var(--text-strong)"/>
             </g>
@@ -1303,10 +1350,10 @@ footer{ padding-block:2.5rem .5rem; }
             <g class="fnode">
               <foreignObject x="486" y="160" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:18ch; animation-delay:3s">assigning owners ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="risk.tClassify" style="--ft-w:18ch; animation-delay:3s">assigning owners ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label" x="550" y="194">Classify</text>
+              <text class="node-label" x="550" y="194" data-i18n="risk.nClassify">Classify</text>
               <rect class="fnode-box" x="526" y="216" width="48" height="48" rx="4"/>
               <use href="#i-shield-list" x="538" y="228" width="24" height="24" color="var(--text-strong)"/>
             </g>
@@ -1314,40 +1361,40 @@ footer{ padding-block:2.5rem .5rem; }
             <g class="fnode">
               <foreignObject x="636" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:18ch; animation-delay:4s">updating register ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="risk.tRegister" style="--ft-w:18ch; animation-delay:4s">updating register ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label" x="700" y="50">Risk register</text>
+              <text class="node-label" x="700" y="50" data-i18n="risk.nRegister">Risk register</text>
               <rect class="fnode-box" x="676" y="72" width="48" height="48" rx="4"/>
               <use href="#i-inbox" x="688" y="84" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode">
               <foreignObject x="786" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:18ch; animation-delay:5.2s">simulating composite ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="risk.tEngine" style="--ft-w:18ch; animation-delay:5.2s">simulating composite ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label" x="850" y="50">Risk engine</text>
+              <text class="node-label" x="850" y="50" data-i18n="risk.nEngine">Risk engine</text>
               <rect class="fnode-box" x="826" y="72" width="48" height="48" rx="4"/>
               <use href="#i-montecarlo" x="838" y="84" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode is-final">
               <foreignObject x="936" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:16ch; animation-delay:6.4s">compiling board ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="risk.tBoard" style="--ft-w:16ch; animation-delay:6.4s">compiling board ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label is-accent" x="1000" y="50">Risk board</text>
+              <text class="node-label is-accent" x="1000" y="50" data-i18n="risk.nBoard">Risk board</text>
               <rect class="fnode-box" x="976" y="72" width="48" height="48" rx="4"/>
               <use href="#i-report" x="988" y="84" width="24" height="24" color="var(--accent)"/>
             </g>
             <g class="fnode is-human">
               <foreignObject x="1086" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:16ch; animation-delay:7.4s">notifying owner ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="risk.tOwner" style="--ft-w:16ch; animation-delay:7.4s">notifying owner ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label is-accent" x="1150" y="50">Task to owner</text>
+              <text class="node-label is-accent" x="1150" y="50" data-i18n="risk.nOwner">Task to owner</text>
               <rect class="fnode-box" x="1126" y="72" width="48" height="48" rx="4"/>
               <use href="#i-user" x="1138" y="84" width="24" height="24" color="var(--accent)"/>
             </g>
@@ -1355,30 +1402,30 @@ footer{ padding-block:2.5rem .5rem; }
             <g class="fnode is-human">
               <foreignObject x="636" y="448" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:17ch; animation-delay:3.6s">opening proposal ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="risk.tProposed" style="--ft-w:17ch; animation-delay:3.6s">opening proposal ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label is-accent" x="700" y="482">Proposed</text>
+              <text class="node-label is-accent" x="700" y="482" data-i18n="risk.nProposed">Proposed</text>
               <rect class="fnode-box" x="676" y="504" width="48" height="48" rx="4"/>
               <use href="#i-user" x="688" y="516" width="24" height="24" color="var(--accent)"/>
             </g>
             <g class="fnode is-human">
               <foreignObject x="786" y="448" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
-                  <span class="ft-text" style="--ft-w:16ch; animation-delay:4.6s">awaiting review ✓</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="risk.tReview" style="--ft-w:16ch; animation-delay:4.6s">awaiting review ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label is-accent" x="850" y="482">In review</text>
+              <text class="node-label is-accent" x="850" y="482" data-i18n="risk.nReview">In review</text>
               <rect class="fnode-box" x="826" y="504" width="48" height="48" rx="4"/>
               <use href="#i-user" x="838" y="516" width="24" height="24" color="var(--accent)"/>
             </g>
             <g class="fnode is-progress">
               <foreignObject x="936" y="448" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type is-progress">
-                  <span class="ft-text" style="--ft-w:16ch; animation-delay:5.6s">commit not live</span><span class="ft-cursor">_</span>
+                  <span class="ft-text" data-i18n-ft="risk.tReviewer" style="--ft-w:16ch; animation-delay:5.6s">commit not live</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
-              <text class="node-label" x="1000" y="482">Reviewer</text>
+              <text class="node-label" x="1000" y="482" data-i18n="risk.nReviewer">Reviewer</text>
               <rect class="fnode-box" x="976" y="504" width="48" height="48" rx="4"/>
               <use href="#i-user" x="988" y="516" width="24" height="24" color="#93c5fd"/>
             </g>
@@ -1387,11 +1434,11 @@ footer{ padding-block:2.5rem .5rem; }
       </div>
 
       <div class="step-row">
-        <div class="step"><span class="n">01</span><span class="t">Four signal sources</span><span class="d">Communications, documents, world search, and schedule or cost deltas. Documents are built, not yet live on a client register.</span></div>
-        <div class="step"><span class="n">02</span><span class="t">Identification</span><span class="d">Extract, de-duplicate, match the existing register, classify, and assign an owner. Proposals, not silent duplicates.</span></div>
-        <div class="step"><span class="n">03</span><span class="t">Action workflow</span><span class="d">Proposed → in review → final validation. The reviewer commit that advances a task is the gap still being hardened.</span></div>
-        <div class="step"><span class="n">04</span><span class="t">Risk engine</span><span class="d">The same engine as the main cascade: cost × schedule × the register. One computation, not a second risk model.</span></div>
-        <div class="step"><span class="n">05</span><span class="t">Board &amp; tasks</span><span class="d">Status lands on the risk board; work is surfaced to the owner over the app, Telegram, email, or MCP.</span></div>
+        <div class="step"><span class="n">01</span><span class="t" data-i18n="risk.s1t">Four signal sources</span><span class="d" data-i18n="risk.s1d">Communications, documents, world search, and schedule or cost deltas. Documents are built, not yet live on a client register.</span></div>
+        <div class="step"><span class="n">02</span><span class="t" data-i18n="risk.s2t">Identification</span><span class="d" data-i18n="risk.s2d">Extract, de-duplicate, match the existing register, classify, and assign an owner. Proposals, not silent duplicates.</span></div>
+        <div class="step"><span class="n">03</span><span class="t" data-i18n="risk.s3t">Action workflow</span><span class="d" data-i18n="risk.s3d">Proposed → in review → final validation. The reviewer commit that advances a task is the gap still being hardened.</span></div>
+        <div class="step"><span class="n">04</span><span class="t" data-i18n="risk.s4t">Risk engine</span><span class="d" data-i18n="risk.s4d">The same engine as the main cascade: cost × schedule × the register. One computation, not a second risk model.</span></div>
+        <div class="step"><span class="n">05</span><span class="t" data-i18n="risk.s5t">Board &amp; tasks</span><span class="d" data-i18n="risk.s5d">Status lands on the risk board; work is surfaced to the owner over the app, Telegram, email, or MCP.</span></div>
       </div>
     </div>
 </section>
@@ -1401,11 +1448,11 @@ footer{ padding-block:2.5rem .5rem; }
      ============================================================ -->
 <section id="playbooks">
   <div class="rule section-head" data-reveal>
-    <p class="cat pad">Playbooks</p>
-    <h2 class="pad">Every loop is a playbook you can read</h2>
+    <p class="cat pad" data-i18n="playbooks.cat">Playbooks</p>
+    <h2 class="pad" data-i18n="playbooks.title">Every loop is a playbook you can read</h2>
   </div>
   <div class="rule">
-    <p class="pad" style="color:var(--text-muted);font-size:1rem;line-height:1.75rem;max-width:48rem;padding-block:1.875rem">A workflow isn't a black box inside the agent. It's a declared document:
+    <p class="pad" data-i18n="playbooks.lede" style="color:var(--text-muted);font-size:1rem;line-height:1.75rem;max-width:48rem;padding-block:1.875rem">A workflow isn't a black box inside the agent. It's a declared document:
     which engines run, in what order, under which guardrail, and exactly where a
     named human has to confirm before anything commits.</p>
   </div>
@@ -1417,7 +1464,7 @@ footer{ padding-block:2.5rem .5rem; }
           <span class="term-title">playbooks/cost-reconciliation.xml</span>
         </div>
         <div class="term-body">
-<pre class="code"><span class="l"><span class="tok-com">&lt;!-- field + actuals → schedule guardrail → waterfall, then a separate Monte Carlo --&gt;</span></span><span class="l"><span class="tok-punc">&lt;</span><span class="tok-tag">playbook</span> <span class="tok-attr">id</span><span class="tok-punc">=</span><span class="tok-str">"cost-reconciliation"</span> <span class="tok-attr">version</span><span class="tok-punc">=</span><span class="tok-str">"5"</span><span class="tok-punc">&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">trigger</span> <span class="tok-attr">on</span><span class="tok-punc">=</span><span class="tok-str">"progress.updated"</span> <span class="tok-attr">scope</span><span class="tok-punc">=</span><span class="tok-str">"project"</span> <span class="tok-punc">/&gt;</span></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">trigger</span> <span class="tok-attr">on</span><span class="tok-punc">=</span><span class="tok-str">"actuals.updated"</span> <span class="tok-attr">scope</span><span class="tok-punc">=</span><span class="tok-str">"project"</span> <span class="tok-punc">/&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">step</span> <span class="tok-attr">engine</span><span class="tok-punc">=</span><span class="tok-str">"schedule"</span> <span class="tok-attr">name</span><span class="tok-punc">=</span><span class="tok-str">"queue"</span><span class="tok-punc">&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">guardrail</span> <span class="tok-attr">mode</span><span class="tok-punc">=</span><span class="tok-str">"deterministic"</span><span class="tok-punc">&gt;</span></span><span class="l">      <span class="tok-punc">&lt;</span><span class="tok-tag">auto</span> <span class="tok-attr">when</span><span class="tok-punc">=</span><span class="tok-str">"direct | mechanical-fix"</span> <span class="tok-punc">/&gt;</span></span><span class="l">      <span class="tok-punc">&lt;</span><span class="tok-tag">hold</span> <span class="tok-attr">when</span><span class="tok-punc">=</span><span class="tok-str">"second-order | unclear"</span> <span class="tok-attr">role</span><span class="tok-punc">=</span><span class="tok-str">"planner"</span> <span class="tok-punc">/&gt;</span></span><span class="l">    <span class="tok-punc">&lt;/</span><span class="tok-tag">guardrail</span><span class="tok-punc">&gt;</span></span><span class="l">  <span class="tok-punc">&lt;/</span><span class="tok-tag">step</span><span class="tok-punc">&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">step</span> <span class="tok-attr">engine</span><span class="tok-punc">=</span><span class="tok-str">"cost"</span> <span class="tok-attr">name</span><span class="tok-punc">=</span><span class="tok-str">"waterfall"</span> <span class="tok-attr">after</span><span class="tok-punc">=</span><span class="tok-str">"queue"</span><span class="tok-punc">&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">method</span><span class="tok-punc">&gt;</span><span class="tok-txt">commitment+accrual</span><span class="tok-punc">&lt;/</span><span class="tok-tag">method</span><span class="tok-punc">&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">confirm</span> <span class="tok-attr">role</span><span class="tok-punc">=</span><span class="tok-str">"cost-controller"</span> <span class="tok-punc">/&gt;</span></span><span class="l">  <span class="tok-punc">&lt;/</span><span class="tok-tag">step</span><span class="tok-punc">&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">step</span> <span class="tok-attr">engine</span><span class="tok-punc">=</span><span class="tok-str">"risk"</span> <span class="tok-attr">name</span><span class="tok-punc">=</span><span class="tok-str">"simulate"</span> <span class="tok-attr">after</span><span class="tok-punc">=</span><span class="tok-str">"waterfall"</span><span class="tok-punc">&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">montecarlo</span> <span class="tok-attr">iterations</span><span class="tok-punc">=</span><span class="tok-str">"10000"</span> <span class="tok-attr">inputs</span><span class="tok-punc">=</span><span class="tok-str">"cost × schedule × register"</span> <span class="tok-punc">/&gt;</span></span><span class="l">  <span class="tok-punc">&lt;/</span><span class="tok-tag">step</span><span class="tok-punc">&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">confirm</span> <span class="tok-attr">role</span><span class="tok-punc">=</span><span class="tok-str">"project-manager"</span><span class="tok-punc">&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">render</span> <span class="tok-attr">template</span><span class="tok-punc">=</span><span class="tok-str">"impact-summary"</span> <span class="tok-attr">immutable</span><span class="tok-punc">=</span><span class="tok-str">"true"</span> <span class="tok-punc">/&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">fingerprint</span> <span class="tok-attr">algorithm</span><span class="tok-punc">=</span><span class="tok-str">"sha-256"</span> <span class="tok-punc">/&gt;</span></span><span class="l">  <span class="tok-punc">&lt;/</span><span class="tok-tag">confirm</span><span class="tok-punc">&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">commit</span> <span class="tok-attr">idempotency-key</span><span class="tok-punc">=</span><span class="tok-str">"{{run}}"</span> <span class="tok-attr">audit</span><span class="tok-punc">=</span><span class="tok-str">"true"</span> <span class="tok-punc">/&gt;</span></span><span class="l"><span class="tok-punc">&lt;/</span><span class="tok-tag">playbook</span><span class="tok-punc">&gt;</span></span></pre>
+<pre class="code"><span class="l"><span class="tok-com" data-i18n="playbooks.xmlComment">&lt;!-- field + actuals → schedule guardrail → waterfall, then a separate Monte Carlo --&gt;</span></span><span class="l"><span class="tok-punc">&lt;</span><span class="tok-tag">playbook</span> <span class="tok-attr">id</span><span class="tok-punc">=</span><span class="tok-str">"cost-reconciliation"</span> <span class="tok-attr">version</span><span class="tok-punc">=</span><span class="tok-str">"5"</span><span class="tok-punc">&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">trigger</span> <span class="tok-attr">on</span><span class="tok-punc">=</span><span class="tok-str">"progress.updated"</span> <span class="tok-attr">scope</span><span class="tok-punc">=</span><span class="tok-str">"project"</span> <span class="tok-punc">/&gt;</span></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">trigger</span> <span class="tok-attr">on</span><span class="tok-punc">=</span><span class="tok-str">"actuals.updated"</span> <span class="tok-attr">scope</span><span class="tok-punc">=</span><span class="tok-str">"project"</span> <span class="tok-punc">/&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">step</span> <span class="tok-attr">engine</span><span class="tok-punc">=</span><span class="tok-str">"schedule"</span> <span class="tok-attr">name</span><span class="tok-punc">=</span><span class="tok-str">"queue"</span><span class="tok-punc">&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">guardrail</span> <span class="tok-attr">mode</span><span class="tok-punc">=</span><span class="tok-str">"deterministic"</span><span class="tok-punc">&gt;</span></span><span class="l">      <span class="tok-punc">&lt;</span><span class="tok-tag">auto</span> <span class="tok-attr">when</span><span class="tok-punc">=</span><span class="tok-str">"direct | mechanical-fix"</span> <span class="tok-punc">/&gt;</span></span><span class="l">      <span class="tok-punc">&lt;</span><span class="tok-tag">hold</span> <span class="tok-attr">when</span><span class="tok-punc">=</span><span class="tok-str">"second-order | unclear"</span> <span class="tok-attr">role</span><span class="tok-punc">=</span><span class="tok-str">"planner"</span> <span class="tok-punc">/&gt;</span></span><span class="l">    <span class="tok-punc">&lt;/</span><span class="tok-tag">guardrail</span><span class="tok-punc">&gt;</span></span><span class="l">  <span class="tok-punc">&lt;/</span><span class="tok-tag">step</span><span class="tok-punc">&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">step</span> <span class="tok-attr">engine</span><span class="tok-punc">=</span><span class="tok-str">"cost"</span> <span class="tok-attr">name</span><span class="tok-punc">=</span><span class="tok-str">"waterfall"</span> <span class="tok-attr">after</span><span class="tok-punc">=</span><span class="tok-str">"queue"</span><span class="tok-punc">&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">method</span><span class="tok-punc">&gt;</span><span class="tok-txt">commitment+accrual</span><span class="tok-punc">&lt;/</span><span class="tok-tag">method</span><span class="tok-punc">&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">confirm</span> <span class="tok-attr">role</span><span class="tok-punc">=</span><span class="tok-str">"cost-controller"</span> <span class="tok-punc">/&gt;</span></span><span class="l">  <span class="tok-punc">&lt;/</span><span class="tok-tag">step</span><span class="tok-punc">&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">step</span> <span class="tok-attr">engine</span><span class="tok-punc">=</span><span class="tok-str">"risk"</span> <span class="tok-attr">name</span><span class="tok-punc">=</span><span class="tok-str">"simulate"</span> <span class="tok-attr">after</span><span class="tok-punc">=</span><span class="tok-str">"waterfall"</span><span class="tok-punc">&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">montecarlo</span> <span class="tok-attr">iterations</span><span class="tok-punc">=</span><span class="tok-str">"10000"</span> <span class="tok-attr">inputs</span><span class="tok-punc">=</span><span class="tok-str">"cost × schedule × register"</span> <span class="tok-punc">/&gt;</span></span><span class="l">  <span class="tok-punc">&lt;/</span><span class="tok-tag">step</span><span class="tok-punc">&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">confirm</span> <span class="tok-attr">role</span><span class="tok-punc">=</span><span class="tok-str">"project-manager"</span><span class="tok-punc">&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">render</span> <span class="tok-attr">template</span><span class="tok-punc">=</span><span class="tok-str">"impact-summary"</span> <span class="tok-attr">immutable</span><span class="tok-punc">=</span><span class="tok-str">"true"</span> <span class="tok-punc">/&gt;</span></span><span class="l">    <span class="tok-punc">&lt;</span><span class="tok-tag">fingerprint</span> <span class="tok-attr">algorithm</span><span class="tok-punc">=</span><span class="tok-str">"sha-256"</span> <span class="tok-punc">/&gt;</span></span><span class="l">  <span class="tok-punc">&lt;/</span><span class="tok-tag">confirm</span><span class="tok-punc">&gt;</span></span><span class="l"></span><span class="l">  <span class="tok-punc">&lt;</span><span class="tok-tag">commit</span> <span class="tok-attr">idempotency-key</span><span class="tok-punc">=</span><span class="tok-str">"{{run}}"</span> <span class="tok-attr">audit</span><span class="tok-punc">=</span><span class="tok-str">"true"</span> <span class="tok-punc">/&gt;</span></span><span class="l"><span class="tok-punc">&lt;/</span><span class="tok-tag">playbook</span><span class="tok-punc">&gt;</span></span></pre>
         </div>
       </div>
     </div>
@@ -1428,12 +1475,12 @@ footer{ padding-block:2.5rem .5rem; }
      ============================================================ -->
 <section id="governance">
   <div class="rule section-head" data-reveal>
-    <p class="cat pad">Governance</p>
-    <h2 class="pad" style="max-width:22ch">The confirmation <em style="font-style:normal;color:var(--accent)">is</em> the decision.</h2>
+    <p class="cat pad" data-i18n="gov.cat">Governance</p>
+    <h2 class="pad" style="max-width:32ch" data-i18n-html="gov.title">The confirmation <em style="font-style:normal;color:var(--accent)">is</em> the decision.</h2>
   </div>
   <div class="rule essence-grid">
     <div data-reveal>
-      <p class="hero-sub pad" style="max-width:44ch">
+      <p class="hero-sub pad" data-i18n="gov.lede" style="max-width:44ch">
         In most agentic tools, governance is the tax paid for automation, bolted on
         after the agent already acts. For Lognos the confirmation step and the
         decision moment are the same event. The loop runs continuously so that when
@@ -1441,9 +1488,9 @@ footer{ padding-block:2.5rem .5rem; }
       </p>
     </div>
     <div class="pcc-col" data-reveal>
-      <div class="pcc-step"><span class="pcc-num">01</span><div class="pcc-body"><h4>Prepare</h4><p>An immutable draft is rendered: schedule, cost, and risk impact, in full.</p></div></div>
-      <div class="pcc-step is-decision"><span class="pcc-num">02</span><div class="pcc-body"><h4>Confirm</h4><p>A named person reviews the draft and confirms. This is the decision.</p></div></div>
-      <div class="pcc-step"><span class="pcc-num">03</span><div class="pcc-body"><h4>Commit</h4><p>The write lands with a content fingerprint and an audit trail. Not before.</p></div></div>
+      <div class="pcc-step"><span class="pcc-num">01</span><div class="pcc-body"><h4 data-i18n="gov.p1t">Prepare</h4><p data-i18n="gov.p1d">An immutable draft is rendered: schedule, cost, and risk impact, in full.</p></div></div>
+      <div class="pcc-step is-decision"><span class="pcc-num">02</span><div class="pcc-body"><h4 data-i18n="gov.p2t">Confirm</h4><p data-i18n="gov.p2d">A named person reviews the draft and confirms. This is the decision.</p></div></div>
+      <div class="pcc-step"><span class="pcc-num">03</span><div class="pcc-body"><h4 data-i18n="gov.p3t">Commit</h4><p data-i18n="gov.p3d">The write lands with a content fingerprint and an audit trail. Not before.</p></div></div>
     </div>
   </div>
 </section>
@@ -1453,27 +1500,27 @@ footer{ padding-block:2.5rem .5rem; }
      ============================================================ -->
 <section id="who">
   <div class="rule section-head" data-reveal>
-    <p class="cat pad">Who it's for</p>
-    <h2 class="pad">Centered on whoever signs the delivery decision</h2>
+    <p class="cat pad" data-i18n="who.cat">Who it's for</p>
+    <h2 class="pad" data-i18n="who.title">Centered on whoever signs the delivery decision</h2>
   </div>
   <div class="rule">
     <div class="role-grid">
       <div class="role-card" data-reveal>
-        <p class="eyebrow">Owns the call</p>
-        <h3>The project manager</h3>
-        <p>Owns the delivery decision and its consequences. The forecast isn't wrong.
+        <p class="eyebrow" data-i18n="who.e1">Owns the call</p>
+        <h3 data-i18n="who.t1">The project manager</h3>
+        <p data-i18n="who.b1">Owns the delivery decision and its consequences. The forecast isn't wrong.
         It arrives too late to act on. Lognos closes that gap.</p>
       </div>
       <div class="role-card" data-reveal>
-        <p class="eyebrow">Signs, more often</p>
-        <h3>The client-side controls lead</h3>
-        <p>Feels the same staleness one level abstracted, and more often holds the
+        <p class="eyebrow" data-i18n="who.e2">Signs, more often</p>
+        <h3 data-i18n="who.t2">The client-side controls lead</h3>
+        <p data-i18n="who.b2">Feels the same staleness one level abstracted, and more often holds the
         budget that approves the purchase.</p>
       </div>
       <div class="role-card" data-reveal>
-        <p class="eyebrow">Freed from the assembly</p>
-        <h3>Planners &amp; cost controllers</h3>
-        <p>Spend the month assembling the picture instead of judging it. Lognos takes
+        <p class="eyebrow" data-i18n="who.e3">Freed from the assembly</p>
+        <h3 data-i18n="who.t3">Planners &amp; cost controllers</h3>
+        <p data-i18n="who.b3">Spend the month assembling the picture instead of judging it. Lognos takes
         the assembly; the judgment stays theirs.</p>
       </div>
     </div>
@@ -1491,12 +1538,12 @@ footer{ padding-block:2.5rem .5rem; }
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="10"/>
       </svg>
-      <span>© 2026 Lognos. E&amp;C delivery, reconciled continuously.</span>
+      <span data-i18n="footer.copy">© 2026 Lognos. E&amp;C delivery, reconciled continuously.</span>
     </div>
     <ul class="footer-links">
-      <li><a href="about.html">About</a></li>
-      <li><a href="whitepaper.html">Whitepaper</a></li>
-      <li><a href="mailto:hello@lognos.io">Contact</a></li>
+      <li><a href="about.html" data-i18n="footer.about">About</a></li>
+      <li><a href="whitepaper.html" data-i18n="footer.whitepaper">Whitepaper</a></li>
+      <li><a href="mailto:hello@lognos.io" data-i18n="footer.contact">Contact</a></li>
     </ul>
   </div>
 </footer>
@@ -1557,9 +1604,15 @@ footer{ padding-block:2.5rem .5rem; }
       "#button-icon svg{ width:20px !important; height:20px !important; }",
       "#button{ margin-left:0 !important; font-weight:600; }"
     ].join("");
+    if (window.LognosI18n){
+      var label = LognosI18n.t("cal.book");
+      var text = root.getElementById("button");
+      if (text && label) text.textContent = label;
+    }
   })();
 </script>
 
+<script src="i18n.js"></script>
 <script>
 (function(){
   /* Cal's data-cal-link handler opens the in-page modal but does not
@@ -1602,7 +1655,7 @@ footer{ padding-block:2.5rem .5rem; }
   }
 
   /* ⌘K quick-jump palette */
-  var SECTIONS = [
+  var FALLBACK_SECTIONS = [
     { label:'Reconciliation loop: cost & schedule', href:'#top' },
     { label:'What Lognos does',                      href:'#what-we-do' },
     { label:'Risk loop: four signal sources',       href:'#risk' },
@@ -1610,6 +1663,14 @@ footer{ padding-block:2.5rem .5rem; }
     { label:'Governance: prepare, confirm, commit', href:'#governance' },
     { label:"Who it's for",                          href:'#who' }
   ];
+  function paletteSections(){
+    var s = window.LognosI18n && LognosI18n.t('palette.sections');
+    return Array.isArray(s) ? s : FALLBACK_SECTIONS;
+  }
+  function paletteEmpty(){
+    var s = window.LognosI18n && LognosI18n.t('palette.empty');
+    return s || 'No section matches.';
+  }
   var pal = document.getElementById('palette');
   var palInput = document.getElementById('palette-input');
   var palList = document.getElementById('palette-list');
@@ -1619,9 +1680,9 @@ footer{ padding-block:2.5rem .5rem; }
 
   function render(){
     var q = palInput.value.trim().toLowerCase();
-    var hits = SECTIONS.filter(function(s){ return s.label.toLowerCase().indexOf(q) !== -1; });
+    var hits = paletteSections().filter(function(s){ return s.label.toLowerCase().indexOf(q) !== -1; });
     if(active >= hits.length) active = 0;
-    if(!hits.length){ palList.innerHTML = '<li class="palette-empty">No section matches.</li>'; return; }
+    if(!hits.length){ palList.innerHTML = '<li class="palette-empty">' + paletteEmpty() + '</li>'; return; }
     palList.innerHTML = hits.map(function(s,i){
       return '<li class="' + (i===active?'is-active':'') + '"><a href="' + s.href + '">' +
              s.label.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '<kbd>' + s.href + '</kbd></a></li>';
@@ -1650,6 +1711,7 @@ footer{ padding-block:2.5rem .5rem; }
       if((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'){ e.preventDefault(); pal.hidden ? open() : close(); }
       else if(e.key === 'Escape' && !pal.hidden){ close(); }
     });
+    document.addEventListener('lognos:lang', function(){ if(!pal.hidden) render(); });
   }
 
   var heroClip = document.getElementById('hero-clip-video');
