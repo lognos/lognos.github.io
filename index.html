@@ -562,8 +562,21 @@ p{ margin:0; }
 .step .d{ color:var(--text-muted); margin-top:4px; display:block; }
 
 @media (max-width:640px){
-  .flow .node-label{ display:none; }
-  .flow foreignObject{ display:none; }
+  .hero-demo,
+  .term-stage,
+  .term{
+    min-width:0;
+    max-width:100%;
+  }
+  .term-body{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .flow{
+    width:60rem;
+    min-width:60rem;
+    max-width:none;
+  }
 }
 @media (prefers-reduced-motion: reduce){
   .flow .conn-flow{ animation:none !important; opacity:.6 !important; }
