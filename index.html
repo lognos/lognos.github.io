@@ -138,6 +138,7 @@ p{ margin:0; }
   padding-top:calc(var(--header-h) + 1px);
   grid-template-columns:1fr;
   grid-template-rows:1fr auto;
+  transition: padding-top .3s var(--ease-out);
 }
 @media (min-width:48rem){
   .sheet{
@@ -270,6 +271,8 @@ p{ margin:0; }
   font-size:.68rem; line-height:1.25rem; font-weight:500;
   letter-spacing:.02em;
   text-align:center;
+  overflow:hidden;
+  transition: opacity .3s var(--ease-out), min-height .3s var(--ease-out);
 }
 .news-banner[hidden]{ display:none; }
 @media (min-width:40rem){ .news-banner{ padding-inline:1.5rem; } }
@@ -285,6 +288,19 @@ p{ margin:0; }
   stroke:currentColor; fill:none;
 }
 .news-banner p{ margin:0; min-width:0; }
+/* Closing animation: .news-clip is a shrinking window (width -> 0);
+   .news-clip-inner is centered on its midpoint regardless of that width
+   (left:50% + translateX(-50%)), so the window closes symmetrically
+   toward the middle of the text instead of just chopping off one end. */
+.news-clip{
+  display:inline-block; overflow:hidden; position:relative;
+  vertical-align:top;
+  transition: width .35s var(--ease-out), opacity .3s ease;
+}
+.news-clip-inner{
+  display:inline-block; white-space:nowrap;
+  position:relative; left:50%; transform:translateX(-50%);
+}
 .news-banner b{ font-weight:700; color:var(--accent-ink); }
 .news-banner-close{
   position:absolute; top:50%; right:.75rem; transform:translateY(-50%);
@@ -1646,22 +1662,59 @@ footer{ padding-block:2.5rem .5rem; }
   }
 
   /* Dismissible news banner: collapses the reserved header space and
-     remembers the dismissal, keyed to this announcement's content. */
+     remembers the dismissal, keyed to this announcement's content.
+     Closing animates in two beats: the text shrinks toward the center
+     first (the rocket stays put, now alone and centered), then the
+     whole bar fades and folds away, taking the reserved header space
+     with it. */
   var NEWS_KEY = 'lognos-news-dismissed-v1';
   var newsBanner = document.querySelector('.news-banner');
-  function hideNews(persist){
-    if(!newsBanner) return;
-    newsBanner.hidden = true;
-    document.documentElement.style.setProperty('--news-h', '0px');
+  var newsClosing = false;
+  function hideNews(persist, animate){
+    if(!newsBanner || newsBanner.hidden || newsClosing) return;
     if(persist){
       try{ localStorage.setItem(NEWS_KEY, '1'); }catch(e){}
     }
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!animate || reduceMotion){
+      newsBanner.hidden = true;
+      document.documentElement.style.setProperty('--news-h', '0px');
+      return;
+    }
+    newsClosing = true;
+    var textEl = newsBanner.querySelector('.news-banner-copy p');
+    if(textEl){
+      /* Rebuild the text as a shrinking clip window around a centered,
+         single-line inner span, so it closes toward the middle instead
+         of just chopping off the right end. */
+      var inner = document.createElement('span');
+      inner.className = 'news-clip-inner';
+      inner.innerHTML = textEl.innerHTML;
+      var clip = document.createElement('span');
+      clip.className = 'news-clip';
+      clip.appendChild(inner);
+      textEl.innerHTML = '';
+      textEl.appendChild(clip);
+      clip.style.width = clip.getBoundingClientRect().width + 'px';
+      void clip.offsetWidth; /* force reflow so the width above is the transition start point */
+      clip.style.width = '0px';
+      clip.style.opacity = '0';
+    }
+    window.setTimeout(function(){
+      newsBanner.style.opacity = '0';
+      newsBanner.style.minHeight = '0px';
+      document.documentElement.style.setProperty('--news-h', '0px');
+    }, 350);
+    window.setTimeout(function(){
+      newsBanner.hidden = true;
+      newsClosing = false;
+    }, 650);
   }
   try{
-    if(localStorage.getItem(NEWS_KEY) === '1') hideNews(false);
+    if(localStorage.getItem(NEWS_KEY) === '1') hideNews(false, false);
   }catch(e){}
   var newsClose = document.getElementById('news-close');
-  if(newsClose) newsClose.addEventListener('click', function(){ hideNews(true); });
+  if(newsClose) newsClose.addEventListener('click', function(){ hideNews(true, true); });
 
   /* ⌘K quick-jump palette */
   var FALLBACK_SECTIONS = [
