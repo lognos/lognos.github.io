@@ -11,7 +11,7 @@
           "Schedule, cost, and risk reconcile against each other continuously. One system, not three tools stitched together. Nothing writes without your confirmation, and that confirmation is the decision."
       },
       skip: "Skip to content",
-      news: { html: "<b>News!</b> v1.0 shipped with Claude / ChatGPT / Gemini connectors" },
+      news: { html: "<b>News!</b> v1.0 shipped with Claude / ChatGPT / Gemini connectors", close: "Dismiss" },
       nav: {
         home: "Home",
         search: "Quick search",
@@ -190,7 +190,7 @@
           "Échéancier, coûts et risques se réconcilient en continu. Un système, pas trois outils recollés. Rien n'est écrit sans votre confirmation, et cette confirmation est la décision."
       },
       skip: "Aller au contenu",
-      news: { html: "<b>Nouveauté!</b> v1.0 est en ligne, avec les connecteurs Claude / ChatGPT / Gemini" },
+      news: { html: "<b>Nouveauté!</b> v1.0 est en ligne, avec les connecteurs Claude / ChatGPT / Gemini", close: "Fermer" },
       nav: {
         home: "Accueil",
         search: "Recherche rapide",
@@ -369,7 +369,7 @@
           "Cronograma, costo y riesgo se reconcilian entre sí en continuo. Un sistema, no tres herramientas recosidas. Nada se escribe sin su confirmación, y esa confirmación es la decisión."
       },
       skip: "Saltar al contenido",
-      news: { html: "<b>¡Novedad!</b> v1.0 ya está en línea, con conectores Claude / ChatGPT / Gemini" },
+      news: { html: "<b>¡Novedad!</b> v1.0 ya está en línea, con conectores Claude / ChatGPT / Gemini", close: "Cerrar" },
       nav: {
         home: "Inicio",
         search: "Búsqueda rápida",
@@ -646,6 +646,9 @@
     document.querySelectorAll("[data-lang]").forEach(function (btn) {
       btn.setAttribute("aria-pressed", btn.getAttribute("data-lang") === lang ? "true" : "false");
     });
+    document.querySelectorAll(".lang-pill").forEach(function (btn) {
+      btn.textContent = lang.toUpperCase();
+    });
 
     applyCal(get(dict, "cal.book"));
     document.dispatchEvent(new CustomEvent("lognos:lang", { detail: { lang: lang, dict: dict } }));
@@ -667,6 +670,18 @@
     setLang(btn.getAttribute("data-lang"));
   });
 
+  var ORDER = ["en", "fr", "es"];
+  function cycleLang() {
+    var idx = ORDER.indexOf(current);
+    setLang(ORDER[(idx + 1) % ORDER.length]);
+  }
+  document.addEventListener("click", function (e) {
+    var btn = e.target && e.target.closest && e.target.closest(".lang-pill");
+    if (!btn) return;
+    e.preventDefault();
+    cycleLang();
+  });
+
   var start = readLang();
   apply(start);
   if (start !== "en") writeUrl(start);
@@ -679,6 +694,7 @@
       return current;
     },
     set: setLang,
+    cycle: cycleLang,
     apply: apply
   };
 })();

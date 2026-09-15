@@ -257,6 +257,7 @@ p{ margin:0; }
   color:var(--text-max); white-space:nowrap;
 }
 .news-banner{
+  position:relative;
   display:grid;
   grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
   align-items:center;
@@ -270,13 +271,14 @@ p{ margin:0; }
   letter-spacing:.02em;
   text-align:center;
 }
+.news-banner[hidden]{ display:none; }
 @media (min-width:40rem){ .news-banner{ padding-inline:1.5rem; } }
 .news-banner-copy{
   grid-column:1 / -1;
   grid-row:1;
   justify-self:center;
   display:flex; align-items:center; justify-content:center; gap:.45rem;
-  min-width:0; max-width:calc(100% - 7.5rem);
+  min-width:0; max-width:calc(100% - 3.25rem);
 }
 .news-banner svg{
   width:14px; height:14px; flex:none;
@@ -284,41 +286,39 @@ p{ margin:0; }
 }
 .news-banner p{ margin:0; min-width:0; }
 .news-banner b{ font-weight:700; color:var(--accent-ink); }
-.lang-switch{
-  grid-column:3;
-  grid-row:1;
-  justify-self:end;
-  z-index:1;
-  display:inline-flex; align-items:center; gap:.1rem;
-  font-family:var(--font-mono);
-  font-size:.68rem; font-weight:500; letter-spacing:.04em;
+.news-banner-close{
+  position:absolute; top:50%; right:.75rem; transform:translateY(-50%);
+  display:inline-grid; place-items:center;
+  width:1.5rem; height:1.5rem; flex:none;
+  border-radius:.35rem; border:0; background:none;
+  color:var(--accent); cursor:pointer;
 }
-.lang-switch button{
-  appearance:none; background:none; border:0; cursor:pointer;
-  color:var(--text-dim); padding:.15rem .38rem; border-radius:.35rem;
-  font:inherit; letter-spacing:inherit;
+.news-banner-close:hover{ background:var(--accent-surface); color:var(--accent-ink); }
+@media (min-width:40rem){ .news-banner-close{ right:1.25rem; } }
+/* Single language toggle: cycles en -> fr -> es on click, text shows current lang */
+.lang-pill{
+  display:inline-flex; align-items:center; justify-content:center;
+  flex:none;
+  border-radius:9999px;
+  background:rgb(255 255 255 / 0.05);
+  box-shadow:inset 0 0 0 1px rgb(255 255 255 / 0.08);
+  padding:.25rem .625rem;
+  color:var(--text-dim); cursor:pointer; border:0;
+  font-family:var(--font-mono); font-size:.75rem; font-weight:500; letter-spacing:.04em;
+  line-height:1.25rem;
 }
-.lang-switch button:hover{ color:var(--text-max); }
-.lang-switch button[aria-pressed="true"]{
-  color:var(--accent);
-  background:var(--accent-surface);
-}
-.nav-overlay .lang-switch{
-  display:flex; justify-content:flex-start;
-  grid-column:auto; grid-row:auto;
-  margin:0 1rem 1.25rem; padding:0;
-}
+.lang-pill:hover{ background:rgb(255 255 255 / 0.08); color:var(--text-max); }
+.nav-overlay-bar-right{ display:flex; align-items:center; gap:.625rem; }
 @media (max-width:720px){
   :root{ --news-h: 3.35rem; }
   .news-banner{
     display:flex; flex-wrap:wrap; justify-content:center; gap:.35rem .75rem;
-    padding:.45rem 1rem;
+    padding:.45rem 2.5rem;
     line-height:1.35;
   }
   .news-banner-copy{ max-width:100%; }
   .news-banner svg{ margin-top:.12rem; }
   .news-banner p{ white-space:normal; text-align:left; }
-  .lang-switch{ justify-self:center; }
 }
 
 .nav-search{
@@ -890,11 +890,9 @@ footer{ padding-block:2.5rem .5rem; }
       <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-rocket"/></svg>
       <p data-i18n-html="news.html"><b>News!</b> v1.0 shipped with Claude / ChatGPT / Gemini connectors</p>
     </div>
-    <div class="lang-switch" role="group" data-i18n-aria="nav.lang" aria-label="Language">
-      <button type="button" data-lang="en" aria-pressed="true">EN</button>
-      <button type="button" data-lang="fr" aria-pressed="false">FR</button>
-      <button type="button" data-lang="es" aria-pressed="false">ES</button>
-    </div>
+    <button type="button" class="news-banner-close" id="news-close" data-i18n-aria="news.close" aria-label="Dismiss">
+      <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14" aria-hidden="true"><path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/></svg>
+    </button>
   </div>
 <nav class="nav">
   <div class="nav-left">
@@ -918,12 +916,14 @@ footer{ padding-block:2.5rem .5rem; }
       <li><a href="https://cal.com/facundo.bassi/lognos-demo"
              data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}' data-i18n="nav.contact">Contact</a></li>
     </ul>
+    <button type="button" class="lang-pill" data-i18n-aria="nav.lang" aria-label="Language">EN</button>
   </div>
 
   <div class="nav-right nav-right-mobile">
     <button class="nav-mobile-search" id="nav-search-mobile" data-i18n-aria="nav.search" aria-label="Search">
       <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd"/></svg>
     </button>
+    <button type="button" class="lang-pill" data-i18n-aria="nav.lang" aria-label="Language">EN</button>
     <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-overlay" data-i18n-aria="nav.menu" aria-label="Navigation">
       <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16" aria-hidden="true"><path d="M8 2a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM8 6.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM9.5 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z"/></svg>
     </button>
@@ -937,9 +937,12 @@ footer{ padding-block:2.5rem .5rem; }
       <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
       <span class="brand-word">lognos</span>
     </a>
-    <button class="nav-toggle" id="nav-close" data-i18n-aria="nav.close" aria-label="Close menu" style="display:grid">
-      <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16" aria-hidden="true"><path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/></svg>
-    </button>
+    <div class="nav-overlay-bar-right">
+      <button type="button" class="lang-pill" data-i18n-aria="nav.lang" aria-label="Language">EN</button>
+      <button class="nav-toggle" id="nav-close" data-i18n-aria="nav.close" aria-label="Close menu" style="display:grid">
+        <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16" aria-hidden="true"><path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/></svg>
+      </button>
+    </div>
   </div>
   <p class="nav-overlay-release">
     <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-rocket"/></svg>
@@ -952,11 +955,6 @@ footer{ padding-block:2.5rem .5rem; }
     <li><a href="#governance" data-i18n="nav.governance">Governance</a></li>
     <li><a href="https://cal.com/facundo.bassi/lognos-demo" data-cal-link="facundo.bassi/lognos-demo" data-cal-namespace="lognos-demo" data-cal-config='{"layout":"month_view"}' data-i18n="nav.contact">Contact</a></li>
   </ul>
-  <div class="lang-switch" role="group" data-i18n-aria="nav.lang" aria-label="Language">
-    <button type="button" data-lang="en" aria-pressed="true">EN</button>
-    <button type="button" data-lang="fr" aria-pressed="false">FR</button>
-    <button type="button" data-lang="es" aria-pressed="false">ES</button>
-  </div>
 </div>
 
 <div class="palette" id="palette" hidden>
@@ -1646,6 +1644,24 @@ footer{ padding-block:2.5rem .5rem; }
       a.addEventListener('click', closeNav);
     });
   }
+
+  /* Dismissible news banner: collapses the reserved header space and
+     remembers the dismissal, keyed to this announcement's content. */
+  var NEWS_KEY = 'lognos-news-dismissed-v1';
+  var newsBanner = document.querySelector('.news-banner');
+  function hideNews(persist){
+    if(!newsBanner) return;
+    newsBanner.hidden = true;
+    document.documentElement.style.setProperty('--news-h', '0px');
+    if(persist){
+      try{ localStorage.setItem(NEWS_KEY, '1'); }catch(e){}
+    }
+  }
+  try{
+    if(localStorage.getItem(NEWS_KEY) === '1') hideNews(false);
+  }catch(e){}
+  var newsClose = document.getElementById('news-close');
+  if(newsClose) newsClose.addEventListener('click', function(){ hideNews(true); });
 
   /* ⌘K quick-jump palette */
   var FALLBACK_SECTIONS = [
