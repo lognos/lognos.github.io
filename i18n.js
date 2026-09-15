@@ -28,7 +28,7 @@
       hero: {
         title: "Schedule, cost, and risk.<br>Reconciled by AI, <em>governed by your team.</em>",
         sub:
-          "Our agents and yours reach the same engines, over MCP or from Teams, Outlook and other channels. Every confirmation is human-authenticated and attributed. Your know-how stays readable and portable, never locked inside a model.",
+          "Our agents and yours access the same engines, over MCP or from Teams, Outlook and other channels. Every confirmation is human-authenticated and attributed. Your organization's know-how remains readable and portable, never locked into a platform or a model.",
         running: "running",
         cascadeAria:
           "Field progress is queued. A guardrail either writes into the schedule engine or holds for a planner. Cost actuals pass a readiness gate into a waterfall forecast and cost sign-off. Both join the risk engine, then a report the PM confirms.",
@@ -71,17 +71,17 @@
         cat: "What it is",
         title: "Project controls, done continuously",
         lede:
-          "Three teams maintain three versions of the truth, and they only agree on the day the report goes out. That isn't carelessness. It's arithmetic. A validated, reconciled forecast used to take days of expert work, so it happened monthly, and everyone agreed to call that current. That constraint is gone. Lognos reconciles schedule, cost, and risk against each other continuously, so the picture a decision gets made against is never more than an update old.",
+          "Three teams maintain three versions of the truth, and they only agree on the day the report goes out. That is not carelessness. It is arithmetic. A validated, reconciled forecast used to take days of expert work, so it happened monthly, and everyone agreed to call that current. That constraint is gone. Lognos reconciles schedule, cost, and risk against each other continuously, so the picture a decision gets made against is never more than an update old.",
         t1: "One picture, not three",
         b1:
-          "Schedule, cost, and risk aren't separate products wired together after the fact. They run as three engines over a single record, reconciling against each other continuously. Most tools in this market do one of the three well and leave the reconciliation between them to you and a spreadsheet.",
+          "Schedule, cost, and risk are not separate products wired together after the fact. They run as three engines over a single record, reconciling against each other continuously. Most tools in this market do one of the three well and leave the reconciliation between them to you and a spreadsheet.",
         t2: "The confirmation is the decision",
         b2:
-          "Nothing writes without prepare → confirm → commit. Not a policy bolted on after the fact. It's the same mechanism that makes the loop worth having.",
+          "Nothing writes without prepare → confirm → commit. Not a policy bolted on after the fact. It is the same mechanism that makes the loop worth having.",
         t3: "Open at the edges",
         b3:
-          "Integrated inside, open outside. The engines are reachable over MCP by any compatible agent: Claude, ChatGPT, or one your own team builds. You shouldn't have to adopt our interface to get value from our reasoning.",
-        t4: "Says what it doesn't know",
+          "Integrated inside, open outside. The engines are reachable over MCP by any compatible agent: Claude, ChatGPT, or one your own team builds. You should not have to adopt our interface to get value from our reasoning.",
+        t4: "Says what it does not know",
         b4:
           "Per-project, per-question capability declaration: available, unavailable, or partial, with a reason. Never a confident wrong answer."
       },
@@ -134,7 +134,7 @@
         cat: "Playbooks",
         title: "Every loop is a playbook you can read",
         lede:
-          "A workflow isn't a black box inside the agent. It's a declared document: which engines run, in what order, under which guardrail, and exactly where a named human has to confirm before anything commits.",
+          "A workflow is not a black box inside the agent. It is a declared document: which engines run, in what order, under which guardrail, and exactly where a named human has to confirm before anything commits.",
         xmlComment: "<!-- field + actuals → schedule guardrail → waterfall, then a separate Monte Carlo -->"
       },
       gov: {
@@ -142,7 +142,7 @@
         title:
           'The confirmation <em style="font-style:normal;color:var(--accent)">is</em> the decision.',
         lede:
-          "In most agentic tools, governance is the tax paid for automation, bolted on after the agent already acts. For Lognos the confirmation step and the decision moment are the same event. The loop runs continuously so that when you're asked, you're asked at the moment that matters, with a current picture.",
+          "In most agentic tools, governance is the tax paid for automation, bolted on after the agent already acts. For Lognos the confirmation step and the decision moment are the same event. The loop runs continuously so that when you are asked, you are asked at the moment that matters, with a current picture.",
         p1t: "Prepare",
         p1d: "An immutable draft is rendered: schedule, cost, and risk impact, in full.",
         p2t: "Confirm",
@@ -151,12 +151,12 @@
         p3d: "The write lands with a content fingerprint and an audit trail. Not before."
       },
       who: {
-        cat: "Who it's for",
+        cat: "Who it serves",
         title: "Centered on whoever signs the delivery decision",
         e1: "Owns the call",
         t1: "The project manager",
         b1:
-          "Owns the delivery decision and its consequences. The forecast isn't wrong. It arrives too late to act on. Lognos closes that gap.",
+          "Owns the delivery decision and its consequences. The forecast is not wrong. It arrives too late to act on. Lognos closes that gap.",
         e2: "Signs, more often",
         t2: "The client-side controls lead",
         b2: "Feels the same staleness one level abstracted, and more often holds the budget that approves the purchase.",
@@ -165,10 +165,7 @@
         b3: "Spend the month assembling the picture instead of judging it. Lognos takes the assembly; the judgment stays theirs."
       },
       footer: {
-        copy: "© 2026 Lognos. E&C delivery, reconciled continuously.",
-        about: "About",
-        whitepaper: "Whitepaper",
-        contact: "Contact"
+        copy: "© 2026 Lognos. E&C delivery, reconciled continuously."
       },
       palette: {
         aria: "Quick search",
@@ -180,7 +177,7 @@
           { label: "Risk loop: four signal sources", href: "#risk" },
           { label: "Playbooks", href: "#playbooks" },
           { label: "Governance: prepare, confirm, commit", href: "#governance" },
-          { label: "Who it's for", href: "#who" }
+          { label: "Who it serves", href: "#who" }
         ]
       },
       cal: { book: "Book a demo" }
@@ -210,7 +207,7 @@
       hero: {
         title: "Échéancier, coûts et risques.<br>Réconciliés par l'IA, <em>gouvernés par votre équipe.</em>",
         sub:
-          "Nos agents et les vôtres atteignent les mêmes moteurs, via MCP ou depuis Teams, Outlook et d'autres canaux. Chaque confirmation est authentifiée par un humain et attribuée. Votre savoir-faire reste lisible et portable, jamais enfermé dans un modèle.",
+          "Nos agents et les vôtres accèdent aux mêmes moteurs, via MCP ou depuis Teams, Outlook et d'autres canaux. Chaque confirmation est authentifiée par une personne et porte son nom. Le savoir-faire de votre organisation demeure lisible et portable, jamais enfermé dans une plateforme ou un modèle.",
         running: "en cours",
         cascadeAria:
           "L'avancement terrain est mis en file. Un garde-fou écrit dans le Schedule engine ou retient pour un planificateur. Les réels de coûts passent une porte de préparation vers une prévision waterfall et une validation coûts. Les deux rejoignent le Risk engine, puis un rapport que le GP confirme.",
@@ -347,10 +344,7 @@
         b3: "Passent le mois à assembler la photo au lieu de la juger. Lognos prend l'assemblage ; le jugement reste le leur."
       },
       footer: {
-        copy: "© 2026 Lognos. Livraison E&C, réconciliée en continu.",
-        about: "À propos",
-        whitepaper: "Livre blanc",
-        contact: "Contact"
+        copy: "© 2026 Lognos. Livraison E&C, réconciliée en continu."
       },
       palette: {
         aria: "Recherche rapide",
@@ -372,7 +366,7 @@
       meta: {
         title: "Lognos: controles de proyecto, reconciliados en continuo",
         description:
-          "Cronograma, costo y riesgo se reconcilian entre sí en continuo. Un sistema, no tres herramientas recosidas. Nada se escribe sin tu confirmación, y esa confirmación es la decisión."
+          "Cronograma, costo y riesgo se reconcilian entre sí en continuo. Un sistema, no tres herramientas recosidas. Nada se escribe sin su confirmación, y esa confirmación es la decisión."
       },
       skip: "Saltar al contenido",
       news: { html: "<b>¡Novedad!</b> v1.0 ya está en línea, con conectores Claude / ChatGPT / Gemini" },
@@ -390,9 +384,9 @@
         ec: "Entrega de ingeniería y construcción"
       },
       hero: {
-        title: "Cronograma, costo y riesgo.<br>Reconciliados por IA, <em>gobernados por tu equipo.</em>",
+        title: "Cronograma, costo y riesgo.<br>Reconciliados por IA, <em>gobernados por su equipo.</em>",
         sub:
-          "Nuestros agentes y los tuyos llegan a los mismos motores, por MCP o desde Teams, Outlook y otros canales. Cada confirmación está autenticada por una persona y atribuida. Tu know-how permanece legible y portable, nunca encerrado en un modelo.",
+          "Nuestros agentes y los suyos acceden a los mismos motores, por MCP o desde Teams, Outlook y otros canales. Cada confirmación queda autenticada por una persona y con su nombre. El know-how de su organización permanece legible y portable, sin quedar encerrado en una plataforma ni en un modelo.",
         running: "en curso",
         cascadeAria:
           "El avance de obra entra en cola. Un guardrail escribe en el Schedule engine o retiene para un planificador. Los reales de costo pasan una puerta de preparación hacia un pronóstico waterfall y la firma de costos. Ambos se unen al Risk engine, luego un informe que el PM confirma.",
@@ -438,13 +432,13 @@
           "Tres equipos mantienen tres versiones de la verdad, y solo coinciden el día en que sale el informe. No es descuido. Es aritmética. Un pronóstico validado y reconciliado tardaba días de trabajo experto, así que era mensual, y todos aceptaban llamarlo vigente. Esa restricción ya no está. Lognos reconcilia cronograma, costo y riesgo en continuo, para que la foto contra la que se decide nunca tenga más de una actualización de atraso.",
         t1: "Una foto, no tres",
         b1:
-          "Cronograma, costo y riesgo no son productos separados recableados después. Corren como tres motores sobre un solo registro, reconciliándose en continuo. La mayoría de las herramientas de este mercado hacen bien una de las tres y te dejan la reconciliación a ti y a una hoja de cálculo.",
+          "Cronograma, costo y riesgo no son productos separados recableados después. Corren como tres motores sobre un solo registro, reconciliándose en continuo. La mayoría de las herramientas de este mercado hacen bien una de las tres y le dejan la reconciliación a usted y a una hoja de cálculo.",
         t2: "La confirmación es la decisión",
         b2:
           "Nada se escribe sin preparar → confirmar → commitear. No es una política añadida después. Es el mismo mecanismo que hace que el ciclo valga la pena.",
         t3: "Abierto en los bordes",
         b3:
-          "Integrado adentro, abierto afuera. Los motores se alcanzan por MCP con cualquier agente compatible: Claude, ChatGPT, o uno que arme tu propio equipo. No deberías tener que adoptar nuestra interfaz para sacar valor de nuestro razonamiento.",
+          "Integrado adentro, abierto afuera. Los motores se alcanzan por MCP con cualquier agente compatible: Claude, ChatGPT, o uno que arme su propio equipo. No debería tener que adoptar nuestra interfaz para sacar valor de nuestro razonamiento.",
         t4: "Dice lo que no sabe",
         b4:
           "Declaración de capacidad por proyecto y por pregunta: disponible, no disponible o parcial, con una razón. Nunca una respuesta incorrecta con confianza."
@@ -529,10 +523,7 @@
         b3: "Pasan el mes armando la foto en vez de juzgarla. Lognos toma el armado; el juicio sigue siendo de ellos."
       },
       footer: {
-        copy: "© 2026 Lognos. Entrega E&C, reconciliada en continuo.",
-        about: "Acerca de",
-        whitepaper: "Whitepaper",
-        contact: "Contacto"
+        copy: "© 2026 Lognos. Entrega E&C, reconciliada en continuo."
       },
       palette: {
         aria: "Búsqueda rápida",
