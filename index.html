@@ -206,13 +206,13 @@ p{ margin:0; }
   font-size:.875rem; font-weight:600;
   letter-spacing:.1em; text-transform:uppercase;
   color:var(--accent);
-  margin:0 0 1rem;
+  margin:0 0 1.5rem;
 }
 @media (min-width:40rem){ .cat{ font-size:.75rem; } }
 @media (min-width:96rem){
-  .cat{
-    position:absolute; top:0; left:calc(-1 * var(--gutter-width));
-    margin:0; z-index:3;
+  .section-head .cat{
+    position:absolute; top:var(--section-title-pad); left:calc(-1 * var(--gutter-width));
+    margin:0; padding:0; z-index:3;
     transform-origin:bottom right;
     transform:translate(-100%,-100%) rotate(-90deg);
     text-align:right;
@@ -362,7 +362,7 @@ p{ margin:0; }
   font-weight:500;
   text-wrap:pretty;
   max-width:none;
-  padding-block:1.25rem .35rem;
+  padding-block:1.875rem .525rem;
 }
 .hero h1 em{ font-style:normal; color:var(--accent); }
 .hero-sub{
@@ -371,7 +371,7 @@ p{ margin:0; }
   font-weight:500;
   color:var(--text-muted);
   max-width:var(--copy-max);
-  padding-block:.75rem 1.5rem;
+  padding-block:1.125rem 2.25rem;
   text-wrap:pretty;
 }
 @media (min-width:40rem){
@@ -501,6 +501,7 @@ p{ margin:0; }
 .flow .fnode.is-gated .fnode-box{ stroke:var(--warning); stroke-dasharray:4 4; }
 .flow .fnode.is-progress .fnode-box{ stroke:#60a5fa; stroke-dasharray:4 4; }
 .flow .fnode.is-held .fnode-box{ stroke:var(--warning); }
+.flow .fnode.is-gate .fnode-box{ stroke:var(--accent); fill:var(--ground); }
 .flow .node-label{ font-family:var(--font-mono); font-size:11px; fill:var(--text-strong); text-anchor:middle; letter-spacing:.01em; }
 .flow .node-label.is-accent{ fill:var(--accent); }
 .flow .node-label.is-warn{ fill:var(--warning); }
@@ -589,17 +590,17 @@ p{ margin:0; }
 /* ============================================================
    SECTIONS / CARDS
    ============================================================ */
-.section-head{ max-width:none; position:relative; overflow:visible; }
+.section-head{ max-width:none; position:relative; overflow:visible; --section-title-pad:4.125rem; padding-block-start:var(--section-title-pad); }
 .section-head h2{
   font-size:2.5rem; line-height:2.5rem; font-weight:500;
   letter-spacing:-0.05em; text-wrap:balance;
   max-width:32rem;
-  padding-block:1.25rem;
+  padding-block:0 1.875rem;
 }
 .section-head p{
   color:var(--text-muted); font-size:1rem; line-height:1.75rem;
   max-width:var(--copy-max);
-  padding-block:1.25rem;
+  padding-block:1.875rem;
 }
 
 .diff-grid{ display:grid; grid-template-columns:repeat(2,1fr); }
@@ -873,144 +874,141 @@ footer{ padding-block:2.5rem .5rem; }
           <span class="term-status"><i></i> running</span>
         </div>
         <div class="term-body term-canvas">
-          <svg class="flow" viewBox="0 0 1080 410" role="img"
+          <svg class="flow" viewBox="0 0 1080 488" role="img"
                aria-label="Field progress is queued. A guardrail either writes into the schedule engine or holds for a planner. Cost actuals pass a readiness gate into a waterfall forecast and cost sign-off. Both join the risk engine, then a report the PM confirms.">
-            <path class="conn-return conn-base" d="M990,218 L990,388 L80,388 L80,88"/>
-            <path class="conn-return conn-flow" d="M990,218 L990,388 L80,388 L80,88"/>
+            <path class="conn-return conn-base" d="M990,264 L990,288 L1048,288 L1048,464 L28,464 L28,144 L80,144 L80,120"/>
+            <path class="conn-return conn-flow" d="M990,264 L990,288 L1048,288 L1048,464 L28,464 L28,144 L80,144 L80,120"/>
 
-            <path class="conn-base" marker-end="url(#arrow)" d="M104,64 L206,64"/>
-            <path class="conn-flow" d="M104,64 L206,64"/>
-            <path class="conn-base" d="M254,64 L358,64"/>
-            <path class="conn-flow" d="M254,64 L358,64"/>
-            <path class="conn-base" marker-end="url(#arrow)" d="M382,64 L506,64"/>
-            <path class="conn-flow" d="M382,64 L506,64"/>
-            <path class="conn-held" d="M370,76 L370,170"/>
-            <path class="conn-held" marker-end="url(#arrow)" d="M394,194 L506,88"/>
-            <path class="conn-base" marker-end="url(#arrow)" d="M554,64 L666,194"/>
-            <path class="conn-flow" d="M554,64 L666,194"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M80,120 L80,144 L230,144 L230,120"/>
+            <path class="conn-flow" d="M80,120 L80,144 L230,144 L230,120"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M230,120 L230,144 L530,144 L530,120"/>
+            <path class="conn-flow" d="M230,120 L230,144 L530,144 L530,120"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M370,158 L330,158 L330,288 L370,288 L370,264"/>
+            <path class="conn-flow" d="M370,158 L330,158 L330,288 L370,288 L370,264"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M370,264 L370,288 L530,288 L530,120"/>
+            <path class="conn-flow" d="M370,264 L370,288 L530,288 L530,120"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M530,120 L530,144 L610,144 L610,288 L690,288 L690,264"/>
+            <path class="conn-flow" d="M530,120 L530,144 L610,144 L610,288 L690,288 L690,264"/>
 
-            <path class="conn-base" d="M104,316 L143,316"/>
-            <path class="conn-flow" d="M104,316 L143,316"/>
-            <path class="conn-base" marker-end="url(#arrow)" d="M167,316 L256,316"/>
-            <path class="conn-flow" d="M167,316 L256,316"/>
-            <path class="conn-base" marker-end="url(#arrow)" d="M304,316 L506,316"/>
-            <path class="conn-flow" d="M304,316 L506,316"/>
-            <path class="conn-base" marker-end="url(#arrow)" d="M554,316 L666,218"/>
-            <path class="conn-flow" d="M554,316 L666,218"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M80,416 L80,440 L280,440 L280,416"/>
+            <path class="conn-flow" d="M80,416 L80,440 L280,440 L280,416"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M280,416 L280,440 L530,440 L530,416"/>
+            <path class="conn-flow" d="M280,416 L280,440 L530,440 L530,416"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M530,416 L530,440 L610,440 L610,288 L690,288 L690,264"/>
+            <path class="conn-flow" d="M530,416 L530,440 L610,440 L610,288 L690,288 L690,264"/>
 
-            <path class="conn-base" marker-end="url(#arrow)" d="M714,194 L816,194"/>
-            <path class="conn-flow" d="M714,194 L816,194"/>
-            <path class="conn-base" marker-end="url(#arrow)" d="M864,194 L966,194"/>
-            <path class="conn-flow" d="M864,194 L966,194"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M690,264 L690,288 L840,288 L840,264"/>
+            <path class="conn-flow" d="M690,264 L690,288 L840,288 L840,264"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M840,264 L840,288 L990,288 L990,264"/>
+            <path class="conn-flow" d="M840,264 L840,288 L990,288 L990,264"/>
 
             <g class="fnode">
-              <rect class="fnode-box" x="56" y="40" width="48" height="48" rx="4"/>
-              <use href="#i-checklist" x="68" y="52" width="24" height="24" color="var(--text-strong)"/>
-              <text class="node-label" x="80" y="104">Field progress</text>
-              <foreignObject x="16" y="110" width="128" height="14">
+              <foreignObject x="16" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:18ch; animation-delay:0s">capturing progress ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label" x="80" y="50">Field progress</text>
+              <rect class="fnode-box" x="56" y="72" width="48" height="48" rx="4"/>
+              <use href="#i-checklist" x="68" y="84" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode">
-              <rect class="fnode-box" x="206" y="40" width="48" height="48" rx="4"/>
-              <use href="#i-inbox" x="218" y="52" width="24" height="24" color="var(--text-strong)"/>
-              <text class="node-label" x="230" y="104">Update queue</text>
-              <foreignObject x="166" y="110" width="128" height="14">
+              <foreignObject x="166" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:16ch; animation-delay:1.2s">triaging updates ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label" x="230" y="50">Update queue</text>
+              <rect class="fnode-box" x="206" y="72" width="48" height="48" rx="4"/>
+              <use href="#i-inbox" x="218" y="84" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode is-gate">
-              <polygon class="fnode-box" points="370,52 382,64 370,76 358,64"/>
+              <polygon class="fnode-box" points="370,130 384,144 370,158 356,144"/>
             </g>
             <g class="fnode is-human">
-              <rect class="fnode-box" x="346" y="170" width="48" height="48" rx="4"/>
-              <use href="#i-user" x="358" y="182" width="24" height="24" color="var(--accent)"/>
-              <text class="node-label is-accent" x="370" y="236">Planner</text>
-              <foreignObject x="306" y="242" width="128" height="14">
+              <foreignObject x="306" y="160" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:16ch; animation-delay:2.8s">held for planner ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label is-accent" x="370" y="194">Planner</text>
+              <rect class="fnode-box" x="346" y="216" width="48" height="48" rx="4"/>
+              <use href="#i-user" x="358" y="228" width="24" height="24" color="var(--accent)"/>
             </g>
             <g class="fnode">
-              <rect class="fnode-box" x="506" y="40" width="48" height="48" rx="4"/>
-              <use href="#i-gantt" x="518" y="52" width="24" height="24" color="var(--text-strong)"/>
-              <text class="node-label" x="530" y="104">Schedule SoR</text>
-              <text class="node-kicker" x="530" y="116">&amp; engine</text>
-              <foreignObject x="466" y="122" width="128" height="14">
+              <foreignObject x="466" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:16ch; animation-delay:2.4s">writing schedule ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label" x="530" y="50">Schedule engine</text>
+              <rect class="fnode-box" x="506" y="72" width="48" height="48" rx="4"/>
+              <use href="#i-gantt" x="518" y="84" width="24" height="24" color="var(--text-strong)"/>
             </g>
 
             <g class="fnode">
-              <rect class="fnode-box" x="56" y="292" width="48" height="48" rx="4"/>
-              <use href="#i-forecast" x="68" y="304" width="24" height="24" color="var(--text-strong)"/>
-              <text class="node-label" x="80" y="356">Actuals in</text>
-              <foreignObject x="16" y="362" width="128" height="14">
+              <foreignObject x="16" y="312" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:17ch; animation-delay:0.4s">ingesting actuals ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label" x="80" y="346">Actuals in</text>
+              <rect class="fnode-box" x="56" y="368" width="48" height="48" rx="4"/>
+              <use href="#i-forecast" x="68" y="380" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode is-gate">
-              <polygon class="fnode-box" points="155,304 167,316 155,328 143,316"/>
+              <polygon class="fnode-box" points="155,426 169,440 155,454 141,440"/>
             </g>
             <g class="fnode">
-              <rect class="fnode-box" x="256" y="292" width="48" height="48" rx="4"/>
-              <use href="#i-forecast" x="268" y="304" width="24" height="24" color="var(--text-strong)"/>
-              <text class="node-label" x="280" y="356">Waterfall</text>
-              <foreignObject x="216" y="362" width="128" height="14">
+              <foreignObject x="216" y="312" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:12ch; animation-delay:4s">forecasting ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label" x="280" y="346">Waterfall</text>
+              <rect class="fnode-box" x="256" y="368" width="48" height="48" rx="4"/>
+              <use href="#i-forecast" x="268" y="380" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode is-human">
-              <rect class="fnode-box" x="506" y="292" width="48" height="48" rx="4"/>
-              <use href="#i-user" x="518" y="304" width="24" height="24" color="var(--accent)"/>
-              <text class="node-label is-accent" x="530" y="356">Cost signs off</text>
-              <foreignObject x="466" y="362" width="128" height="14">
+              <foreignObject x="466" y="312" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:16ch; animation-delay:5s">awaiting sign-off ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label is-accent" x="530" y="346">Cost signs off</text>
+              <rect class="fnode-box" x="506" y="368" width="48" height="48" rx="4"/>
+              <use href="#i-user" x="518" y="380" width="24" height="24" color="var(--accent)"/>
             </g>
 
             <g class="fnode">
-              <rect class="fnode-box" x="666" y="170" width="48" height="48" rx="4"/>
-              <use href="#i-montecarlo" x="678" y="182" width="24" height="24" color="var(--text-strong)"/>
-              <text class="node-label" x="690" y="236">Risk engine</text>
-              <foreignObject x="626" y="242" width="128" height="14">
+              <foreignObject x="626" y="160" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:18ch; animation-delay:6s">simulating composite ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label" x="690" y="194">Risk engine</text>
+              <rect class="fnode-box" x="666" y="216" width="48" height="48" rx="4"/>
+              <use href="#i-montecarlo" x="678" y="228" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode is-final">
-              <rect class="fnode-box" x="816" y="170" width="48" height="48" rx="4"/>
-              <use href="#i-report" x="828" y="182" width="24" height="24" color="var(--accent)"/>
-              <text class="node-label is-accent" x="840" y="236">Report</text>
-              <foreignObject x="776" y="242" width="128" height="14">
+              <foreignObject x="776" y="160" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:16ch; animation-delay:7.5s">compiling report ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label is-accent" x="840" y="194">Report</text>
+              <rect class="fnode-box" x="816" y="216" width="48" height="48" rx="4"/>
+              <use href="#i-report" x="828" y="228" width="24" height="24" color="var(--accent)"/>
             </g>
             <g class="fnode is-human">
-              <rect class="fnode-box" x="966" y="170" width="48" height="48" rx="4"/>
-              <use href="#i-user" x="978" y="182" width="24" height="24" color="var(--accent)"/>
-              <text class="node-label is-accent" x="990" y="236">PM confirms</text>
-              <foreignObject x="926" y="242" width="128" height="14">
+              <foreignObject x="926" y="160" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:16ch; animation-delay:8.5s">awaiting confirm ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label is-accent" x="990" y="194">PM confirms</text>
+              <rect class="fnode-box" x="966" y="216" width="48" height="48" rx="4"/>
+              <use href="#i-user" x="978" y="228" width="24" height="24" color="var(--accent)"/>
             </g>
           </svg>
         </div>
@@ -1026,14 +1024,9 @@ footer{ padding-block:2.5rem .5rem; }
       </div>
     </div>
 
-      <div class="flow-legend">
-        <span><span class="sw"></span> live update propagating</span>
-        <span><span class="sw-c"></span> a named person confirms</span>
-      </div>
-
       <div class="step-row">
         <div class="step"><span class="n">01</span><span class="t">Field progress</span><span class="d">Site capture enters the cascade. Cost actuals can start the same loop from the other side.</span></div>
-        <div class="step"><span class="n">02</span><span class="t">Schedule SoR &amp; engine</span><span class="d">Queued updates pass a guardrail. Direct and mechanical fixes write; second-order or unclear changes are held for a planner.</span></div>
+        <div class="step"><span class="n">02</span><span class="t">Schedule engine</span><span class="d">Queued updates pass a guardrail. Direct and mechanical fixes write; second-order or unclear changes are held for a planner.</span></div>
         <div class="step"><span class="n">03</span><span class="t">Waterfall forecast</span><span class="d">A deterministic commitment + accrual forecast, signed off by the cost controller. Not the risk engine.</span></div>
         <div class="step"><span class="n">04</span><span class="t">Risk engine</span><span class="d">A separate computation: cost × schedule × the risk register, producing a risk-adjusted forecast.</span></div>
         <div class="step"><span class="n">05</span><span class="t">Report</span><span class="d">The PM confirms. That confirmation is the decision. Pending tasks start the next cycle.</span></div>
@@ -1079,7 +1072,7 @@ footer{ padding-block:2.5rem .5rem; }
     <h2 class="pad">Project controls, done continuously</h2>
   </div>
   <div class="rule">
-    <p class="pad" style="color:var(--text-muted);font-size:1rem;line-height:1.75rem;max-width:48rem;padding-block:1.25rem">
+    <p class="pad" style="color:var(--text-muted);font-size:1rem;line-height:1.75rem;max-width:48rem;padding-block:1.875rem">
       Three teams maintain three versions of the truth, and they only agree on the
       day the report goes out. That isn't carelessness. It's arithmetic. A validated,
       reconciled forecast used to take days of expert work, so it happened monthly,
@@ -1130,7 +1123,7 @@ footer{ padding-block:2.5rem .5rem; }
     <h2 class="pad">Risk, triggered from more than one place</h2>
   </div>
   <div class="rule">
-    <p class="pad" style="color:var(--text-muted);font-size:1rem;line-height:1.75rem;max-width:48rem;padding-block:1.25rem">Project communications, ingested documents, live world signals, and schedule or cost deltas all land in the same identification step. Matches update the register; new actions open a governed review. The reviewer-commit path is still being hardened. Everything around it is live.</p>
+    <p class="pad" style="color:var(--text-muted);font-size:1rem;line-height:1.75rem;max-width:48rem;padding-block:1.875rem">Project communications, ingested documents, live world signals, and schedule or cost deltas all land in the same identification step. Matches update the register; new actions open a governed review. The reviewer-commit path is still being hardened. Everything around it is live.</p>
   </div>
 
   <div class="rule term-stage" data-reveal>
@@ -1141,186 +1134,181 @@ footer{ padding-block:2.5rem .5rem; }
           <span class="term-status"><i></i> running</span>
         </div>
         <div class="term-body term-canvas">
-          <svg class="flow" viewBox="0 0 1240 580" role="img"
+          <svg class="flow" viewBox="0 0 1260 640" role="img"
                aria-label="Four signal sources (communications, documents, world search, and schedule or cost deltas) feed extraction and de-duplication, then a match against the existing register. Classification updates the register and opens a proposed-to-review workflow. The reviewer commit step is in progress. The register feeds the same risk engine, then a risk board and tasks back to owners.">
-            <path class="conn-return conn-base" d="M1150,88 L1220,88 L1220,564 L20,564 L20,64 L56,64"/>
-            <path class="conn-return conn-flow" d="M1150,88 L1220,88 L1220,564 L20,564 L20,64 L56,64"/>
+            <path class="conn-return conn-base" d="M1150,120 L1150,144 L1224,144 L1224,608 L28,608 L28,144 L80,144 L80,120"/>
+            <path class="conn-return conn-flow" d="M1150,120 L1150,144 L1224,144 L1224,608 L28,608 L28,144 L80,144 L80,120"/>
 
-            <path class="conn-base" d="M104,64 L200,64 L200,188 L246,188"/>
-            <path class="conn-flow" d="M104,64 L200,64 L200,188 L246,188"/>
-            <path class="conn-progress" d="M104,200 L246,200"/>
-            <path class="conn-base" d="M104,336 L200,336 L200,212 L246,212"/>
-            <path class="conn-flow" d="M104,336 L200,336 L200,212 L246,212"/>
-            <path class="conn-base" d="M104,472 L200,472 L200,220 L246,220"/>
-            <path class="conn-flow" d="M104,472 L200,472 L200,220 L246,220"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M80,120 L80,144 L200,144 L200,288 L270,288 L270,264"/>
+            <path class="conn-flow" d="M80,120 L80,144 L200,144 L200,288 L270,288 L270,264"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M80,264 L80,288 L270,288 L270,264"/>
+            <path class="conn-flow" d="M80,264 L80,288 L270,288 L270,264"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M80,408 L80,432 L200,432 L200,288 L270,288 L270,264"/>
+            <path class="conn-flow" d="M80,408 L80,432 L200,432 L200,288 L270,288 L270,264"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M80,552 L80,576 L200,576 L200,288 L270,288 L270,264"/>
+            <path class="conn-flow" d="M80,552 L80,576 L200,576 L200,288 L270,288 L270,264"/>
 
-            <path class="conn-base" marker-end="url(#arrow)" d="M294,200 L398,200"/>
-            <path class="conn-flow" d="M294,200 L398,200"/>
-            <path class="conn-base" marker-end="url(#arrow)" d="M422,200 L526,200"/>
-            <path class="conn-flow" d="M422,200 L526,200"/>
-            <path class="conn-base" marker-end="url(#arrow)" d="M574,176 L676,88"/>
-            <path class="conn-flow" d="M574,176 L676,88"/>
-            <path class="conn-base" marker-end="url(#arrow)" d="M574,224 L676,472"/>
-            <path class="conn-flow" d="M574,224 L676,472"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M270,264 L270,288 L550,288 L550,264"/>
+            <path class="conn-flow" d="M270,264 L270,288 L550,288 L550,264"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M550,264 L550,288 L630,288 L630,144 L700,144 L700,120"/>
+            <path class="conn-flow" d="M550,264 L550,288 L630,288 L630,144 L700,144 L700,120"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M550,264 L550,288 L630,288 L630,576 L700,576 L700,552"/>
+            <path class="conn-flow" d="M550,264 L550,288 L630,288 L630,576 L700,576 L700,552"/>
 
-            <path class="conn-base" marker-end="url(#arrow)" d="M724,64 L826,64"/>
-            <path class="conn-flow" d="M724,64 L826,64"/>
-            <path class="conn-base" marker-end="url(#arrow)" d="M874,64 L976,64"/>
-            <path class="conn-flow" d="M874,64 L976,64"/>
-            <path class="conn-base" marker-end="url(#arrow)" d="M1024,64 L1126,64"/>
-            <path class="conn-flow" d="M1024,64 L1126,64"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M700,120 L700,144 L850,144 L850,120"/>
+            <path class="conn-flow" d="M700,120 L700,144 L850,144 L850,120"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M850,120 L850,144 L1000,144 L1000,120"/>
+            <path class="conn-flow" d="M850,120 L850,144 L1000,144 L1000,120"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M1000,120 L1000,144 L1150,144 L1150,120"/>
+            <path class="conn-flow" d="M1000,120 L1000,144 L1150,144 L1150,120"/>
 
-            <path class="conn-base" marker-end="url(#arrow)" d="M724,472 L826,472"/>
-            <path class="conn-flow" d="M724,472 L826,472"/>
-            <path class="conn-progress" marker-end="url(#arrow)" d="M874,472 L976,472"/>
-            <path class="conn-held" d="M1000,496 L1000,548 L700,548 L700,496"/>
-            <path class="conn-base" marker-end="url(#arrow)" d="M1024,448 L1088,448 L1088,148 L724,148 L724,88"/>
-            <path class="conn-flow" d="M1024,448 L1088,448 L1088,148 L724,148 L724,88"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M700,552 L700,576 L850,576 L850,552"/>
+            <path class="conn-flow" d="M700,552 L700,576 L850,576 L850,552"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M850,552 L850,576 L1000,576 L1000,552"/>
+            <path class="conn-flow" d="M850,552 L850,576 L1000,576 L1000,552"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M1000,552 L1000,576 L1000,608 L700,608 L700,576 L700,552"/>
+            <path class="conn-flow" d="M1000,552 L1000,576 L1000,608 L700,608 L700,576 L700,552"/>
+            <path class="conn-base" marker-end="url(#arrow)" d="M1000,552 L1000,576 L1075,576 L1075,144 L700,144 L700,120"/>
+            <path class="conn-flow" d="M1000,552 L1000,576 L1075,576 L1075,144 L700,144 L700,120"/>
 
             <g class="fnode">
-              <rect class="fnode-box" x="56" y="40" width="48" height="48" rx="4"/>
-              <use href="#i-mail" x="68" y="52" width="24" height="24" color="var(--text-strong)"/>
-              <text class="node-label" x="80" y="104">Communications</text>
-              <foreignObject x="16" y="110" width="128" height="14">
+              <foreignObject x="16" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:14ch; animation-delay:0s">reading comms ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label" x="80" y="50">Communications</text>
+              <rect class="fnode-box" x="56" y="72" width="48" height="48" rx="4"/>
+              <use href="#i-mail" x="68" y="84" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode is-progress">
-              <rect class="fnode-box" x="56" y="176" width="48" height="48" rx="4"/>
-              <use href="#i-file" x="68" y="188" width="24" height="24" color="#93c5fd"/>
-              <text class="node-label" x="80" y="240">Documents</text>
-              <foreignObject x="16" y="246" width="128" height="14">
+              <foreignObject x="16" y="160" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type is-progress">
                   <span class="ft-text" style="--ft-w:15ch; animation-delay:0.4s">ingesting docs …</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label" x="80" y="194">Documents</text>
+              <rect class="fnode-box" x="56" y="216" width="48" height="48" rx="4"/>
+              <use href="#i-file" x="68" y="228" width="24" height="24" color="#93c5fd"/>
             </g>
             <g class="fnode">
-              <rect class="fnode-box" x="56" y="312" width="48" height="48" rx="4"/>
-              <use href="#i-globe" x="68" y="324" width="24" height="24" color="var(--text-strong)"/>
-              <text class="node-label" x="80" y="376">World signals</text>
-              <foreignObject x="16" y="382" width="128" height="14">
+              <foreignObject x="16" y="304" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:16ch; animation-delay:0.8s">searching world ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label" x="80" y="338">World signals</text>
+              <rect class="fnode-box" x="56" y="360" width="48" height="48" rx="4"/>
+              <use href="#i-globe" x="68" y="372" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode">
-              <rect class="fnode-box" x="56" y="448" width="48" height="48" rx="4"/>
-              <use href="#i-gantt" x="68" y="460" width="24" height="24" color="var(--text-strong)"/>
-              <text class="node-label" x="80" y="512">Schedule &amp; cost</text>
-              <foreignObject x="16" y="518" width="128" height="14">
+              <foreignObject x="16" y="448" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:16ch; animation-delay:1.2s">reading deltas ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label" x="80" y="482">Schedule &amp; cost</text>
+              <rect class="fnode-box" x="56" y="504" width="48" height="48" rx="4"/>
+              <use href="#i-gantt" x="68" y="516" width="24" height="24" color="var(--text-strong)"/>
             </g>
 
             <g class="fnode">
-              <rect class="fnode-box" x="246" y="176" width="48" height="48" rx="4"/>
-              <use href="#i-search" x="258" y="188" width="24" height="24" color="var(--text-strong)"/>
-              <text class="node-label" x="270" y="240">Extract</text>
-              <foreignObject x="206" y="246" width="128" height="14">
+              <foreignObject x="206" y="160" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:15ch; animation-delay:1.8s">de-duplicating ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label" x="270" y="194">Extract</text>
+              <rect class="fnode-box" x="246" y="216" width="48" height="48" rx="4"/>
+              <use href="#i-search" x="258" y="228" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode is-gate">
-              <polygon class="fnode-box" points="410,188 422,200 410,212 398,200"/>
+              <polygon class="fnode-box" points="410,274 424,288 410,302 396,288"/>
             </g>
             <g class="fnode">
-              <rect class="fnode-box" x="526" y="176" width="48" height="48" rx="4"/>
-              <use href="#i-shield-list" x="538" y="188" width="24" height="24" color="var(--text-strong)"/>
-              <text class="node-label" x="550" y="240">Classify</text>
-              <foreignObject x="486" y="246" width="128" height="14">
+              <foreignObject x="486" y="160" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:18ch; animation-delay:3s">assigning owners ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label" x="550" y="194">Classify</text>
+              <rect class="fnode-box" x="526" y="216" width="48" height="48" rx="4"/>
+              <use href="#i-shield-list" x="538" y="228" width="24" height="24" color="var(--text-strong)"/>
             </g>
 
             <g class="fnode">
-              <rect class="fnode-box" x="676" y="40" width="48" height="48" rx="4"/>
-              <use href="#i-inbox" x="688" y="52" width="24" height="24" color="var(--text-strong)"/>
-              <text class="node-label" x="700" y="104">Risk register</text>
-              <foreignObject x="636" y="110" width="128" height="14">
+              <foreignObject x="636" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:18ch; animation-delay:4s">updating register ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label" x="700" y="50">Risk register</text>
+              <rect class="fnode-box" x="676" y="72" width="48" height="48" rx="4"/>
+              <use href="#i-inbox" x="688" y="84" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode">
-              <rect class="fnode-box" x="826" y="40" width="48" height="48" rx="4"/>
-              <use href="#i-montecarlo" x="838" y="52" width="24" height="24" color="var(--text-strong)"/>
-              <text class="node-label" x="850" y="104">Risk engine</text>
-              <foreignObject x="786" y="110" width="128" height="14">
+              <foreignObject x="786" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:18ch; animation-delay:5.2s">simulating composite ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label" x="850" y="50">Risk engine</text>
+              <rect class="fnode-box" x="826" y="72" width="48" height="48" rx="4"/>
+              <use href="#i-montecarlo" x="838" y="84" width="24" height="24" color="var(--text-strong)"/>
             </g>
             <g class="fnode is-final">
-              <rect class="fnode-box" x="976" y="40" width="48" height="48" rx="4"/>
-              <use href="#i-report" x="988" y="52" width="24" height="24" color="var(--accent)"/>
-              <text class="node-label is-accent" x="1000" y="104">Risk board</text>
-              <foreignObject x="936" y="110" width="128" height="14">
+              <foreignObject x="936" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:16ch; animation-delay:6.4s">compiling board ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label is-accent" x="1000" y="50">Risk board</text>
+              <rect class="fnode-box" x="976" y="72" width="48" height="48" rx="4"/>
+              <use href="#i-report" x="988" y="84" width="24" height="24" color="var(--accent)"/>
             </g>
             <g class="fnode is-human">
-              <rect class="fnode-box" x="1126" y="40" width="48" height="48" rx="4"/>
-              <use href="#i-user" x="1138" y="52" width="24" height="24" color="var(--accent)"/>
-              <text class="node-label is-accent" x="1150" y="104">Task to owner</text>
-              <foreignObject x="1086" y="110" width="128" height="14">
+              <foreignObject x="1086" y="16" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:16ch; animation-delay:7.4s">notifying owner ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label is-accent" x="1150" y="50">Task to owner</text>
+              <rect class="fnode-box" x="1126" y="72" width="48" height="48" rx="4"/>
+              <use href="#i-user" x="1138" y="84" width="24" height="24" color="var(--accent)"/>
             </g>
 
             <g class="fnode is-human">
-              <rect class="fnode-box" x="676" y="448" width="48" height="48" rx="4"/>
-              <use href="#i-user" x="688" y="460" width="24" height="24" color="var(--accent)"/>
-              <text class="node-label is-accent" x="700" y="512">Proposed</text>
-              <foreignObject x="636" y="518" width="128" height="14">
+              <foreignObject x="636" y="448" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:17ch; animation-delay:3.6s">opening proposal ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label is-accent" x="700" y="482">Proposed</text>
+              <rect class="fnode-box" x="676" y="504" width="48" height="48" rx="4"/>
+              <use href="#i-user" x="688" y="516" width="24" height="24" color="var(--accent)"/>
             </g>
             <g class="fnode is-human">
-              <rect class="fnode-box" x="826" y="448" width="48" height="48" rx="4"/>
-              <use href="#i-user" x="838" y="460" width="24" height="24" color="var(--accent)"/>
-              <text class="node-label is-accent" x="850" y="512">In review</text>
-              <foreignObject x="786" y="518" width="128" height="14">
+              <foreignObject x="786" y="448" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type">
                   <span class="ft-text" style="--ft-w:16ch; animation-delay:4.6s">awaiting review ✓</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label is-accent" x="850" y="482">In review</text>
+              <rect class="fnode-box" x="826" y="504" width="48" height="48" rx="4"/>
+              <use href="#i-user" x="838" y="516" width="24" height="24" color="var(--accent)"/>
             </g>
             <g class="fnode is-progress">
-              <rect class="fnode-box" x="976" y="448" width="48" height="48" rx="4"/>
-              <use href="#i-user" x="988" y="460" width="24" height="24" color="#93c5fd"/>
-              <text class="node-label" x="1000" y="512">Reviewer</text>
-              <foreignObject x="936" y="518" width="128" height="14">
+              <foreignObject x="936" y="448" width="128" height="14">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="flow-type is-progress">
                   <span class="ft-text" style="--ft-w:16ch; animation-delay:5.6s">commit not live</span><span class="ft-cursor">_</span>
                 </div>
               </foreignObject>
+              <text class="node-label" x="1000" y="482">Reviewer</text>
+              <rect class="fnode-box" x="976" y="504" width="48" height="48" rx="4"/>
+              <use href="#i-user" x="988" y="516" width="24" height="24" color="#93c5fd"/>
             </g>
           </svg>
         </div>
-      </div>
-
-      <div class="flow-legend">
-        <span><span class="sw"></span> live update propagating</span>
-        <span><span class="sw-c"></span> a named person confirms</span>
-        <span><span class="sw-progress"></span> in progress, not yet enabled</span>
       </div>
 
       <div class="step-row">
@@ -1342,7 +1330,7 @@ footer{ padding-block:2.5rem .5rem; }
     <h2 class="pad">Every loop is a playbook you can read</h2>
   </div>
   <div class="rule">
-    <p class="pad" style="color:var(--text-muted);font-size:1rem;line-height:1.75rem;max-width:48rem;padding-block:1.25rem">A workflow isn't a black box inside the agent. It's a declared document:
+    <p class="pad" style="color:var(--text-muted);font-size:1rem;line-height:1.75rem;max-width:48rem;padding-block:1.875rem">A workflow isn't a black box inside the agent. It's a declared document:
     which engines run, in what order, under which guardrail, and exactly where a
     named human has to confirm before anything commits.</p>
   </div>
